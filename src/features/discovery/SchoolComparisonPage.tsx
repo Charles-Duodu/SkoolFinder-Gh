@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDemo } from '../../context/DemoContext';
 import { formatGHS } from '../../lib/utils';
 import { Button } from '../../components/ui/Button';
 import { StatusBadge } from '../../components/ui/StatusBadge';
-import { Scale, X, Plus, Check, ArrowLeft, ExternalLink, Bookmark } from 'lucide-react';
+import { Scale, X, Plus, Check, ArrowLeft, ExternalLink, Bookmark, Calculator } from 'lucide-react';
+import { SchoolFeeCalculatorModal } from './SchoolFeeCalculatorModal';
+import { School } from '../../types';
 
 export const SchoolComparisonPage: React.FC = () => {
   const { state, toggleCompareSchool } = useDemo();
+  const [calculatorSchool, setCalculatorSchool] = useState<School | null>(null);
   const comparedIds = state.parent.comparisonSchoolIds;
   const comparedSchools = state.schools.filter(s => comparedIds.includes(s.id));
 
@@ -184,12 +187,21 @@ export const SchoolComparisonPage: React.FC = () => {
 
               {/* Actions row */}
               <tr className="bg-slate-50/50">
-                <td className="p-4 font-bold text-ink-primary">Profile Link</td>
+                <td className="p-4 font-bold text-ink-primary">Decision Actions</td>
                 {comparedSchools.map(s => (
-                  <td key={s.id} className="p-4">
-                    <Link to={`/schools/${s.slug}`}>
-                      <Button variant="outline" size="sm" className="w-full justify-center">
-                        View Profile
+                  <td key={s.id} className="p-4 space-y-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setCalculatorSchool(s)}
+                      className="w-full justify-center text-xs"
+                      icon={<Calculator className="w-3.5 h-3.5 text-brand-navy" />}
+                    >
+                      Calculate Fees
+                    </Button>
+                    <Link to={`/schools/${s.slug}`} className="block">
+                      <Button variant="primary" size="sm" className="w-full justify-center text-xs">
+                        View Full Profile
                       </Button>
                     </Link>
                   </td>
@@ -198,6 +210,14 @@ export const SchoolComparisonPage: React.FC = () => {
 
             </tbody>
           </table>
+
+          {calculatorSchool && (
+            <SchoolFeeCalculatorModal
+              school={calculatorSchool}
+              isOpen={Boolean(calculatorSchool)}
+              onClose={() => setCalculatorSchool(null)}
+            />
+          )}
         </div>
       )}
 

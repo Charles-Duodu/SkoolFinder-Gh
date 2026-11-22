@@ -3,6 +3,7 @@ import { Routes, Route, Outlet, Navigate, Link } from 'react-router-dom';
 import { DemoRoleBar } from './components/layout/DemoRoleBar';
 import { PublicNavbar } from './components/layout/PublicNavbar';
 import { PublicFooter } from './components/layout/PublicFooter';
+import { ToastContainer } from './components/ui/ToastContainer';
 
 // Public Feature Pages
 import { HomePage } from './features/discovery/HomePage';
@@ -59,6 +60,7 @@ export const App: React.FC = () => {
     <div className="min-h-screen flex flex-col">
       {/* Universal Demo Switcher Toolbar */}
       <DemoRoleBar />
+      <ToastContainer />
 
       <Routes>
         {/* Public Marketing & Discovery Routes */}

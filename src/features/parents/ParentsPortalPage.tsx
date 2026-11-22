@@ -20,21 +20,33 @@ import {
   Clock, 
   Plus, 
   Trash2,
-  ExternalLink
+  ExternalLink,
+  GraduationCap,
+  Calculator,
+  FileText
 } from 'lucide-react';
+import { StudentAdmissionModal } from '../discovery/StudentAdmissionModal';
+import { SchoolFeeCalculatorModal } from '../discovery/SchoolFeeCalculatorModal';
+import { School } from '../../types';
 
 export const ParentsPortalPage: React.FC = () => {
   const { state, toggleSaveSchool, toggleShortlistSchool, toggleCompareSchool } = useDemo();
-  const [activeTab, setActiveTab] = useState<'overview' | 'saved' | 'shortlist' | 'comparisons' | 'enquiries' | 'alerts' | 'settings'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'applications' | 'saved' | 'shortlist' | 'comparisons' | 'enquiries' | 'alerts' | 'settings'>('overview');
+  const [admissionSchool, setAdmissionSchool] = useState<School | null>(null);
+  const [feeModalSchool, setFeeModalSchool] = useState<School | null>(null);
 
   const parent = state.parent;
   const savedSchools = state.schools.filter(s => parent.savedSchoolIds.includes(s.id));
   const shortlistedSchools = state.schools.filter(s => parent.shortlistedSchoolIds.includes(s.id));
   const comparedSchools = state.schools.filter(s => parent.comparisonSchoolIds.includes(s.id));
   const parentEnquiries = state.enquiries.filter(e => e.parentEmail === parent.email || e.parentName === parent.fullName);
+  const parentApplications = (state.admissionApplications || []).filter(
+    a => a.parentEmail === parent.email || a.parentName === parent.fullName
+  );
 
   const navItems: DashboardNavItem[] = [
     { id: 'overview', label: 'Overview', path: '/parents/dashboard', icon: <LayoutDashboard className="w-4 h-4" /> },
+    { id: 'applications', label: 'Admissions & Entry', path: '/parents/applications', icon: <GraduationCap className="w-4 h-4" />, badge: parentApplications.length },
     { id: 'saved', label: 'Saved Schools', path: '/parents/saved', icon: <Bookmark className="w-4 h-4" />, badge: savedSchools.length },
     { id: 'shortlist', label: 'My Shortlist', path: '/parents/shortlist', icon: <Star className="w-4 h-4" />, badge: shortlistedSchools.length },
     { id: 'comparisons', label: 'My Comparisons', path: '/parents/comparisons', icon: <Scale className="w-4 h-4" />, badge: comparedSchools.length },
@@ -116,6 +128,18 @@ export const ParentsPortalPage: React.FC = () => {
           {/* KPI Summary Cards */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <div 
+              onClick={() => setActiveTab('applications')} 
+              className="bg-white p-5 rounded-xl border border-surface-border shadow-subtle cursor-pointer hover:border-brand-navy transition-colors"
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-ink-muted font-medium">Active Applications</span>
+                <GraduationCap className="w-4 h-4 text-emerald-600" />
+              </div>
+              <p className="text-2xl font-bold text-ink-primary mt-2">{parentApplications.length}</p>
+              <span className="text-[11px] text-emerald-700 font-semibold mt-1 block">Track entry status</span>
+            </div>
+
+            <div 
               onClick={() => setActiveTab('saved')} 
               className="bg-white p-5 rounded-xl border border-surface-border shadow-subtle cursor-pointer hover:border-brand-navy transition-colors"
             >
@@ -140,27 +164,15 @@ export const ParentsPortalPage: React.FC = () => {
             </div>
 
             <div 
-              onClick={() => setActiveTab('comparisons')} 
-              className="bg-white p-5 rounded-xl border border-surface-border shadow-subtle cursor-pointer hover:border-brand-navy transition-colors"
-            >
-              <div className="flex items-center justify-between">
-                <span className="text-xs text-ink-muted font-medium">Side-by-Side</span>
-                <Scale className="w-4 h-4 text-blue-600" />
-              </div>
-              <p className="text-2xl font-bold text-ink-primary mt-2">{comparedSchools.length}</p>
-              <span className="text-[11px] text-ink-secondary mt-1 block">Active comparison matrix</span>
-            </div>
-
-            <div 
               onClick={() => setActiveTab('enquiries')} 
               className="bg-white p-5 rounded-xl border border-surface-border shadow-subtle cursor-pointer hover:border-brand-navy transition-colors"
             >
               <div className="flex items-center justify-between">
-                <span className="text-xs text-ink-muted font-medium">Admission Enquiries</span>
-                <MessageSquare className="w-4 h-4 text-emerald-600" />
+                <span className="text-xs text-ink-muted font-medium">Active Enquiries</span>
+                <MessageSquare className="w-4 h-4 text-brand-navy" />
               </div>
               <p className="text-2xl font-bold text-ink-primary mt-2">{parentEnquiries.length}</p>
-              <span className="text-[11px] text-emerald-700 font-medium mt-1 block">1 school responded</span>
+              <span className="text-[11px] text-ink-secondary mt-1 block">Direct messages to schools</span>
             </div>
           </div>
 
@@ -227,6 +239,143 @@ export const ParentsPortalPage: React.FC = () => {
               ))}
             </div>
           </div>
+        </div>
+      )}
+
+      {/* VIEW: APPLICATIONS & ADMISSION STATUS */}
+      {activeTab === 'applications' && (
+        <div className="space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h2 className="text-xl font-bold text-ink-primary">Formal Admission Applications</h2>
+              <p className="text-xs text-ink-secondary">
+                Track assessment dates, admissions offers, and verify submitted credentials
+              </p>
+            </div>
+            <Link to="/schools">
+              <Button variant="gold" size="sm" icon={<Plus className="w-4 h-4 text-brand-navy-dark" />}>
+                Apply to a New School
+              </Button>
+            </Link>
+          </div>
+
+          {parentApplications.length === 0 ? (
+            <div className="bg-white p-12 rounded-2xl border text-center space-y-3">
+              <GraduationCap className="w-8 h-8 text-ink-muted mx-auto" />
+              <p className="text-sm font-semibold">No active admission applications lodged yet.</p>
+              <p className="text-xs text-ink-muted max-w-sm mx-auto">
+                Explore our Greater Accra school profiles and click "Apply for Admission" to lodge a digital student application.
+              </p>
+              <Link to="/schools"><Button variant="primary" size="sm">Browse Accra Schools</Button></Link>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {parentApplications.map((app) => {
+                const targetSchool = state.schools.find(s => s.id === app.schoolId);
+
+                let statusBadgeClass = 'bg-blue-100 text-blue-800';
+                if (app.status === 'Assessment Scheduled') statusBadgeClass = 'bg-amber-100 text-amber-800 border-amber-300';
+                if (app.status === 'Admitted / Offered') statusBadgeClass = 'bg-emerald-100 text-emerald-800 border-emerald-300';
+                if (app.status === 'Declined') statusBadgeClass = 'bg-rose-100 text-rose-800';
+
+                return (
+                  <div key={app.id} className="bg-white rounded-2xl p-6 border border-surface-border shadow-subtle space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-surface-border">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-brand-navy/10 flex items-center justify-center text-brand-navy shrink-0">
+                          <GraduationCap className="w-5 h-5 text-brand-navy" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <h4 className="text-sm font-bold text-ink-primary">{app.studentName}</h4>
+                            <span className="text-[11px] text-ink-muted font-mono font-semibold">#{app.id.toUpperCase()}</span>
+                          </div>
+                          <p className="text-xs text-ink-secondary">
+                            Applying to: <strong className="text-brand-navy">{app.schoolName}</strong> ({app.schoolLocality})
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <span className={`text-xs px-3 py-1 rounded-full font-bold border ${statusBadgeClass}`}>
+                          {app.status}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                      <div className="p-3 rounded-xl bg-slate-50 border border-surface-border">
+                        <span className="text-slate-500 block text-[11px]">Target Stage</span>
+                        <strong className="text-slate-800">{app.targetLevel}</strong>
+                      </div>
+                      <div className="p-3 rounded-xl bg-slate-50 border border-surface-border">
+                        <span className="text-slate-500 block text-[11px]">Academic Entry</span>
+                        <strong className="text-slate-800">{app.targetTerm}</strong>
+                      </div>
+                      <div className="p-3 rounded-xl bg-slate-50 border border-surface-border">
+                        <span className="text-slate-500 block text-[11px]">GPS Digital Address</span>
+                        <strong className="text-slate-800 font-mono">{app.digitalAddress}</strong>
+                      </div>
+                      <div className="p-3 rounded-xl bg-slate-50 border border-surface-border">
+                        <span className="text-slate-500 block text-[11px]">Submitted On</span>
+                        <strong className="text-slate-800">{formatDate(app.submittedAt)}</strong>
+                      </div>
+                    </div>
+
+                    {/* School Notes or Assessment Notice */}
+                    {app.schoolNotes && (
+                      <div className="p-3.5 rounded-xl bg-amber-50/80 border border-amber-200 text-xs text-amber-950 space-y-1">
+                        <span className="font-bold text-amber-900 block flex items-center gap-1.5">
+                          <Clock className="w-3.5 h-3.5 text-amber-700" />
+                          Admissions Office Notice:
+                        </span>
+                        <p className="leading-relaxed">{app.schoolNotes}</p>
+                      </div>
+                    )}
+
+                    {/* Attached Verification Documents */}
+                    <div>
+                      <span className="text-[11px] uppercase tracking-wider font-bold text-slate-500 block mb-1.5">
+                        Attached Applicant Records ({app.documentsAttached.length}):
+                      </span>
+                      <div className="flex flex-wrap gap-2">
+                        {app.documentsAttached.map((doc, idx) => (
+                          <span key={idx} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-100 border text-[11px] text-slate-700 font-medium">
+                            <FileText className="w-3 h-3 text-slate-500" />
+                            {doc}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="flex flex-wrap items-center justify-between pt-2 border-t border-slate-100 gap-2">
+                      {targetSchool && (
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setFeeModalSchool(targetSchool)}
+                            icon={<Calculator className="w-3.5 h-3.5 text-brand-navy" />}
+                          >
+                            Calculate Fees
+                          </Button>
+                          <Link to={`/schools/${targetSchool.slug}`}>
+                            <Button variant="ghost" size="sm" icon={<ExternalLink className="w-3.5 h-3.5" />}>
+                              View School Profile
+                            </Button>
+                          </Link>
+                        </div>
+                      )}
+                      <span className="text-[11px] text-slate-400">
+                        Admissions desk contact: {targetSchool?.contactPerson.phone || '+233 24 000 0000'}
+                      </span>
+                    </div>
+
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       )}
 
@@ -443,6 +592,15 @@ export const ParentsPortalPage: React.FC = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Fee Calculator Modal */}
+      {feeModalSchool && (
+        <SchoolFeeCalculatorModal
+          school={feeModalSchool}
+          isOpen={Boolean(feeModalSchool)}
+          onClose={() => setFeeModalSchool(null)}
+        />
       )}
 
     </DashboardLayout>

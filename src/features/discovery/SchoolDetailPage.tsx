@@ -5,6 +5,9 @@ import { formatGHS } from '../../lib/utils';
 import { StatusBadge } from '../../components/ui/StatusBadge';
 import { Button } from '../../components/ui/Button';
 import { ParentEnquiryModal } from './ParentEnquiryModal';
+import { StudentAdmissionModal } from './StudentAdmissionModal';
+import { SchoolFeeCalculatorModal } from './SchoolFeeCalculatorModal';
+import { SafeguardingReportModal } from './SafeguardingReportModal';
 import { 
   MapPin, 
   Phone, 
@@ -20,7 +23,10 @@ import {
   Share2,
   ExternalLink,
   ShieldCheck,
-  Send
+  Send,
+  Calculator,
+  ShieldAlert,
+  FileSignature
 } from 'lucide-react';
 
 export const SchoolDetailPage: React.FC = () => {
@@ -28,6 +34,9 @@ export const SchoolDetailPage: React.FC = () => {
   const navigate = useNavigate();
   const { state, toggleSaveSchool, toggleCompareSchool } = useDemo();
   const [enquiryOpen, setEnquiryOpen] = useState(false);
+  const [admissionOpen, setAdmissionOpen] = useState(false);
+  const [calculatorOpen, setCalculatorOpen] = useState(false);
+  const [safeguardingOpen, setSafeguardingOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'overview' | 'academics' | 'facilities' | 'admissions' | 'gallery'>('overview');
 
   const school = state.schools.find(s => s.slug === slug || s.id === slug);
@@ -63,7 +72,7 @@ export const SchoolDetailPage: React.FC = () => {
             <span>Back to All Schools</span>
           </Link>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={() => toggleSaveSchool(school.id)}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
@@ -82,6 +91,22 @@ export const SchoolDetailPage: React.FC = () => {
               <Scale className="w-3.5 h-3.5" />
               <span>{isCompared ? 'In Comparison' : 'Compare'}</span>
             </button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCalculatorOpen(true)}
+              icon={<Calculator className="w-3.5 h-3.5 text-brand-navy" />}
+            >
+              Calculate Fees
+            </Button>
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={() => setAdmissionOpen(true)}
+              icon={<FileSignature className="w-3.5 h-3.5 text-brand-gold" />}
+            >
+              Apply for Admission
+            </Button>
             <Button variant="gold" size="sm" onClick={() => setEnquiryOpen(true)} icon={<Send className="w-3.5 h-3.5 text-brand-navy-dark" />}>
               Send Enquiry
             </Button>
@@ -270,6 +295,45 @@ export const SchoolDetailPage: React.FC = () => {
                   </div>
                 )}
 
+                {/* Direct Action Hub for Admissions & Fees */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                  <div className="p-5 rounded-2xl bg-gradient-to-br from-brand-navy to-slate-900 text-white space-y-3">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-brand-gold">
+                      Formal Online Entry
+                    </span>
+                    <h4 className="text-base font-bold">Apply for 2026/2027 Admission</h4>
+                    <p className="text-xs text-white/80 leading-relaxed">
+                      Complete our 3-step digital application, attach academic transcripts, and book your entrance assessment slot.
+                    </p>
+                    <Button
+                      variant="gold"
+                      size="sm"
+                      onClick={() => setAdmissionOpen(true)}
+                      icon={<FileSignature className="w-3.5 h-3.5 text-brand-navy-dark" />}
+                    >
+                      Begin Application
+                    </Button>
+                  </div>
+
+                  <div className="p-5 rounded-2xl bg-slate-50 border border-surface-border space-y-3">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-brand-navy">
+                      Transparent Costing
+                    </span>
+                    <h4 className="text-base font-bold text-ink-primary">Calculate Termly & Annual Fees</h4>
+                    <p className="text-xs text-ink-secondary leading-relaxed">
+                      Customize meal catering, bus transit zones, sibling discounts, and STEM levies for a realistic breakdown.
+                    </p>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setCalculatorOpen(true)}
+                      icon={<Calculator className="w-3.5 h-3.5 text-brand-navy" />}
+                    >
+                      Launch Fee Calculator
+                    </Button>
+                  </div>
+                </div>
+
                 <div>
                   <h3 className="text-base font-bold text-ink-primary mb-2">Annual Tuition Band (Published)</h3>
                   <div className="p-4 rounded-xl bg-slate-50 border border-surface-border flex items-center justify-between">
@@ -304,21 +368,58 @@ export const SchoolDetailPage: React.FC = () => {
           {/* Sidebar CTA & Related Schools */}
           <div className="space-y-6">
             
-            {/* Quick Admissions Enquiry Box */}
-            <div className="bg-white rounded-2xl p-6 border border-surface-border shadow-subtle space-y-4">
-              <h3 className="text-base font-bold text-ink-primary">Direct Enquiry</h3>
+            {/* Quick Admissions Actions Box */}
+            <div className="bg-white rounded-2xl p-6 border border-surface-border shadow-subtle space-y-3.5">
+              <h3 className="text-base font-bold text-ink-primary">Admissions & Enquiries</h3>
               <p className="text-xs text-ink-secondary leading-relaxed">
-                Connect with {school.contactPerson.name} ({school.contactPerson.role}) to schedule a campus walk-through or request entrance test details.
+                Connect with {school.contactPerson.name} ({school.contactPerson.role}) or submit your child's entry application online.
               </p>
-              <Button
-                variant="gold"
-                size="md"
-                onClick={() => setEnquiryOpen(true)}
-                className="w-full justify-center"
-                icon={<Send className="w-4 h-4 text-brand-navy-dark" />}
-              >
-                Send Admission Message
-              </Button>
+              
+              <div className="space-y-2 pt-1">
+                <Button
+                  variant="primary"
+                  size="md"
+                  onClick={() => setAdmissionOpen(true)}
+                  className="w-full justify-center"
+                  icon={<FileSignature className="w-4 h-4 text-brand-gold" />}
+                >
+                  Apply for Admission
+                </Button>
+                
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCalculatorOpen(true)}
+                  className="w-full justify-center"
+                  icon={<Calculator className="w-3.5 h-3.5" />}
+                >
+                  Fee Affordability Calculator
+                </Button>
+
+                <Button
+                  variant="gold"
+                  size="sm"
+                  onClick={() => setEnquiryOpen(true)}
+                  className="w-full justify-center"
+                  icon={<Send className="w-3.5 h-3.5 text-brand-navy-dark" />}
+                >
+                  Send Direct Enquiry
+                </Button>
+              </div>
+
+              {/* Safeguarding Confidential Reporting Link */}
+              <div className="pt-2 border-t border-slate-100">
+                <button
+                  onClick={() => setSafeguardingOpen(true)}
+                  className="w-full text-left text-[11px] text-slate-500 hover:text-rose-600 flex items-center justify-between transition-colors p-1 rounded font-semibold"
+                >
+                  <span className="flex items-center gap-1.5">
+                    <ShieldAlert className="w-3.5 h-3.5 text-amber-600" />
+                    <span>Report Safeguarding Concern</span>
+                  </span>
+                  <span>&rarr;</span>
+                </button>
+              </div>
             </div>
 
             {/* Related Schools in Greater Accra */}
@@ -361,6 +462,28 @@ export const SchoolDetailPage: React.FC = () => {
         school={school}
         isOpen={enquiryOpen}
         onClose={() => setEnquiryOpen(false)}
+      />
+
+      {/* Formal Student Admission Application Modal */}
+      <StudentAdmissionModal
+        school={school}
+        isOpen={admissionOpen}
+        onClose={() => setAdmissionOpen(false)}
+      />
+
+      {/* School Fee Breakdown & Affordability Calculator Modal */}
+      <SchoolFeeCalculatorModal
+        school={school}
+        isOpen={calculatorOpen}
+        onClose={() => setCalculatorOpen(false)}
+        onApplyClick={() => setAdmissionOpen(true)}
+      />
+
+      {/* Confidential Safeguarding Reporting Modal */}
+      <SafeguardingReportModal
+        preselectedSchool={school}
+        isOpen={safeguardingOpen}
+        onClose={() => setSafeguardingOpen(false)}
       />
 
     </div>

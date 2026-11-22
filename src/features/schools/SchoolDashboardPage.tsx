@@ -24,7 +24,8 @@ import {
   Clock, 
   Send,
   FileText,
-  Calendar
+  Calendar,
+  GraduationCap
 } from 'lucide-react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 
@@ -33,15 +34,17 @@ interface SchoolDashboardPageProps {
 }
 
 export const SchoolDashboardPage: React.FC<SchoolDashboardPageProps> = ({ welcomeNotice = false }) => {
-  const { state, postVacancy, createRFQ, respondToEnquiry, updateApplicationStatus, updateBidStatus } = useDemo();
+  const { state, postVacancy, createRFQ, respondToEnquiry, updateApplicationStatus, updateBidStatus, updateAdmissionStatus } = useDemo();
   const [showWelcome, setShowWelcome] = useState(welcomeNotice);
   
   // Use Achimota Preparatory (sch-01) as the active demonstration school
   const currentSchool = state.schools.find(s => s.id === 'sch-01') || state.schools[0];
   const [activeTab, setActiveTab] = useState<'overview' | 'profile' | 'academics' | 'admissions' | 'recruitment' | 'procurement' | 'reports' | 'settings'>('overview');
+  const [admissionsSubTab, setAdmissionsSubTab] = useState<'applications' | 'enquiries'>('applications');
 
   // Filter school-specific data
   const schoolEnquiries = state.enquiries.filter(e => e.schoolId === currentSchool.id);
+  const schoolAdmissions = (state.admissionApplications || []).filter(a => a.schoolId === currentSchool.id);
   const schoolVacancies = state.vacancies.filter(v => v.schoolId === currentSchool.id);
   const schoolApplications = state.applications.filter(a => a.schoolId === currentSchool.id);
   const schoolRFQs = state.rfqs.filter(r => r.schoolId === currentSchool.id);
@@ -75,7 +78,7 @@ export const SchoolDashboardPage: React.FC<SchoolDashboardPageProps> = ({ welcom
   const navItems: DashboardNavItem[] = [
     { id: 'overview', label: 'Executive Overview', path: '#', icon: <LayoutDashboard className="w-4 h-4" /> },
     { id: 'profile', label: 'School Profile', path: '#', icon: <School className="w-4 h-4" /> },
-    { id: 'admissions', label: 'Admissions & Enquiries', path: '#', icon: <MessageSquare className="w-4 h-4" />, badge: schoolEnquiries.length },
+    { id: 'admissions', label: 'Admissions & Inquiries', path: '#', icon: <GraduationCap className="w-4 h-4" />, badge: schoolEnquiries.length + schoolAdmissions.length },
     { id: 'recruitment', label: 'Staff Recruitment', path: '#', icon: <Briefcase className="w-4 h-4" />, badge: schoolVacancies.length },
     { id: 'procurement', label: 'Suppliers & RFQs', path: '#', icon: <Truck className="w-4 h-4" />, badge: schoolRFQs.length },
     { id: 'reports', label: 'Analytics & Trends', path: '#', icon: <BarChart3 className="w-4 h-4" /> },
@@ -484,46 +487,200 @@ export const SchoolDashboardPage: React.FC<SchoolDashboardPageProps> = ({ welcom
       {/* VIEW: ADMISSIONS & ENQUIRIES */}
       {activeTab === 'admissions' && (
         <div className="space-y-6">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h2 className="text-xl font-bold text-ink-primary">Admissions Inquiries Inbox</h2>
-              <p className="text-xs text-ink-secondary">Manage communication from parents and prospective guardians</p>
+              <h2 className="text-xl font-bold text-ink-primary">Admissions & Enrollment Hub</h2>
+              <p className="text-xs text-ink-secondary">
+                Manage online student admission applications, schedule diagnostic assessments, and respond to parent inquiries
+              </p>
+            </div>
+
+            {/* Segmented Subtab Switcher */}
+            <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-surface-border">
+              <button
+                onClick={() => setAdmissionsSubTab('applications')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors flex items-center gap-1.5 ${
+                  admissionsSubTab === 'applications'
+                    ? 'bg-white text-brand-navy shadow-sm'
+                    : 'text-ink-secondary hover:text-ink-primary'
+                }`}
+              >
+                <GraduationCap className="w-3.5 h-3.5 text-brand-navy" />
+                <span>Student Applications</span>
+                <span className="px-1.5 py-0.2 rounded-full bg-brand-navy text-white text-[10px]">
+                  {schoolAdmissions.length}
+                </span>
+              </button>
+
+              <button
+                onClick={() => setAdmissionsSubTab('enquiries')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors flex items-center gap-1.5 ${
+                  admissionsSubTab === 'enquiries'
+                    ? 'bg-white text-brand-navy shadow-sm'
+                    : 'text-ink-secondary hover:text-ink-primary'
+                }`}
+              >
+                <MessageSquare className="w-3.5 h-3.5 text-brand-gold" />
+                <span>General Enquiries</span>
+                <span className="px-1.5 py-0.2 rounded-full bg-slate-200 text-slate-800 text-[10px]">
+                  {schoolEnquiries.length}
+                </span>
+              </button>
             </div>
           </div>
 
-          <div className="space-y-4">
-            {schoolEnquiries.map(enq => (
-              <div key={enq.id} className="bg-white rounded-2xl p-6 border border-surface-border space-y-3">
-                <div className="flex items-start justify-between">
+          {/* SUBTAB 1: FORMAL STUDENT APPLICATIONS */}
+          {admissionsSubTab === 'applications' && (
+            <div className="space-y-4">
+              {schoolAdmissions.length === 0 ? (
+                <div className="bg-white p-12 rounded-2xl border text-center space-y-3">
+                  <GraduationCap className="w-8 h-8 text-ink-muted mx-auto" />
+                  <p className="text-sm font-semibold">No formal admission applications received yet.</p>
+                  <p className="text-xs text-ink-muted max-w-sm mx-auto">
+                    When parents apply through your school profile or the parent workspace, applications will appear here for review and assessment scheduling.
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {schoolAdmissions.map((app) => {
+                    let badgeClass = 'bg-blue-100 text-blue-800 border-blue-200';
+                    if (app.status === 'Assessment Scheduled') badgeClass = 'bg-amber-100 text-amber-800 border-amber-300';
+                    if (app.status === 'Admitted / Offered') badgeClass = 'bg-emerald-100 text-emerald-800 border-emerald-300';
+                    if (app.status === 'Declined') badgeClass = 'bg-rose-100 text-rose-800 border-rose-200';
+
+                    return (
+                      <div key={app.id} className="bg-white rounded-2xl p-6 border border-surface-border shadow-subtle space-y-4">
+                        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 pb-3 border-b border-surface-border">
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <h4 className="text-base font-bold text-ink-primary">{app.studentName}</h4>
+                              <span className="text-xs font-mono text-slate-400 font-semibold">#{app.id.toUpperCase()}</span>
+                              <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${badgeClass}`}>
+                                {app.status}
+                              </span>
+                            </div>
+                            <p className="text-xs text-ink-secondary mt-1">
+                              Guardian: <strong className="text-ink-primary">{app.parentName}</strong> &bull; Phone: {app.parentPhone} &bull; Email: {app.parentEmail}
+                            </p>
+                          </div>
+
+                          {/* Quick Decision Mutator */}
+                          <div className="flex items-center gap-2">
+                            <select
+                              value={app.status}
+                              onChange={(e) => {
+                                const newStatus = e.target.value as any;
+                                let note = app.schoolNotes;
+                                let date = app.assessmentDate;
+                                if (newStatus === 'Assessment Scheduled') {
+                                  note = 'Entrance diagnostic assessment scheduled at school examination hall.';
+                                  date = '2026-06-25T09:00:00Z';
+                                } else if (newStatus === 'Admitted / Offered') {
+                                  note = 'Candidate offered provisional admission for Academic Year 2026/2027.';
+                                }
+                                updateAdmissionStatus(app.id, newStatus, note, date);
+                              }}
+                              className="text-xs py-1.5 px-3 border border-surface-border rounded-xl bg-white font-bold text-brand-navy outline-none"
+                            >
+                              <option value="Submitted">Submitted</option>
+                              <option value="Under Review">Under Review</option>
+                              <option value="Assessment Scheduled">Schedule Assessment</option>
+                              <option value="Admitted / Offered">Offer Admission</option>
+                              <option value="Enrolled">Enroll Student</option>
+                              <option value="Declined">Decline Application</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        {/* Details grid */}
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                          <div className="p-3 rounded-xl bg-slate-50 border border-surface-border">
+                            <span className="text-slate-500 block text-[11px]">Applied Stage</span>
+                            <strong className="text-slate-800">{app.targetLevel}</strong>
+                          </div>
+                          <div className="p-3 rounded-xl bg-slate-50 border border-surface-border">
+                            <span className="text-slate-500 block text-[11px]">Target Term</span>
+                            <strong className="text-slate-800">{app.targetTerm}</strong>
+                          </div>
+                          <div className="p-3 rounded-xl bg-slate-50 border border-surface-border">
+                            <span className="text-slate-500 block text-[11px]">Prior School</span>
+                            <strong className="text-slate-800 truncate block">{app.previousSchool || 'None'}</strong>
+                          </div>
+                          <div className="p-3 rounded-xl bg-slate-50 border border-surface-border">
+                            <span className="text-slate-500 block text-[11px]">GPS Digital Address</span>
+                            <strong className="text-slate-800 font-mono">{app.digitalAddress}</strong>
+                          </div>
+                        </div>
+
+                        {/* Assessment / School Notes */}
+                        {app.schoolNotes && (
+                          <div className="p-3 rounded-xl bg-amber-50/70 border border-amber-200 text-xs text-amber-950 flex items-start gap-2">
+                            <Clock className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
+                            <div>
+                              <strong className="block text-amber-900">Current Status Note / Assessment Schedule:</strong>
+                              <p className="mt-0.5">{app.schoolNotes}</p>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Enclosed Documents */}
+                        <div>
+                          <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block mb-1">
+                            Submitted Verification Records ({app.documentsAttached.length}):
+                          </span>
+                          <div className="flex flex-wrap gap-1.5">
+                            {app.documentsAttached.map((doc, idx) => (
+                              <span key={idx} className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-slate-100 border text-[11px] text-slate-700 font-medium">
+                                <FileText className="w-3 h-3 text-slate-400" />
+                                {doc}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* SUBTAB 2: GENERAL INQUIRIES INBOX */}
+          {admissionsSubTab === 'enquiries' && (
+            <div className="space-y-4">
+              {schoolEnquiries.map(enq => (
+                <div key={enq.id} className="bg-white rounded-2xl p-6 border border-surface-border space-y-3 shadow-subtle">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <h4 className="text-sm font-bold text-ink-primary">{enq.parentName}</h4>
+                      <p className="text-xs text-ink-secondary">
+                        Email: {enq.parentEmail} &bull; Phone: {enq.parentPhone} &bull; Target: <strong className="text-brand-navy">{enq.childTargetLevel}</strong>
+                      </p>
+                    </div>
+                    <span className={`text-xs px-2.5 py-0.5 rounded-full font-bold ${
+                      enq.status === 'Responded' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
+                    }`}>
+                      {enq.status}
+                    </span>
+                  </div>
+                  <div className="p-3 bg-slate-50 rounded-xl border text-xs text-ink-primary">
+                    <strong className="block mb-1">{enq.subject}</strong>
+                    <p>{enq.message}</p>
+                  </div>
+                  {enq.responseNotes && (
+                    <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-900">
+                      <strong>School Reply Sent:</strong> {enq.responseNotes}
+                    </div>
+                  )}
                   <div>
-                    <h4 className="text-sm font-bold text-ink-primary">{enq.parentName}</h4>
-                    <p className="text-xs text-ink-secondary">
-                      Email: {enq.parentEmail} &bull; Phone: {enq.parentPhone} &bull; Target: <strong className="text-brand-navy">{enq.childTargetLevel}</strong>
-                    </p>
+                    <Button variant="outline" size="sm" onClick={() => { setReplyEnquiryModal(enq.id); setReplyText(enq.responseNotes || ''); }}>
+                      {enq.status === 'Responded' ? 'Update Reply' : 'Send Reply'}
+                    </Button>
                   </div>
-                  <span className={`text-xs px-2.5 py-0.5 rounded-full font-bold ${
-                    enq.status === 'Responded' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
-                  }`}>
-                    {enq.status}
-                  </span>
                 </div>
-                <div className="p-3 bg-slate-50 rounded-xl border text-xs text-ink-primary">
-                  <strong className="block mb-1">{enq.subject}</strong>
-                  <p>{enq.message}</p>
-                </div>
-                {enq.responseNotes && (
-                  <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-900">
-                    <strong>School Reply Sent:</strong> {enq.responseNotes}
-                  </div>
-                )}
-                <div>
-                  <Button variant="outline" size="sm" onClick={() => { setReplyEnquiryModal(enq.id); setReplyText(enq.responseNotes || ''); }}>
-                    {enq.status === 'Responded' ? 'Update Reply' : 'Send Reply'}
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 

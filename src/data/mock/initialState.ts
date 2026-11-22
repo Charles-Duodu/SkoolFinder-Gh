@@ -4,7 +4,8 @@ import { mockSuppliers } from './suppliers';
 import { mockVacancies, mockApplications } from './recruitment';
 import { mockRFQs, mockBids } from './procurement';
 import { mockSafeguardingCases } from './cases';
-import { ParentUser, ParentEnquiry } from '../../types';
+import { mockAdmissionApplications } from './admissions';
+import { ParentUser, ParentEnquiry, StudentAdmissionApplication } from '../../types';
 
 export const mockInitialParent: ParentUser = {
   id: 'par-01',
@@ -65,6 +66,7 @@ export interface EcosystemState {
   rfqs: typeof mockRFQs;
   bids: typeof mockBids;
   enquiries: typeof mockInitialEnquiries;
+  admissionApplications: StudentAdmissionApplication[];
   parent: typeof mockInitialParent;
   cases: typeof mockSafeguardingCases;
 }
@@ -78,6 +80,7 @@ export const getInitialEcosystemState = (): EcosystemState => ({
   rfqs: [...mockRFQs],
   bids: [...mockBids],
   enquiries: [...mockInitialEnquiries],
+  admissionApplications: [...mockAdmissionApplications],
   parent: { ...mockInitialParent },
   cases: [...mockSafeguardingCases]
 });

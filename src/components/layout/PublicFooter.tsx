@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { School, MapPin, Shield, BookOpen, Users, Phone, Mail } from 'lucide-react';
+import { School, MapPin, Shield, BookOpen, Users, Phone, Mail, ShieldAlert } from 'lucide-react';
+import { SafeguardingReportModal } from '../../features/discovery/SafeguardingReportModal';
 
 export const PublicFooter: React.FC = () => {
+  const [safeguardingOpen, setSafeguardingOpen] = useState(false);
   const localities = [
     'East Legon', 'Cantonments', 'Airport Residential', 'Osu', 'Tema',
     'Spintex', 'Achimota', 'Dansoman', 'Madina', 'Adenta', 'Ridge', 'Labone'
@@ -64,6 +66,15 @@ export const PublicFooter: React.FC = () => {
               <li><Link to="/professionals" className="hover:text-brand-gold transition-colors">Teachers & Professionals</Link></li>
               <li><Link to="/suppliers" className="hover:text-brand-gold transition-colors">Suppliers & Tenders</Link></li>
               <li><Link to="/super-admin/dashboard" className="hover:text-brand-gold transition-colors">Super Admin Console</Link></li>
+              <li>
+                <button
+                  onClick={() => setSafeguardingOpen(true)}
+                  className="text-amber-400 hover:text-amber-300 font-semibold flex items-center gap-1 mt-1 transition-colors"
+                >
+                  <ShieldAlert className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Report Safeguarding Incident</span>
+                </button>
+              </li>
             </ul>
           </div>
 
@@ -119,6 +130,11 @@ export const PublicFooter: React.FC = () => {
           </div>
         </div>
       </div>
+
+      <SafeguardingReportModal
+        isOpen={safeguardingOpen}
+        onClose={() => setSafeguardingOpen(false)}
+      />
     </footer>
   );
 };

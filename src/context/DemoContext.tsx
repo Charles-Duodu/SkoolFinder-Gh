@@ -11,7 +11,9 @@ import {
   ParentUser, 
   ParentEnquiry, 
   SafeguardingCase, 
-  VerificationStatus 
+  VerificationStatus,
+  StudentAdmissionApplication,
+  ToastNotification
 } from '../types';
 import { getInitialEcosystemState, EcosystemState } from '../data/mock/initialState';
 
@@ -19,6 +21,9 @@ interface DemoContextType {
   role: UserRole;
   setRole: (role: UserRole) => void;
   state: EcosystemState;
+  toasts: ToastNotification[];
+  addToast: (toast: Omit<ToastNotification, 'id'>) => void;
+  removeToast: (id: string) => void;
   
   // School actions
   addSchool: (school: Omit<School, 'id' | 'verificationStatus' | 'featured'>) => string;
@@ -31,6 +36,8 @@ interface DemoContextType {
   toggleCompareSchool: (schoolId: string) => void;
   submitEnquiry: (enquiry: Omit<ParentEnquiry, 'id' | 'submittedAt' | 'status'>) => void;
   respondToEnquiry: (enquiryId: string, responseNotes: string) => void;
+  submitAdmissionApplication: (app: Omit<StudentAdmissionApplication, 'id' | 'submittedAt' | 'status'>) => void;
+  updateAdmissionStatus: (id: string, status: StudentAdmissionApplication['status'], notes?: string, assessmentDate?: string) => void;
   
   // Professional actions
   addProfessional: (pro: Omit<Professional, 'id' | 'verificationStatus'>) => string;
@@ -50,6 +57,7 @@ interface DemoContextType {
   
   // Governance actions
   updateCaseStatus: (caseId: string, status: SafeguardingCase['status']) => void;
+  submitSafeguardingReport: (report: Omit<SafeguardingCase, 'id' | 'reportedAt' | 'status' | 'notes'> & { reporterName?: string; reporterContact?: string }) => void;
   
   // Global actions
   resetDemoData: () => void;
@@ -70,11 +78,32 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   });
 
+  const [toasts, setToasts] = useState<ToastNotification[]>([]);
+
+  const addToast = (toast: Omit<ToastNotification, 'id'>) => {
+    const id = `toast-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
+    const newToast: ToastNotification = { ...toast, id };
+    setToasts(prev => [...prev, newToast]);
+    setTimeout(() => {
+      setToasts(prev => prev.filter(t => t.id !== id));
+    }, toast.duration || 4500);
+  };
+
+  const removeToast = (id: string) => {
+    setToasts(prev => prev.filter(t => t.id !== id));
+  };
+
   const [state, setState] = useState<EcosystemState>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        const pristine = getInitialEcosystemState();
+        return {
+          ...pristine,
+          ...parsed,
+          admissionApplications: parsed.admissionApplications || pristine.admissionApplications
+        };
       }
     } catch (e) {
       console.warn('Failed to parse saved state, using default mock data', e);
@@ -146,6 +175,15 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const savedSchoolIds = exists 
         ? prev.parent.savedSchoolIds.filter(id => id !== schoolId)
         : [...prev.parent.savedSchoolIds, schoolId];
+      
+      const school = prev.schools.find(s => s.id === schoolId);
+      const name = school ? school.name : 'School';
+      addToast({
+        title: exists ? 'Removed from Saved' : 'School Saved',
+        message: exists ? `${name} removed from your saved list.` : `${name} saved to your parent profile.`,
+        type: exists ? 'info' : 'success'
+      });
+
       return {
         ...prev,
         parent: { ...prev.parent, savedSchoolIds }
@@ -159,6 +197,15 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const shortlistedSchoolIds = exists 
         ? prev.parent.shortlistedSchoolIds.filter(id => id !== schoolId)
         : [...prev.parent.shortlistedSchoolIds, schoolId];
+      
+      const school = prev.schools.find(s => s.id === schoolId);
+      const name = school ? school.name : 'School';
+      addToast({
+        title: exists ? 'Removed from Shortlist' : 'Prioritized in Shortlist',
+        message: exists ? `${name} removed from shortlist.` : `${name} marked for priority admission follow-up.`,
+        type: exists ? 'info' : 'success'
+      });
+
       return {
         ...prev,
         parent: { ...prev.parent, shortlistedSchoolIds }
@@ -170,13 +217,26 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setState(prev => {
       const exists = prev.parent.comparisonSchoolIds.includes(schoolId);
       let comparisonSchoolIds = [...prev.parent.comparisonSchoolIds];
+      const school = prev.schools.find(s => s.id === schoolId);
+      const name = school ? school.name : 'School';
+
       if (exists) {
         comparisonSchoolIds = comparisonSchoolIds.filter(id => id !== schoolId);
+        addToast({
+          title: 'Removed from Comparison',
+          message: `${name} removed from matrix (${comparisonSchoolIds.length}/4).`,
+          type: 'info'
+        });
       } else {
         if (comparisonSchoolIds.length >= 4) {
           comparisonSchoolIds.shift(); // keep max 4
         }
         comparisonSchoolIds.push(schoolId);
+        addToast({
+          title: 'Added to Comparison',
+          message: `${name} added to comparison matrix (${comparisonSchoolIds.length}/4).`,
+          type: 'success'
+        });
       }
       return {
         ...prev,
@@ -196,6 +256,11 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
       ...prev,
       enquiries: [newEnquiry, ...prev.enquiries]
     }));
+    addToast({
+      title: 'Enquiry Dispatched',
+      message: `Your message was delivered to the admissions desk at ${enquiryData.schoolName}.`,
+      type: 'success'
+    });
   };
 
   const respondToEnquiry = (enquiryId: string, responseNotes: string) => {
@@ -203,6 +268,52 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
       ...prev,
       enquiries: prev.enquiries.map(e => e.id === enquiryId ? { ...e, status: 'Responded', responseNotes } : e)
     }));
+    addToast({
+      title: 'Response Sent',
+      message: 'Official response delivered to prospective parent.',
+      type: 'success'
+    });
+  };
+
+  const submitAdmissionApplication = (appData: Omit<StudentAdmissionApplication, 'id' | 'submittedAt' | 'status'>) => {
+    const newId = `adm-${Date.now().toString().slice(-4)}`;
+    const newApp: StudentAdmissionApplication = {
+      ...appData,
+      id: newId,
+      submittedAt: new Date().toISOString(),
+      status: 'Submitted'
+    };
+    setState(prev => ({
+      ...prev,
+      admissionApplications: [newApp, ...(prev.admissionApplications || [])]
+    }));
+    addToast({
+      title: 'Application Lodged Successfully',
+      message: `Formal admission application for ${appData.studentName} sent to ${appData.schoolName}. Ref: #${newId.toUpperCase()}`,
+      type: 'success',
+      duration: 5500
+    });
+  };
+
+  const updateAdmissionStatus = (id: string, status: StudentAdmissionApplication['status'], notes?: string, assessmentDate?: string) => {
+    setState(prev => ({
+      ...prev,
+      admissionApplications: (prev.admissionApplications || []).map(a => 
+        a.id === id 
+          ? { 
+              ...a, 
+              status, 
+              ...(notes !== undefined ? { schoolNotes: notes } : {}),
+              ...(assessmentDate !== undefined ? { assessmentDate } : {})
+            } 
+          : a
+      )
+    }));
+    addToast({
+      title: 'Admission Stage Updated',
+      message: `Application #${id} status changed to "${status}".`,
+      type: 'info'
+    });
   };
 
   // Professional actions
@@ -239,6 +350,11 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
       applications: [newApp, ...prev.applications],
       vacancies: prev.vacancies.map(v => v.id === appData.jobId ? { ...v, applicantsCount: v.applicantsCount + 1 } : v)
     }));
+    addToast({
+      title: 'Application Submitted',
+      message: `Your professional profile & NTC verification sent for "${appData.jobTitle}".`,
+      type: 'success'
+    });
   };
 
   const updateApplicationStatus = (appId: string, status: JobApplication['status']) => {
@@ -246,6 +362,11 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
       ...prev,
       applications: prev.applications.map(a => a.id === appId ? { ...a, status } : a)
     }));
+    addToast({
+      title: 'Applicant Stage Updated',
+      message: `Candidate application moved to "${status}".`,
+      type: 'info'
+    });
   };
 
   // Supplier actions
@@ -282,6 +403,11 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
       ...prev,
       rfqs: [newRfq, ...prev.rfqs]
     }));
+    addToast({
+      title: 'Tender Published',
+      message: `New RFQ "${rfqData.title}" is now open for supplier bids.`,
+      type: 'success'
+    });
   };
 
   const submitBid = (bidData: Omit<QuotationBid, 'id' | 'submittedAt' | 'status'>) => {
@@ -296,6 +422,11 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
       bids: [newBid, ...prev.bids],
       rfqs: prev.rfqs.map(r => r.id === bidData.rfqId ? { ...r, bidsCount: r.bidsCount + 1 } : r)
     }));
+    addToast({
+      title: 'Quotation Bid Lodged',
+      message: `Your bid of GHS ${bidData.totalAmountGHS.toLocaleString()} was delivered to ${bidData.schoolName}.`,
+      type: 'success'
+    });
   };
 
   const updateBidStatus = (bidId: string, status: QuotationBid['status']) => {
@@ -303,6 +434,11 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
       ...prev,
       bids: prev.bids.map(b => b.id === bidId ? { ...b, status } : b)
     }));
+    addToast({
+      title: 'Bid Status Updated',
+      message: `Quotation bid stage changed to "${status}".`,
+      type: 'info'
+    });
   };
 
   // Recruitment actions
@@ -318,6 +454,11 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
       ...prev,
       vacancies: [newJob, ...prev.vacancies]
     }));
+    addToast({
+      title: 'Vacancy Published',
+      message: `Position for "${jobData.title}" is now live on the Ghanaian educator network.`,
+      type: 'success'
+    });
   };
 
   // Governance actions
@@ -326,6 +467,42 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
       ...prev,
       cases: prev.cases.map(c => c.id === caseId ? { ...c, status } : c)
     }));
+    addToast({
+      title: 'Safeguarding Case Updated',
+      message: `Investigation case #${caseId} changed to "${status}".`,
+      type: 'info'
+    });
+  };
+
+  const submitSafeguardingReport = (report: Omit<SafeguardingCase, 'id' | 'reportedAt' | 'status' | 'notes'> & { reporterName?: string; reporterContact?: string }) => {
+    const newId = `case-${Date.now().toString().slice(-4)}`;
+    const newCase: SafeguardingCase = {
+      id: newId,
+      title: report.title,
+      category: report.category,
+      entityType: report.entityType,
+      entityName: report.entityName,
+      severity: report.severity,
+      status: 'New',
+      reportedAt: new Date().toISOString(),
+      summary: report.summary,
+      notes: [
+        'Confidential report lodged via Public Safeguarding Portal.',
+        report.reporterName 
+          ? `Submitted by: ${report.reporterName} (${report.reporterContact || 'Contact on file'})` 
+          : 'Report lodged anonymously by community whistleblower.'
+      ]
+    };
+    setState(prev => ({
+      ...prev,
+      cases: [newCase, ...prev.cases]
+    }));
+    addToast({
+      title: 'Safeguarding Report Lodged',
+      message: `Reference #${newId.toUpperCase()} logged for national review. All reports are strictly confidential.`,
+      type: 'warning',
+      duration: 6000
+    });
   };
 
   return (
@@ -333,6 +510,9 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
       role,
       setRole,
       state,
+      toasts,
+      addToast,
+      removeToast,
       addSchool,
       updateSchoolStatus,
       updateSchool,
@@ -341,6 +521,8 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
       toggleCompareSchool,
       submitEnquiry,
       respondToEnquiry,
+      submitAdmissionApplication,
+      updateAdmissionStatus,
       addProfessional,
       updateProfessionalStatus,
       applyForJob,
@@ -352,6 +534,7 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
       updateBidStatus,
       postVacancy,
       updateCaseStatus,
+      submitSafeguardingReport,
       resetDemoData
     }}>
       {children}

@@ -292,3 +292,35 @@ export interface AdminRoleMatrix {
     systemConfiguration: boolean;
   };
 }
+
+export interface StudentAdmissionApplication {
+  id: string;
+  schoolId: string;
+  schoolName: string;
+  schoolLocality: GreaterAccraLocality;
+  parentName: string;
+  parentEmail: string;
+  parentPhone: string;
+  studentName: string;
+  dateOfBirth: string;
+  gender: 'Male' | 'Female';
+  targetLevel: EducationLevel;
+  targetTerm: 'Term 1 (September)' | 'Term 2 (January)' | 'Term 3 (May)';
+  targetYear: number;
+  digitalAddress: string;
+  previousSchool?: string;
+  specialNeeds?: string;
+  documentsAttached: string[];
+  submittedAt: string;
+  status: 'Submitted' | 'Under Review' | 'Assessment Scheduled' | 'Admitted / Offered' | 'Enrolled' | 'Declined';
+  assessmentDate?: string;
+  schoolNotes?: string;
+}
+
+export interface ToastNotification {
+  id: string;
+  title: string;
+  message: string;
+  type: 'success' | 'info' | 'warning' | 'error';
+  duration?: number;
+}

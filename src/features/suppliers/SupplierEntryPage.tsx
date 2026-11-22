@@ -2,14 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../../components/ui/Button';
 import { SupplierCategory } from '../../types';
-import { 
-  Truck, 
-  Layers, 
-  FileText, 
-  CheckCircle2, 
-  Sparkles, 
-  ArrowRight, 
-  ShieldCheck, 
+import {
+  Truck,
+  Layers,
+  FileText,
+  CheckCircle2,
+  Sparkles,
+  ArrowRight,
+  ShieldCheck,
   ShoppingBag,
   Building,
   Briefcase
@@ -24,13 +24,13 @@ export const SupplierEntryPage: React.FC<SupplierEntryPageProps> = ({ onStartReg
   const categories: SupplierCategory[] = [
     'Stationery & Books', 'ICT & Software', 'School Furniture', 'School Uniforms',
     'Catering & Food Services', 'Cleaning & Sanitation', 'Facility Maintenance',
-    'Security Services', 'Student Transport', 'Science Lab Equipment', 
+    'Security Services', 'Student Transport', 'Science Lab Equipment',
     'Sports Equipment', 'Construction & Repairs'
   ];
 
   return (
     <div className="space-y-16 lg:space-y-24 pb-20">
-      
+
       {/* Hero */}
       <section className="bg-gradient-to-b from-brand-navy-dark via-brand-navy to-brand-navy-light text-white pt-16 pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">

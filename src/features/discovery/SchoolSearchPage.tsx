@@ -3,6 +3,7 @@ import { useSearchParams, Link } from 'react-router-dom';
 import { useDemo } from '../../context/DemoContext';
 import { SchoolCard } from './SchoolCard';
 import { ParentEnquiryModal } from './ParentEnquiryModal';
+import { AccraLocalityMap } from './AccraLocalityMap';
 import { School, GreaterAccraLocality, EducationLevel, CurriculumType } from '../../types';
 import { 
   Search, 
@@ -12,6 +13,7 @@ import {
   RotateCcw, 
   Grid, 
   List, 
+  Map as MapIcon,
   SlidersHorizontal,
   X,
   Sparkles
@@ -35,7 +37,7 @@ export const SchoolSearchPage: React.FC = () => {
   });
 
   const [sortBy, setSortBy] = useState<'featured' | 'name' | 'feeAsc' | 'feeDesc'>('featured');
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [viewMode, setViewMode] = useState<'grid' | 'list' | 'map'>('grid');
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
 
   const [enquirySchool, setEnquirySchool] = useState<School | null>(null);
@@ -337,18 +339,52 @@ export const SchoolSearchPage: React.FC = () => {
               Showing <strong className="text-ink-primary">{filteredSchools.length}</strong> results in Greater Accra
             </span>
 
-            <div className="flex items-center gap-2 text-xs">
-              <span className="text-ink-muted">Sort by:</span>
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as any)}
-                className="py-1 px-2.5 border border-surface-border rounded-lg bg-white text-ink-primary font-medium outline-none"
-              >
-                <option value="featured">Featured First</option>
-                <option value="name">School Name (A-Z)</option>
-                <option value="feeAsc">Fees (Lowest first)</option>
-                <option value="feeDesc">Fees (Highest first)</option>
-              </select>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 text-xs">
+                <span className="text-ink-muted">Sort:</span>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as any)}
+                  className="py-1 px-2.5 border border-surface-border rounded-lg bg-white text-ink-primary font-medium outline-none text-xs"
+                >
+                  <option value="featured">Featured</option>
+                  <option value="name">Name (A-Z)</option>
+                  <option value="feeAsc">Fees (Lowest)</option>
+                  <option value="feeDesc">Fees (Highest)</option>
+                </select>
+              </div>
+
+              {/* View Switcher */}
+              <div className="flex items-center gap-1 border border-surface-border rounded-lg p-0.5 bg-slate-50">
+                <button
+                  onClick={() => setViewMode('grid')}
+                  title="Grid View"
+                  className={`p-1.5 rounded-md text-xs transition-colors ${
+                    viewMode === 'grid' ? 'bg-white text-brand-navy shadow-sm font-bold' : 'text-slate-500 hover:text-slate-800'
+                  }`}
+                >
+                  <Grid className="w-3.5 h-3.5" />
+                </button>
+                <button
+                  onClick={() => setViewMode('list')}
+                  title="List View"
+                  className={`p-1.5 rounded-md text-xs transition-colors ${
+                    viewMode === 'list' ? 'bg-white text-brand-navy shadow-sm font-bold' : 'text-slate-500 hover:text-slate-800'
+                  }`}
+                >
+                  <List className="w-3.5 h-3.5" />
+                </button>
+                <button
+                  onClick={() => setViewMode('map')}
+                  title="Accra Locality Map"
+                  className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs font-semibold transition-colors ${
+                    viewMode === 'map' ? 'bg-brand-navy text-white shadow-sm' : 'text-slate-500 hover:text-slate-800'
+                  }`}
+                >
+                  <MapPin className="w-3 h-3 text-brand-gold" />
+                  <span>Accra Map</span>
+                </button>
+              </div>
             </div>
           </div>
 
@@ -415,15 +451,26 @@ export const SchoolSearchPage: React.FC = () => {
               </div>
             </div>
           ) : (
-            /* Cards Grid / List */
-            <div className={`grid gap-6 ${viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
-              {filteredSchools.map((school) => (
-                <SchoolCard
-                  key={school.id}
-                  school={school}
-                  onOpenEnquiry={(s) => setEnquirySchool(s)}
+            <div className="space-y-6">
+              {/* Locality Map Display when in Map View Mode */}
+              {viewMode === 'map' && (
+                <AccraLocalityMap
+                  schools={filteredSchools}
+                  selectedLocality={selectedLocality}
+                  onSelectLocality={(loc) => setSelectedLocality(loc)}
                 />
-              ))}
+              )}
+
+              {/* Cards Grid / List */}
+              <div className={`grid gap-6 ${viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
+                {filteredSchools.map((school) => (
+                  <SchoolCard
+                    key={school.id}
+                    school={school}
+                    onOpenEnquiry={(s) => setEnquirySchool(s)}
+                  />
+                ))}
+              </div>
             </div>
           )}
 
