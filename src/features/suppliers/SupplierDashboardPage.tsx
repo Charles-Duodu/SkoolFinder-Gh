@@ -22,8 +22,13 @@ import {
   Package
 } from 'lucide-react';
 
-export const SupplierDashboardPage: React.FC = () => {
+interface SupplierDashboardPageProps {
+  welcomeNotice?: boolean;
+}
+
+export const SupplierDashboardPage: React.FC<SupplierDashboardPageProps> = ({ welcomeNotice = false }) => {
   const { state, submitBid } = useDemo();
+  const [showWelcome, setShowWelcome] = useState(welcomeNotice);
   const sup = state.suppliers.find(s => s.id === 'sup-01') || state.suppliers[0];
 
   const [activeTab, setActiveTab] = useState<'overview' | 'opportunities' | 'bids' | 'catalog' | 'settings'>('overview');
@@ -109,6 +114,28 @@ export const SupplierDashboardPage: React.FC = () => {
           </button>
         ))}
       </div>
+
+      {/* Newly Registered Celebration Notice */}
+      {showWelcome && (
+        <div className="mb-6 p-4 rounded-2xl bg-gradient-to-r from-emerald-500/15 via-teal-500/10 to-transparent border border-emerald-500/30 flex items-start justify-between gap-4 animate-in slide-in-from-top-2">
+          <div className="flex items-start gap-3">
+            <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-700 flex items-center justify-center shrink-0">
+              <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+            </div>
+            <div>
+              <h4 className="text-sm font-bold text-ink-primary">
+                🎉 Commercial Vendor Profile Submitted & Dashboard Unlocked!
+              </h4>
+              <p className="text-xs text-ink-secondary mt-0.5 leading-relaxed">
+                Your business registration and tax clearance details are queued for verification. Your supplier portal is active below—you can now browse school tenders, prepare quotations, and present your catalog to Accra institutions.
+              </p>
+            </div>
+          </div>
+          <button onClick={() => setShowWelcome(false)} className="text-ink-muted hover:text-ink-primary text-xs font-semibold p-1">
+            ✕
+          </button>
+        </div>
+      )}
 
       {/* VIEW: OVERVIEW */}
       {activeTab === 'overview' && (

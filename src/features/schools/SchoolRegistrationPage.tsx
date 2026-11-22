@@ -18,7 +18,11 @@ import {
   RotateCcw
 } from 'lucide-react';
 
-export const SchoolRegistrationPage: React.FC = () => {
+interface SchoolRegistrationPageProps {
+  onComplete?: () => void;
+}
+
+export const SchoolRegistrationPage: React.FC<SchoolRegistrationPageProps> = ({ onComplete }) => {
   const navigate = useNavigate();
   const { addSchool, setRole } = useDemo();
 
@@ -135,7 +139,11 @@ export const SchoolRegistrationPage: React.FC = () => {
                 size="sm"
                 onClick={() => {
                   setRole('school_owner');
-                  navigate('/school-owners/dashboard');
+                  if (onComplete) {
+                    onComplete();
+                  } else {
+                    navigate('/school-owners/dashboard');
+                  }
                 }}
                 className="w-full justify-center"
               >

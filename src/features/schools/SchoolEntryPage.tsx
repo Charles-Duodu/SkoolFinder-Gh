@@ -15,7 +15,12 @@ import {
   Award
 } from 'lucide-react';
 
-export const SchoolEntryPage: React.FC = () => {
+interface SchoolEntryPageProps {
+  onStartRegister?: () => void;
+  onOpenDashboard?: () => void;
+}
+
+export const SchoolEntryPage: React.FC<SchoolEntryPageProps> = ({ onStartRegister, onOpenDashboard }) => {
   return (
     <div className="space-y-16 lg:space-y-24 pb-20">
       
@@ -36,16 +41,29 @@ export const SchoolEntryPage: React.FC = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-4">
-            <Link to="/school-owners/register">
-              <Button variant="gold" size="lg" className="w-full sm:w-auto">
+            {onStartRegister ? (
+              <Button variant="gold" size="lg" onClick={onStartRegister} className="w-full sm:w-auto">
                 Register Your School (Free Demo)
               </Button>
-            </Link>
-            <Link to="/school-owners/dashboard">
-              <Button variant="outline" size="lg" className="w-full sm:w-auto border-slate-600 text-white hover:bg-white/10">
+            ) : (
+              <Link to="/school-owners/register">
+                <Button variant="gold" size="lg" className="w-full sm:w-auto">
+                  Register Your School (Free Demo)
+                </Button>
+              </Link>
+            )}
+
+            {onOpenDashboard ? (
+              <Button variant="outline" size="lg" onClick={onOpenDashboard} className="w-full sm:w-auto border-slate-600 text-white hover:bg-white/10">
                 View Sample School Dashboard
               </Button>
-            </Link>
+            ) : (
+              <Link to="/school-owners/dashboard">
+                <Button variant="outline" size="lg" className="w-full sm:w-auto border-slate-600 text-white hover:bg-white/10">
+                  View Sample School Dashboard
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </section>

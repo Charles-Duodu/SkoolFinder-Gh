@@ -15,7 +15,11 @@ import {
   Clock 
 } from 'lucide-react';
 
-export const SupplierOnboardingPage: React.FC = () => {
+interface SupplierOnboardingPageProps {
+  onComplete?: () => void;
+}
+
+export const SupplierOnboardingPage: React.FC<SupplierOnboardingPageProps> = ({ onComplete }) => {
   const navigate = useNavigate();
   const { addSupplier, setRole } = useDemo();
 
@@ -93,7 +97,11 @@ export const SupplierOnboardingPage: React.FC = () => {
                 size="sm"
                 onClick={() => {
                   setRole('supplier');
-                  navigate('/suppliers/dashboard');
+                  if (onComplete) {
+                    onComplete();
+                  } else {
+                    navigate('/suppliers/dashboard');
+                  }
                 }}
                 className="w-full justify-center"
               >

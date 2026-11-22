@@ -82,12 +82,12 @@ export const PublicNavbar: React.FC = () => {
 
           {/* Action CTAs */}
           <div className="hidden sm:flex items-center gap-2.5">
-            <Link to="/parents/dashboard">
+            <Link to="/parents">
               <Button variant="outline" size="sm">
                 Parent Portal
               </Button>
             </Link>
-            <Link to="/school-owners/register">
+            <Link to="/school-owners?tab=register">
               <Button variant="gold" size="sm" icon={<Sparkles className="w-4 h-4 text-brand-navy-dark" />}>
                 Register School
               </Button>

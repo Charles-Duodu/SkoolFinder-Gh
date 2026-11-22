@@ -16,7 +16,11 @@ import {
   GraduationCap
 } from 'lucide-react';
 
-export const ProfessionalOnboardingPage: React.FC = () => {
+interface ProfessionalOnboardingPageProps {
+  onComplete?: () => void;
+}
+
+export const ProfessionalOnboardingPage: React.FC<ProfessionalOnboardingPageProps> = ({ onComplete }) => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { addProfessional, setRole } = useDemo();
@@ -100,7 +104,11 @@ export const ProfessionalOnboardingPage: React.FC = () => {
                 size="sm"
                 onClick={() => {
                   setRole('professional');
-                  navigate('/professionals/dashboard');
+                  if (onComplete) {
+                    onComplete();
+                  } else {
+                    navigate('/professionals/dashboard');
+                  }
                 }}
                 className="w-full justify-center"
               >

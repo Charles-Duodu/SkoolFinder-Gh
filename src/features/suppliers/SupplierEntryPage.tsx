@@ -15,7 +15,12 @@ import {
   Briefcase
 } from 'lucide-react';
 
-export const SupplierEntryPage: React.FC = () => {
+interface SupplierEntryPageProps {
+  onStartRegister?: () => void;
+  onOpenDashboard?: () => void;
+}
+
+export const SupplierEntryPage: React.FC<SupplierEntryPageProps> = ({ onStartRegister, onOpenDashboard }) => {
   const categories: SupplierCategory[] = [
     'Stationery & Books', 'ICT & Software', 'School Furniture', 'School Uniforms',
     'Catering & Food Services', 'Cleaning & Sanitation', 'Facility Maintenance',
@@ -43,16 +48,29 @@ export const SupplierEntryPage: React.FC = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-4">
-            <Link to="/suppliers/register">
-              <Button variant="gold" size="lg" className="w-full sm:w-auto">
+            {onStartRegister ? (
+              <Button variant="gold" size="lg" onClick={onStartRegister} className="w-full sm:w-auto">
                 Register as a Verified Supplier
               </Button>
-            </Link>
-            <Link to="/suppliers/dashboard">
-              <Button variant="outline" size="lg" className="w-full sm:w-auto border-slate-600 text-white hover:bg-white/10">
+            ) : (
+              <Link to="/suppliers/register">
+                <Button variant="gold" size="lg" className="w-full sm:w-auto">
+                  Register as a Verified Supplier
+                </Button>
+              </Link>
+            )}
+
+            {onOpenDashboard ? (
+              <Button variant="outline" size="lg" onClick={onOpenDashboard} className="w-full sm:w-auto border-slate-600 text-white hover:bg-white/10">
                 View Sample Supplier Dashboard
               </Button>
-            </Link>
+            ) : (
+              <Link to="/suppliers/dashboard">
+                <Button variant="outline" size="lg" className="w-full sm:w-auto border-slate-600 text-white hover:bg-white/10">
+                  View Sample Supplier Dashboard
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </section>

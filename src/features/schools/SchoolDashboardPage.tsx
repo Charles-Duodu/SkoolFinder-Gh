@@ -28,8 +28,13 @@ import {
 } from 'lucide-react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 
-export const SchoolDashboardPage: React.FC = () => {
+interface SchoolDashboardPageProps {
+  welcomeNotice?: boolean;
+}
+
+export const SchoolDashboardPage: React.FC<SchoolDashboardPageProps> = ({ welcomeNotice = false }) => {
   const { state, postVacancy, createRFQ, respondToEnquiry, updateApplicationStatus, updateBidStatus } = useDemo();
+  const [showWelcome, setShowWelcome] = useState(welcomeNotice);
   
   // Use Achimota Preparatory (sch-01) as the active demonstration school
   const currentSchool = state.schools.find(s => s.id === 'sch-01') || state.schools[0];
@@ -169,6 +174,28 @@ export const SchoolDashboardPage: React.FC = () => {
           </button>
         ))}
       </div>
+
+      {/* Newly Registered Celebration Notice */}
+      {showWelcome && (
+        <div className="mb-6 p-4 rounded-2xl bg-gradient-to-r from-emerald-500/15 via-teal-500/10 to-transparent border border-emerald-500/30 flex items-start justify-between gap-4 animate-in slide-in-from-top-2">
+          <div className="flex items-start gap-3">
+            <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-700 flex items-center justify-center shrink-0">
+              <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+            </div>
+            <div>
+              <h4 className="text-sm font-bold text-ink-primary">
+                🎉 Institutional Application Submitted & Account Activated!
+              </h4>
+              <p className="text-xs text-ink-secondary mt-0.5 leading-relaxed">
+                Your school application has been queued for Super Admin compliance verification. As a School Administrator in demonstration mode, your dashboard is fully unlocked below to post vacancies, issue RFQs, and respond to admissions queries.
+              </p>
+            </div>
+          </div>
+          <button onClick={() => setShowWelcome(false)} className="text-ink-muted hover:text-ink-primary text-xs font-semibold p-1">
+            ✕
+          </button>
+        </div>
+      )}
 
       {/* VIEW: OVERVIEW */}
       {activeTab === 'overview' && (

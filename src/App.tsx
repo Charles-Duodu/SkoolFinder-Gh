@@ -13,20 +13,10 @@ import { SchoolComparisonPage } from './features/discovery/SchoolComparisonPage'
 // Parents Portal
 import { ParentsPortalPage } from './features/parents/ParentsPortalPage';
 
-// Schools Portal
-import { SchoolEntryPage } from './features/schools/SchoolEntryPage';
-import { SchoolRegistrationPage } from './features/schools/SchoolRegistrationPage';
-import { SchoolDashboardPage } from './features/schools/SchoolDashboardPage';
-
-// Professionals Portal
-import { ProfessionalEntryPage } from './features/professionals/ProfessionalEntryPage';
-import { ProfessionalOnboardingPage } from './features/professionals/ProfessionalOnboardingPage';
-import { ProfessionalDashboardPage } from './features/professionals/ProfessionalDashboardPage';
-
-// Suppliers Portal
-import { SupplierEntryPage } from './features/suppliers/SupplierEntryPage';
-import { SupplierOnboardingPage } from './features/suppliers/SupplierOnboardingPage';
-import { SupplierDashboardPage } from './features/suppliers/SupplierDashboardPage';
+// Unified Stakeholder Portal Hubs
+import { SchoolPortalPage } from './features/schools/SchoolPortalPage';
+import { ProfessionalPortalPage } from './features/professionals/ProfessionalPortalPage';
+import { SupplierPortalPage } from './features/suppliers/SupplierPortalPage';
 
 // Super Admin Portal
 import { SuperAdminDashboardPage } from './features/super-admin/SuperAdminDashboardPage';
@@ -78,21 +68,24 @@ export const App: React.FC = () => {
           <Route path="/schools/:slug" element={<SchoolDetailPage />} />
           <Route path="/compare" element={<SchoolComparisonPage />} />
           
-          {/* Public Portal Entry Pages */}
-          <Route path="/school-owners" element={<SchoolEntryPage />} />
-          <Route path="/school-owners/register" element={<SchoolRegistrationPage />} />
+          {/* Unified Stakeholder Portal Hubs */}
+          <Route path="/school-owners" element={<SchoolPortalPage />} />
+          <Route path="/school-owners/register" element={<SchoolPortalPage initialTab="register" />} />
+          <Route path="/school-owners/dashboard" element={<SchoolPortalPage initialTab="dashboard" />} />
           
-          <Route path="/professionals" element={<ProfessionalEntryPage />} />
-          <Route path="/professionals/register" element={<ProfessionalOnboardingPage />} />
+          <Route path="/professionals" element={<ProfessionalPortalPage />} />
+          <Route path="/professionals/register" element={<ProfessionalPortalPage initialTab="register" />} />
+          <Route path="/professionals/dashboard" element={<ProfessionalPortalPage initialTab="dashboard" />} />
           
-          <Route path="/suppliers" element={<SupplierEntryPage />} />
-          <Route path="/suppliers/register" element={<SupplierOnboardingPage />} />
+          <Route path="/suppliers" element={<SupplierPortalPage />} />
+          <Route path="/suppliers/register" element={<SupplierPortalPage initialTab="register" />} />
+          <Route path="/suppliers/dashboard" element={<SupplierPortalPage initialTab="dashboard" />} />
 
           <Route path="*" element={<NotFoundPage />} />
         </Route>
 
         {/* Parents Portal Dashboard Routes */}
-        <Route path="/parents" element={<Navigate to="/parents/dashboard" replace />} />
+        <Route path="/parents" element={<ParentsPortalPage />} />
         <Route path="/parents/dashboard" element={<ParentsPortalPage />} />
         <Route path="/parents/saved" element={<ParentsPortalPage />} />
         <Route path="/parents/shortlist" element={<ParentsPortalPage />} />
@@ -100,15 +93,6 @@ export const App: React.FC = () => {
         <Route path="/parents/enquiries" element={<ParentsPortalPage />} />
         <Route path="/parents/alerts" element={<ParentsPortalPage />} />
         <Route path="/parents/settings" element={<ParentsPortalPage />} />
-
-        {/* School Proprietor Portal Routes */}
-        <Route path="/school-owners/dashboard" element={<SchoolDashboardPage />} />
-
-        {/* Teachers & Professionals Portal Routes */}
-        <Route path="/professionals/dashboard" element={<ProfessionalDashboardPage />} />
-
-        {/* Suppliers & Vendors Portal Routes */}
-        <Route path="/suppliers/dashboard" element={<SupplierDashboardPage />} />
 
         {/* Super Admin Governance Routes */}
         <Route path="/super-admin" element={<Navigate to="/super-admin/dashboard" replace />} />

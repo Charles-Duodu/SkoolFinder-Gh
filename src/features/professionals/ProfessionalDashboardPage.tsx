@@ -24,8 +24,13 @@ import {
   Sparkles
 } from 'lucide-react';
 
-export const ProfessionalDashboardPage: React.FC = () => {
+interface ProfessionalDashboardPageProps {
+  welcomeNotice?: boolean;
+}
+
+export const ProfessionalDashboardPage: React.FC<ProfessionalDashboardPageProps> = ({ welcomeNotice = false }) => {
   const { state, applyForJob } = useDemo();
+  const [showWelcome, setShowWelcome] = useState(welcomeNotice);
   const pro = state.professionals.find(p => p.id === 'pro-01') || state.professionals[0];
 
   const [activeTab, setActiveTab] = useState<'overview' | 'jobs' | 'applications' | 'portfolio' | 'services' | 'settings'>('overview');
@@ -117,6 +122,28 @@ export const ProfessionalDashboardPage: React.FC = () => {
           </button>
         ))}
       </div>
+
+      {/* Newly Registered Celebration Notice */}
+      {showWelcome && (
+        <div className="mb-6 p-4 rounded-2xl bg-gradient-to-r from-emerald-500/15 via-teal-500/10 to-transparent border border-emerald-500/30 flex items-start justify-between gap-4 animate-in slide-in-from-top-2">
+          <div className="flex items-start gap-3">
+            <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-700 flex items-center justify-center shrink-0">
+              <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+            </div>
+            <div>
+              <h4 className="text-sm font-bold text-ink-primary">
+                🎉 Professional Profile Submitted & Workspace Activated!
+              </h4>
+              <p className="text-xs text-ink-secondary mt-0.5 leading-relaxed">
+                Your NTC license and teaching portfolio have been queued for simulated verification. Your educator workspace is active below—you can now browse school vacancies, submit 1-click applications, and configure your tutoring profile.
+              </p>
+            </div>
+          </div>
+          <button onClick={() => setShowWelcome(false)} className="text-ink-muted hover:text-ink-primary text-xs font-semibold p-1">
+            ✕
+          </button>
+        </div>
+      )}
 
       {/* VIEW: OVERVIEW */}
       {activeTab === 'overview' && (

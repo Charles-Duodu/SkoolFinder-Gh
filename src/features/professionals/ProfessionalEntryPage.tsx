@@ -15,7 +15,12 @@ import {
   UserCheck
 } from 'lucide-react';
 
-export const ProfessionalEntryPage: React.FC = () => {
+interface ProfessionalEntryPageProps {
+  onStartRegister?: () => void;
+  onOpenDashboard?: () => void;
+}
+
+export const ProfessionalEntryPage: React.FC<ProfessionalEntryPageProps> = ({ onStartRegister, onOpenDashboard }) => {
   const navigate = useNavigate();
   const [selectedMode, setSelectedMode] = useState<ProfessionalMode>('both');
 
@@ -60,16 +65,29 @@ export const ProfessionalEntryPage: React.FC = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-4">
-            <Link to="/professionals/register">
-              <Button variant="gold" size="lg" className="w-full sm:w-auto">
+            {onStartRegister ? (
+              <Button variant="gold" size="lg" onClick={onStartRegister} className="w-full sm:w-auto">
                 Create Professional Profile
               </Button>
-            </Link>
-            <Link to="/professionals/dashboard">
-              <Button variant="outline" size="lg" className="w-full sm:w-auto border-slate-600 text-white hover:bg-white/10">
+            ) : (
+              <Link to="/professionals/register">
+                <Button variant="gold" size="lg" className="w-full sm:w-auto">
+                  Create Professional Profile
+                </Button>
+              </Link>
+            )}
+
+            {onOpenDashboard ? (
+              <Button variant="outline" size="lg" onClick={onOpenDashboard} className="w-full sm:w-auto border-slate-600 text-white hover:bg-white/10">
                 View Sample Dashboard
               </Button>
-            </Link>
+            ) : (
+              <Link to="/professionals/dashboard">
+                <Button variant="outline" size="lg" className="w-full sm:w-auto border-slate-600 text-white hover:bg-white/10">
+                  View Sample Dashboard
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </section>
