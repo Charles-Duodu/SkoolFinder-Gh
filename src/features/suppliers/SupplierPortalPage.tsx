@@ -24,8 +24,10 @@ export const SupplierPortalPage: React.FC<SupplierPortalPageProps> = ({ initialT
   useEffect(() => {
     if (queryTab && ['overview', 'register', 'dashboard'].includes(queryTab)) {
       setActiveMode(queryTab);
+    } else if (initialTab) {
+      setActiveMode(initialTab);
     }
-  }, [queryTab]);
+  }, [queryTab, initialTab]);
 
   const handleModeChange = (mode: PortalHubMode) => {
     setActiveMode(mode);

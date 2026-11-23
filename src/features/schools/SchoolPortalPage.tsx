@@ -22,12 +22,14 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({ initialTab }
   const [activeMode, setActiveMode] = useState<PortalHubMode>(defaultMode);
   const [welcomeNotice, setWelcomeNotice] = useState(false);
 
-  // Sync mode if query param changes or if user switches persona
+  // Sync mode if query param changes or if user switches persona / route prop
   useEffect(() => {
     if (queryTab && ['overview', 'register', 'dashboard'].includes(queryTab)) {
       setActiveMode(queryTab);
+    } else if (initialTab) {
+      setActiveMode(initialTab);
     }
-  }, [queryTab]);
+  }, [queryTab, initialTab]);
 
   const handleModeChange = (mode: PortalHubMode) => {
     setActiveMode(mode);
