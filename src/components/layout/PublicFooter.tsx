@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { School, MapPin, Shield, BookOpen, Users, Phone, Mail, ShieldAlert } from 'lucide-react';
+import { School, MapPin, Shield, BookOpen, Users, Phone, Mail, ShieldAlert, GraduationCap } from 'lucide-react';
 import { SafeguardingReportModal } from '../../features/discovery/SafeguardingReportModal';
 
 export const PublicFooter: React.FC = () => {
@@ -26,15 +26,12 @@ export const PublicFooter: React.FC = () => {
           {/* Brand Col */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-brand-navy flex items-center justify-center text-brand-gold border border-brand-gold/30">
-                <School className="w-6 h-6" />
+              <div className="w-10 h-10 rounded-2xl bg-brand-navy-light flex items-center justify-center text-amber-400 border border-amber-400/30">
+                <GraduationCap className="w-6 h-6 text-amber-400" />
               </div>
-              <div>
-                <span className="text-xl font-extrabold tracking-tight text-white">
-                  Skool<span className="text-brand-gold">Finder</span> Ghana
-                </span>
-                <p className="text-xs text-slate-400">Greater Accra Private Education Directory & SaaS Ecosystem</p>
-              </div>
+              <span className="text-2xl font-black tracking-tight text-white">
+                SkoolFinder
+              </span>
             </div>
             <p className="text-sm text-slate-400 leading-relaxed max-w-sm">
               Empowering parents and guardians to discover the right private educational foundation for their children, while equipping schools, teachers, and suppliers with an interconnected commercial platform.

@@ -19,6 +19,7 @@ import {
   AlertCircle,
   Sparkles,
   ArrowRight,
+  GraduationCap,
 } from 'lucide-react';
 
 interface SupabaseAuthFormProps {
@@ -178,12 +179,12 @@ export const SupabaseAuthForm: React.FC<SupabaseAuthFormProps> = ({ initialMode 
       {/* Top Brand Header */}
       <div className="bg-gradient-to-r from-brand-navy-dark via-brand-navy to-brand-navy-light p-6 text-white space-y-2">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-brand-gold/20 border border-brand-gold/40 flex items-center justify-center text-brand-gold">
-              <School className="w-4 h-4" />
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-brand-navy-dark border border-white/20 flex items-center justify-center text-amber-400">
+              <GraduationCap className="w-4 h-4 text-amber-400" />
             </div>
-            <span className="font-extrabold tracking-tight text-sm">
-              Skool<span className="text-brand-gold">Finder</span> Ghana
+            <span className="font-black tracking-tight text-base text-white">
+              SkoolFinder
             </span>
           </div>
           <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">

@@ -14,7 +14,8 @@ import {
   Truck, 
   Scale, 
   ChevronRight,
-  Sparkles
+  Sparkles,
+  GraduationCap
 } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { AuthButton } from './AuthButton';
@@ -41,22 +42,12 @@ export const PublicNavbar: React.FC = () => {
           
           {/* Brand Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-brand-navy flex items-center justify-center text-brand-gold shadow-sm group-hover:scale-105 transition-transform">
-              <School className="w-6 h-6" />
+            <div className="w-10 h-10 rounded-2xl bg-brand-navy flex items-center justify-center text-amber-400 shadow-md group-hover:scale-105 transition-transform border border-brand-navy-light/40">
+              <GraduationCap className="w-6 h-6 text-amber-400" />
             </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-xl font-extrabold tracking-tight text-brand-navy">
-                  Skool<span className="text-brand-gold">Finder</span>
-                </span>
-                <span className="text-[10px] uppercase font-bold tracking-widest px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">
-                  Ghana
-                </span>
-              </div>
-              <p className="text-[10px] text-ink-secondary -mt-0.5 tracking-tight hidden sm:block">
-                Greater Accra Private Education Ecosystem
-              </p>
-            </div>
+            <span className="text-2xl font-black tracking-tight text-brand-navy">
+              SkoolFinder
+            </span>
           </Link>
 
           {/* Desktop Navigation Links */}
