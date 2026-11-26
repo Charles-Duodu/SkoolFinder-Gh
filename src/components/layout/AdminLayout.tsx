@@ -21,7 +21,8 @@ import {
   Menu, 
   X,
   ExternalLink,
-  ChevronRight
+  ChevronRight,
+  ArrowLeft
 } from 'lucide-react';
 import { SignOutButton } from './SignOutButton';
 
@@ -99,15 +100,31 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
       <div className="flex-1 flex overflow-hidden">
         
         {/* Desktop Sidebar */}
-        <aside className="hidden lg:flex lg:w-64 flex-col bg-slate-950 border-r border-slate-800">
-          <div className="p-4 border-b border-slate-800 flex items-center justify-between">
+        <aside className="hidden lg:flex lg:w-64 flex-col bg-[#0B1E36] border-r border-slate-800 text-slate-100 shrink-0 sticky top-0 h-screen select-none">
+          {/* Brand & Portal Header */}
+          <div className="p-5 border-b border-slate-800">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-1.5 text-slate-400 hover:text-white text-xs font-semibold mb-3 py-1 px-1.5 rounded-lg hover:bg-white/5 transition-colors"
+              title="Return to Public Directory"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Back to Public Directory</span>
+            </Link>
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-[#0078D4] flex items-center justify-center text-white shadow-sm font-bold">
-                <ShieldCheck className="w-5 h-5" />
+              <div className="w-9 h-9 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center font-black shrink-0 shadow-xs">
+                <ShieldCheck className="w-5 h-5 text-slate-950" />
               </div>
-              <div>
-                <h1 className="text-xs font-black tracking-wider text-white uppercase">Super Admin</h1>
-                <p className="text-[10px] text-slate-400">SkoolFinder Ghana Governance</p>
+              <div className="min-w-0">
+                <h2 className="text-sm font-bold text-white font-serif leading-tight truncate">
+                  SkoolFinder
+                </h2>
+                <p className="text-[10px] font-extrabold tracking-widest text-amber-400 uppercase leading-none mt-0.5">
+                  SUPER ADMIN
+                </p>
+                <p className="text-[11px] text-slate-400 truncate mt-0.5">
+                  Ghana Education Governance
+                </p>
               </div>
             </div>
           </div>
@@ -115,7 +132,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
           <div className="flex-1 p-3 space-y-5 overflow-y-auto">
             {navSections.map((sec, idx) => (
               <div key={idx} className="space-y-1">
-                <div className="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                <div className="px-3 text-[10px] font-black uppercase tracking-widest text-slate-400">
                   {sec.group}
                 </div>
                 {sec.items.map((item) => {
@@ -124,23 +141,27 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                     <Link
                       key={item.path}
                       href={item.path}
-                      className={`flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+                      className={`flex items-center justify-between text-xs transition-all ${
                         isActive
-                          ? 'bg-[#0078D4] text-white font-semibold shadow-sm'
-                          : 'text-slate-400 hover:text-white hover:bg-slate-900'
+                          ? 'bg-[#0078D4] text-white shadow-md border-l-4 border-amber-400 rounded-r-xl rounded-l-none pl-3 pr-3.5 py-2.5 font-bold'
+                          : 'text-slate-300 hover:text-white hover:bg-white/5 rounded-xl px-3.5 py-2.5 font-medium'
                       }`}
                     >
-                      <div className="flex items-center gap-2.5">
-                        <span className={isActive ? 'text-white' : 'text-slate-400'}>{item.icon}</span>
-                        <span>{item.label}</span>
+                      <div className="flex items-center gap-3 min-w-0">
+                        <span className={isActive ? 'text-white' : 'text-slate-400 shrink-0'}>{item.icon}</span>
+                        <span className="truncate">{item.label}</span>
                       </div>
                       {item.badge !== undefined && (
-                        <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${item.badgeColor}`}>
+                        <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
+                          isActive ? 'bg-white/20 text-white' : item.badgeColor
+                        }`}>
                           {item.badge}
                         </span>
                       )}
                       {item.count !== undefined && !item.badge && (
-                        <span className="text-[10px] text-slate-500">
+                        <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${
+                          isActive ? 'bg-white/20 text-white' : 'bg-slate-800 text-slate-400 border border-slate-700/60'
+                        }`}>
                           {item.count}
                         </span>
                       )}
@@ -151,21 +172,43 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
             ))}
           </div>
 
-          {/* Desktop Sidebar Footer with Sign Out */}
-          <div className="p-3 border-t border-slate-800 bg-slate-950/80 space-y-2">
-            <div className="text-[11px] text-slate-400 flex items-center justify-between">
-              <span className="flex items-center gap-1.5 text-emerald-400">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                Gov Console Active
+          {/* Super Admin Console Plan & Usage Widget */}
+          <div className="mx-3 mb-3 p-3.5 rounded-2xl bg-white/5 border border-white/10 space-y-2 backdrop-blur-md">
+            <div className="flex items-center justify-between gap-2">
+              <span className="bg-emerald-400 text-slate-950 font-black px-2 py-0.5 rounded-full text-[10px] shadow-2xs">
+                Console Active
               </span>
-              <Link href="/" className="text-slate-400 hover:text-white flex items-center gap-1 text-[10px]">
-                <span>Public View</span>
-                <ExternalLink className="w-3 h-3" />
-              </Link>
+              <span className="text-slate-300 text-[10px] font-semibold truncate">
+                Super Admin
+              </span>
+            </div>
+            <p className="text-[10px] text-slate-400 leading-tight">
+              Institutional compliance, directories & ecosystem oversight.
+            </p>
+            <Link
+              href="/super-admin/approvals"
+              className="w-full py-1.5 px-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-sm block text-center"
+            >
+              Applications Centre
+            </Link>
+            <Link
+              href="/"
+              className="block text-center text-[10px] text-slate-400 hover:text-white underline underline-offset-2 pt-0.5"
+            >
+              Public Directory
+            </Link>
+          </div>
+
+          {/* Desktop Sidebar Footer with Sign Out */}
+          <div className="p-4 border-t border-slate-800 bg-slate-950/70 space-y-2">
+            <div className="text-[11px] text-slate-400 flex items-center justify-between">
+              <span>Console Context:</span>
+              <span className="font-bold uppercase text-amber-400">Gov Active</span>
             </div>
             <SignOutButton
-              className="w-full justify-center bg-slate-900 border-slate-800 text-slate-300 hover:text-sky-200 hover:bg-sky-950/40"
+              className="w-full justify-center border-slate-700 text-slate-200 hover:bg-white/5"
               size="sm"
+              variant="outline"
             />
           </div>
         </aside>
@@ -194,12 +237,12 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
           </header>
 
           {/* Mobile Header Bar */}
-          <header className="bg-slate-950 text-white px-4 py-3 flex items-center justify-between border-b border-slate-800 lg:hidden">
+          <header className="bg-[#0B1E36] text-white px-4 py-3 flex items-center justify-between border-b border-slate-800 lg:hidden">
             <div className="flex items-center gap-2">
               <button onClick={() => setMobileOpen(true)} className="p-1 rounded text-slate-300">
                 <Menu className="w-5 h-5" />
               </button>
-              <span className="font-bold text-xs uppercase tracking-wider text-[#0078D4]">Super Admin Portal</span>
+              <span className="font-bold text-xs uppercase tracking-wider text-amber-400">Super Admin Portal</span>
             </div>
             <div className="flex items-center gap-2">
               <Link href="/" className="text-xs text-slate-400 hover:text-white mr-1">
@@ -213,21 +256,26 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
           {mobileOpen && (
             <div className="fixed inset-0 z-50 lg:hidden flex">
               <div className="fixed inset-0 bg-black/60" onClick={() => setMobileOpen(false)} />
-              <div className="relative w-72 bg-slate-950 text-white flex flex-col z-10 p-4 space-y-4">
+              <div className="relative w-72 bg-[#0B1E36] text-white flex flex-col z-10 p-4 space-y-4 shadow-floating h-full">
                 <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-                  <span className="font-bold text-xs uppercase tracking-wider">Navigation</span>
-                  <button onClick={() => setMobileOpen(false)}><X className="w-5 h-5" /></button>
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-7 rounded-lg bg-amber-400 text-slate-950 flex items-center justify-center font-bold">
+                      <ShieldCheck className="w-4 h-4" />
+                    </div>
+                    <span className="font-bold text-xs uppercase tracking-wider text-white">Super Admin</span>
+                  </div>
+                  <button onClick={() => setMobileOpen(false)}><X className="w-5 h-5 text-slate-400" /></button>
                 </div>
                 <div className="space-y-4 overflow-y-auto flex-1">
                   {navSections.map((sec, idx) => (
                     <div key={idx} className="space-y-1">
-                      <div className="text-[10px] font-bold uppercase text-slate-500">{sec.group}</div>
+                      <div className="text-[10px] font-bold uppercase text-slate-400">{sec.group}</div>
                       {sec.items.map(i => (
                         <Link
                           key={i.path}
                           href={i.path}
                           onClick={() => setMobileOpen(false)}
-                          className="flex items-center justify-between py-2 px-2 text-xs text-slate-300 hover:bg-slate-900 rounded"
+                          className="flex items-center justify-between py-2 px-2 text-xs text-slate-300 hover:bg-white/5 rounded-xl"
                         >
                           <div className="flex items-center gap-2">
                             {i.icon}
@@ -240,7 +288,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                   ))}
                 </div>
                 <div className="pt-3 border-t border-slate-800">
-                  <SignOutButton className="w-full justify-center bg-[#0078D4] hover:bg-[#005A9E] text-white" size="sm" />
+                  <SignOutButton className="w-full justify-center bg-[#0078D4] hover:bg-blue-600 text-white" size="sm" />
                 </div>
               </div>
             </div>

@@ -59,7 +59,8 @@ export const ParentsPortalPage: React.FC = () => {
 
   return (
     <DashboardLayout
-      portalName="Parents & Guardians Workspace"
+      portalName="SkoolFinder"
+      portalTag="PARENTS & GUARDIANS"
       portalSubtitle="Discovering education for Nana Yaw & Akosua"
       navItems={navItems}
       activeTab={activeTab}

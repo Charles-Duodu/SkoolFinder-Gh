@@ -83,7 +83,8 @@ export const SupplierDashboardPage: React.FC<SupplierDashboardPageProps> = ({ we
 
   return (
     <DashboardLayout
-      portalName="Educational Suppliers Hub"
+      portalName="SkoolFinder"
+      portalTag="SUPPLIERS & VENDORS"
       portalSubtitle={`${sup.businessName} &bull; ${sup.category}`}
       navItems={navItems}
       activeTab={activeTab}

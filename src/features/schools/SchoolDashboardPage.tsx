@@ -141,8 +141,9 @@ export const SchoolDashboardPage: React.FC<SchoolDashboardPageProps> = ({ welcom
 
   return (
     <DashboardLayout
-      portalName={currentSchool.name}
-      portalSubtitle={`Verified Institution &bull; ${currentSchool.locality}, Accra`}
+      portalName="SkoolFinder"
+      portalTag="SCHOOL OWNERS"
+      portalSubtitle={`${currentSchool.name} &bull; ${currentSchool.locality}, Accra`}
       navItems={navItems}
       activeTab={activeTab}
       onTabChange={(tabId) => setActiveTab(tabId as any)}

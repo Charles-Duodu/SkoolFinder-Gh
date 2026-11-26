@@ -56,8 +56,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   onTabChange,
   children,
   actionButton,
-  sidebarVariant = 'white',
-  groupTitle,
+  sidebarVariant = 'blue',
+  groupTitle = 'YOUR WORKSPACE',
   planWidget,
 }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -65,6 +65,54 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const { role } = useDemo();
 
   const isBlue = sidebarVariant === 'blue';
+
+  // Role-based auto-tag if not specified
+  const effectiveTag = portalTag || (
+    role === 'school_owner' ? 'SCHOOL OWNERS' :
+    role === 'supplier' ? 'SUPPLIERS & VENDORS' :
+    role === 'parent' ? 'PARENTS & GUARDIANS' :
+    role === 'professional' ? 'PROFESSIONALS' :
+    'WORKSPACE'
+  );
+
+  // Role-based default plan widget if not provided
+  const effectivePlanWidget: PlanWidgetConfig = planWidget || (
+    role === 'school_owner' ? {
+      badge: 'Institution Active',
+      planName: 'Verified School Profile',
+      subtext: 'Institutional campus workspace enabled.',
+      buttonText: 'Campus settings',
+      onButtonClick: () => onTabChange?.('settings'),
+      publicLink: '/schools',
+      publicLinkText: 'Browse public listings'
+    } :
+    role === 'supplier' ? {
+      badge: 'Commercial Active',
+      planName: 'Verified Supplier',
+      subtext: 'Educational vendor tenders active.',
+      buttonText: 'Vendor profile',
+      onButtonClick: () => onTabChange?.('profile'),
+      publicLink: '/suppliers',
+      publicLinkText: 'Explore suppliers directory'
+    } :
+    role === 'parent' ? {
+      badge: 'Family Active',
+      planName: 'Parent Shortlist Hub',
+      subtext: 'Active admission inquiries enabled.',
+      buttonText: 'Compare schools',
+      onButtonClick: () => onTabChange?.('comparisons'),
+      publicLink: '/schools',
+      publicLinkText: 'Find more schools'
+    } : {
+      badge: 'Free active',
+      planName: 'Career + Services',
+      subtext: 'Approved activities, within your plan.',
+      buttonText: 'View plan & usage',
+      onButtonClick: () => onTabChange?.('billing'),
+      publicLink: '/professionals',
+      publicLinkText: 'Explore public page'
+    }
+  );
 
   // Format subtitle to render bullet cleanly
   const formattedSubtitle = portalSubtitle.replace(/&bull;/g, '•');
@@ -112,9 +160,9 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               <h2 className={cn("text-sm font-bold leading-tight truncate", isBlue ? "text-white font-serif" : "text-ink-primary")}>
                 {portalName}
               </h2>
-              {portalTag && (
+              {effectiveTag && (
                 <p className="text-[10px] font-extrabold tracking-widest text-amber-400 uppercase leading-none mt-0.5">
-                  {portalTag}
+                  {effectiveTag}
                 </p>
               )}
               <p className={cn("text-[11px] truncate mt-0.5", isBlue ? "text-slate-400" : "text-ink-secondary")}>
@@ -206,38 +254,38 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         </nav>
 
         {/* Optional Plan & Usage Widget */}
-        {planWidget && (
+        {effectivePlanWidget && (
           <div className={cn(
             "mx-3 mb-3 p-3.5 rounded-2xl border space-y-2 backdrop-blur-md",
             isBlue ? "bg-white/5 border-white/10" : "bg-slate-50 border-slate-200"
           )}>
             <div className="flex items-center justify-between gap-2">
               <span className="bg-white text-slate-950 font-bold px-2 py-0.5 rounded-full text-[10px] shadow-2xs">
-                {planWidget.badge}
+                {effectivePlanWidget.badge}
               </span>
               <span className={cn("text-[10px] font-semibold truncate", isBlue ? "text-slate-300" : "text-slate-600")}>
-                {planWidget.planName}
+                {effectivePlanWidget.planName}
               </span>
             </div>
             <p className={cn("text-[10px] leading-tight", isBlue ? "text-slate-400" : "text-slate-500")}>
-              {planWidget.subtext}
+              {effectivePlanWidget.subtext}
             </p>
             <button
               type="button"
-              onClick={planWidget.onButtonClick}
+              onClick={effectivePlanWidget.onButtonClick}
               className="w-full py-1.5 px-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-sm block text-center"
             >
-              {planWidget.buttonText}
+              {effectivePlanWidget.buttonText}
             </button>
-            {planWidget.publicLink && (
+            {effectivePlanWidget.publicLink && (
               <Link
-                href={planWidget.publicLink}
+                href={effectivePlanWidget.publicLink}
                 className={cn(
                   "block text-center text-[10px] underline underline-offset-2 pt-0.5 transition-colors",
                   isBlue ? "text-slate-400 hover:text-white" : "text-slate-500 hover:text-brand-navy"
                 )}
               >
-                {planWidget.publicLinkText || 'Explore public page'}
+                {effectivePlanWidget.publicLinkText || 'Explore public page'}
               </Link>
             )}
           </div>
@@ -280,7 +328,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                   <span className={cn("font-bold text-sm truncate block", isBlue ? "text-white" : "text-brand-navy")}>
                     {portalName}
                   </span>
-                  {portalTag && <span className="text-[10px] font-bold text-amber-400 uppercase block">{portalTag}</span>}
+                  {effectiveTag && <span className="text-[10px] font-bold text-amber-400 uppercase block">{effectiveTag}</span>}
                 </div>
               </div>
               <button
@@ -333,28 +381,28 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               })}
             </nav>
 
-            {planWidget && (
+            {effectivePlanWidget && (
               <div className={cn(
                 "mx-3 mb-3 p-3 rounded-xl border space-y-2",
                 isBlue ? "bg-white/5 border-white/10" : "bg-slate-50 border-slate-200"
               )}>
                 <div className="flex items-center justify-between gap-2">
                   <span className="bg-white text-slate-950 font-bold px-2 py-0.5 rounded-full text-[10px]">
-                    {planWidget.badge}
+                    {effectivePlanWidget.badge}
                   </span>
                   <span className={cn("text-[10px] font-semibold truncate", isBlue ? "text-slate-300" : "text-slate-600")}>
-                    {planWidget.planName}
+                    {effectivePlanWidget.planName}
                   </span>
                 </div>
                 <button
                   type="button"
                   onClick={() => {
                     setSidebarOpen(false);
-                    planWidget.onButtonClick?.();
+                    effectivePlanWidget.onButtonClick?.();
                   }}
                   className="w-full py-1.5 px-3 rounded-lg bg-blue-600 text-white text-xs font-bold"
                 >
-                  {planWidget.buttonText}
+                  {effectivePlanWidget.buttonText}
                 </button>
               </div>
             )}
