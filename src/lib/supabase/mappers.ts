@@ -25,17 +25,69 @@ const DEFAULT_COVER = '/images/schools/school-east-legon.jpg';
 const DEFAULT_AVATAR = '/images/professionals/teacher-kofi.jpg';
 const DEFAULT_LOGO = '/images/ecosystem-suppliers.jpg';
 
+const SCHOOL_COVER_MAP: Record<string, string> = {
+  'achimota-preparatory-international': '/images/schools/school-achimota.jpg',
+  'east-legon-cambridge-academy': '/images/schools/school-east-legon.jpg',
+  'cantonments-montessori-centre': '/images/schools/school-cantonments.jpg',
+  'tema-community-international-college': '/images/schools/school-tema.jpg',
+  'airport-residential-international-school': '/images/schools/school-east-legon.jpg',
+  'north-legon-little-explorers-montessori': '/images/schools/school-cantonments.jpg',
+  'spintex-crest-bilingual-academy': '/images/schools/school-tema.jpg',
+  'dansoman-heritage-academy': '/images/schools/school-achimota.jpg',
+};
+
+const PROFESSIONAL_AVATAR_MAP: Record<string, string> = {
+  'prof-1': '/images/professionals/teacher-kofi.jpg',
+  'prof-2': '/images/professionals/teacher-esi.jpg',
+  'prof-3': '/images/professionals/teacher-grace.jpg',
+};
+
+function getSafeSchoolCover(url: string | undefined, slug: string): string {
+  if (slug && SCHOOL_COVER_MAP[slug]) return SCHOOL_COVER_MAP[slug];
+  if (!url || url.includes('unsplash.com')) {
+    return DEFAULT_COVER;
+  }
+  return url;
+}
+
+function getSafeCrest(url: string | undefined): string {
+  if (!url || url.includes('unsplash.com')) {
+    return DEFAULT_CREST;
+  }
+  return url;
+}
+
+function getSafeAvatar(url: string | undefined, id: string): string {
+  if (id && PROFESSIONAL_AVATAR_MAP[id]) return PROFESSIONAL_AVATAR_MAP[id];
+  if (!url || url.includes('unsplash.com')) {
+    return DEFAULT_AVATAR;
+  }
+  return url;
+}
+
+function getSafeLogo(url: string | undefined): string {
+  if (!url || url.includes('unsplash.com')) {
+    return DEFAULT_LOGO;
+  }
+  return url;
+}
+
 export function mapSchoolRow(row: DbRow): School {
+  const slug = String(row.slug || row.id);
+  const coverImageUrl = getSafeSchoolCover(row.cover_image_url, slug);
+  const crestUrl = getSafeCrest(row.crest_url);
+  const gallery = Array.isArray(row.gallery_images) && row.gallery_images.length > 0
+    ? row.gallery_images.map((img: string) => (img.includes('unsplash.com') ? coverImageUrl : img))
+    : [coverImageUrl];
+
   return {
     id: String(row.id),
     name: String(row.name || ''),
-    slug: String(row.slug || row.id),
+    slug,
     tagline: String(row.tagline || ''),
-    crestUrl: row.crest_url || DEFAULT_CREST,
-    coverImageUrl: row.cover_image_url || DEFAULT_COVER,
-    galleryImages: Array.isArray(row.gallery_images) && row.gallery_images.length > 0
-      ? row.gallery_images
-      : [row.cover_image_url || DEFAULT_COVER],
+    crestUrl,
+    coverImageUrl,
+    galleryImages: gallery,
     locality: (row.locality || 'East Legon') as GreaterAccraLocality,
     digitalAddress: String(row.digital_address || ''),
     address: String(row.address || ''),
@@ -94,10 +146,13 @@ export function mapProfessionalRow(row: DbRow): Professional {
       ? [{ degree: String(row.highest_qualification), institution: 'Accredited Institution', year: 2018 }]
       : [];
 
+  const profId = String(row.id);
+  const avatarUrl = getSafeAvatar(row.avatar_url, profId);
+
   return {
-    id: String(row.id),
+    id: profId,
     fullName: String(row.full_name || ''),
-    avatarUrl: row.avatar_url || DEFAULT_AVATAR,
+    avatarUrl,
     title: String(row.title || ''),
     mode: (row.mode || 'both') as Professional['mode'],
     locality: (row.locality || 'East Legon') as GreaterAccraLocality,
@@ -117,13 +172,15 @@ export function mapProfessionalRow(row: DbRow): Professional {
 }
 
 export function mapSupplierRow(row: DbRow): Supplier {
+  const logoUrl = getSafeLogo(row.logo_url);
+
   return {
     id: String(row.id),
     businessName: String(row.business_name || ''),
     registrationNumber: String(row.registration_number || ''),
     category: (row.category || 'Stationery & Books') as SupplierCategory,
     additionalCategories: (row.additional_categories || []) as SupplierCategory[],
-    logoUrl: row.logo_url || DEFAULT_LOGO,
+    logoUrl,
     locality: (row.locality || 'Osu') as GreaterAccraLocality,
     address: String(row.address || ''),
     phone: String(row.phone || ''),
