@@ -426,11 +426,11 @@ export const HomePage: React.FC = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 xl:gap-10">
           
           {/* Card 1: School Owners */}
           <div className="glass-panel glass-panel-hover rounded-3xl overflow-hidden shadow-glass hover:shadow-glass-hover flex flex-col group relative">
-            <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-900/10">
+            <div className="relative h-56 sm:h-64 md:h-72 lg:h-80 xl:h-96 w-full overflow-hidden bg-slate-900/10">
               <img
                 src="/images/ecosystem-schools.jpg"
                 alt="School Owners"
@@ -440,25 +440,25 @@ export const HomePage: React.FC = () => {
               <div className="absolute bottom-0 inset-x-0 h-1 bg-amber-400" />
             </div>
 
-            <div className="p-6 sm:p-7 flex flex-col justify-between flex-1 space-y-5">
+            <div className="p-6 sm:p-7 md:p-8 lg:p-9 xl:p-10 flex flex-col justify-between flex-1 space-y-6">
               <div>
-                <h3 className="text-xl font-bold text-[#0B1E36]">
+                <h3 className="text-xl sm:text-2xl lg:text-[26px] font-bold text-[#0B1E36] tracking-tight leading-snug">
                   School Owners
                 </h3>
-                <h4 className="text-xs sm:text-sm font-bold text-[#0B1E36] mt-0.5 mb-2">
+                <h4 className="text-xs sm:text-sm lg:text-base font-bold text-[#0B1E36] mt-1 mb-2.5">
                   Grow Your School
                 </h4>
-                <p className="text-xs text-slate-600 leading-relaxed">
+                <p className="text-xs sm:text-sm lg:text-[15px] text-slate-600 leading-relaxed">
                   Reach more families, promote admissions and find school partners.
                 </p>
 
-                <div className="grid grid-cols-2 gap-2 pt-4 text-[11px] font-semibold text-[#0B1E36]">
-                  <div className="flex items-center gap-1.5 glass-pill px-2.5 py-1.5 rounded-lg">
-                    <Users className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-5 text-[11px] sm:text-xs lg:text-sm font-semibold text-[#0B1E36]">
+                  <div className="flex items-center gap-2 glass-pill px-3 py-2 sm:py-2.5 rounded-xl shadow-2xs">
+                    <Users className="w-4 h-4 text-slate-500 shrink-0" />
                     <span>Admissions Support</span>
                   </div>
-                  <div className="flex items-center gap-1.5 glass-pill px-2.5 py-1.5 rounded-lg">
-                    <Briefcase className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                  <div className="flex items-center gap-2 glass-pill px-3 py-2 sm:py-2.5 rounded-xl shadow-2xs">
+                    <Briefcase className="w-4 h-4 text-slate-500 shrink-0" />
                     <span>Vacancies & Tenders</span>
                   </div>
                 </div>
@@ -467,7 +467,7 @@ export const HomePage: React.FC = () => {
               <div className="pt-2">
                 <Link
                   href="/school-owners/register"
-                  className="w-full py-2.5 px-4 bg-[#0B1E36] hover:bg-[#132c4d] text-white font-bold text-sm rounded-xl text-center block transition-all shadow-sm hover:shadow"
+                  className="w-full py-3 sm:py-3.5 lg:py-4 px-6 bg-[#0B1E36] hover:bg-[#132c4d] text-white font-bold text-sm sm:text-base rounded-xl text-center block transition-all shadow-sm hover:shadow-md hover:scale-[1.01]"
                 >
                   List Your School
                 </Link>
@@ -477,7 +477,7 @@ export const HomePage: React.FC = () => {
 
           {/* Card 2: Teachers & Professionals */}
           <div className="glass-panel glass-panel-hover rounded-3xl overflow-hidden shadow-glass hover:shadow-glass-hover flex flex-col group relative">
-            <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-900/10">
+            <div className="relative h-56 sm:h-64 md:h-72 lg:h-80 xl:h-96 w-full overflow-hidden bg-slate-900/10">
               <img
                 src="/images/ecosystem-teachers.jpg"
                 alt="Teachers & Professionals"
@@ -487,25 +487,25 @@ export const HomePage: React.FC = () => {
               <div className="absolute bottom-0 inset-x-0 h-1 bg-amber-400" />
             </div>
 
-            <div className="p-6 sm:p-7 flex flex-col justify-between flex-1 space-y-5">
+            <div className="p-6 sm:p-7 md:p-8 lg:p-9 xl:p-10 flex flex-col justify-between flex-1 space-y-6">
               <div>
-                <h3 className="text-xl font-bold text-[#0B1E36]">
+                <h3 className="text-xl sm:text-2xl lg:text-[26px] font-bold text-[#0B1E36] tracking-tight leading-snug">
                   Teachers & Professionals
                 </h3>
-                <h4 className="text-xs sm:text-sm font-bold text-[#0B1E36] mt-0.5 mb-2">
+                <h4 className="text-xs sm:text-sm lg:text-base font-bold text-[#0B1E36] mt-1 mb-2.5">
                   Find Your Next Opportunity
                 </h4>
-                <p className="text-xs text-slate-600 leading-relaxed">
+                <p className="text-xs sm:text-sm lg:text-[15px] text-slate-600 leading-relaxed">
                   Explore education jobs, showcase your expertise and offer services.
                 </p>
 
-                <div className="grid grid-cols-2 gap-2 pt-4 text-[11px] font-semibold text-[#0B1E36]">
-                  <div className="flex items-center gap-1.5 glass-pill px-2.5 py-1.5 rounded-lg">
-                    <Briefcase className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-5 text-[11px] sm:text-xs lg:text-sm font-semibold text-[#0B1E36]">
+                  <div className="flex items-center gap-2 glass-pill px-3 py-2 sm:py-2.5 rounded-xl shadow-2xs">
+                    <Briefcase className="w-4 h-4 text-slate-500 shrink-0" />
                     <span>Education Jobs</span>
                   </div>
-                  <div className="flex items-center gap-1.5 glass-pill px-2.5 py-1.5 rounded-lg">
-                    <Users className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                  <div className="flex items-center gap-2 glass-pill px-3 py-2 sm:py-2.5 rounded-xl shadow-2xs">
+                    <Users className="w-4 h-4 text-slate-500 shrink-0" />
                     <span>Tutoring Services</span>
                   </div>
                 </div>
@@ -514,7 +514,7 @@ export const HomePage: React.FC = () => {
               <div className="pt-2">
                 <Link
                   href="/professionals"
-                  className="w-full py-2.5 px-4 bg-[#0B1E36] hover:bg-[#132c4d] text-white font-bold text-sm rounded-xl text-center block transition-all shadow-sm hover:shadow"
+                  className="w-full py-3 sm:py-3.5 lg:py-4 px-6 bg-[#0B1E36] hover:bg-[#132c4d] text-white font-bold text-sm sm:text-base rounded-xl text-center block transition-all shadow-sm hover:shadow-md hover:scale-[1.01]"
                 >
                   Explore Opportunities
                 </Link>
@@ -524,7 +524,7 @@ export const HomePage: React.FC = () => {
 
           {/* Card 3: Suppliers & Services */}
           <div className="glass-panel glass-panel-hover rounded-3xl overflow-hidden shadow-glass hover:shadow-glass-hover flex flex-col group relative">
-            <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-900/10">
+            <div className="relative h-56 sm:h-64 md:h-72 lg:h-80 xl:h-96 w-full overflow-hidden bg-slate-900/10">
               <img
                 src="/images/ecosystem-suppliers.jpg"
                 alt="Suppliers & Services"
@@ -534,25 +534,25 @@ export const HomePage: React.FC = () => {
               <div className="absolute bottom-0 inset-x-0 h-1 bg-amber-400" />
             </div>
 
-            <div className="p-6 sm:p-7 flex flex-col justify-between flex-1 space-y-5">
+            <div className="p-6 sm:p-7 md:p-8 lg:p-9 xl:p-10 flex flex-col justify-between flex-1 space-y-6">
               <div>
-                <h3 className="text-xl font-bold text-[#0B1E36]">
+                <h3 className="text-xl sm:text-2xl lg:text-[26px] font-bold text-[#0B1E36] tracking-tight leading-snug">
                   Suppliers & Services
                 </h3>
-                <h4 className="text-xs sm:text-sm font-bold text-[#0B1E36] mt-0.5 mb-2">
+                <h4 className="text-xs sm:text-sm lg:text-base font-bold text-[#0B1E36] mt-1 mb-2.5">
                   Connect With Schools
                 </h4>
-                <p className="text-xs text-slate-600 leading-relaxed">
+                <p className="text-xs sm:text-sm lg:text-[15px] text-slate-600 leading-relaxed">
                   Showcase your products and services, and discover school tenders.
                 </p>
 
-                <div className="grid grid-cols-2 gap-2 pt-4 text-[11px] font-semibold text-[#0B1E36]">
-                  <div className="flex items-center gap-1.5 glass-pill px-2.5 py-1.5 rounded-lg">
-                    <Truck className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-5 text-[11px] sm:text-xs lg:text-sm font-semibold text-[#0B1E36]">
+                  <div className="flex items-center gap-2 glass-pill px-3 py-2 sm:py-2.5 rounded-xl shadow-2xs">
+                    <Truck className="w-4 h-4 text-slate-500 shrink-0" />
                     <span>Products & Services</span>
                   </div>
-                  <div className="flex items-center gap-1.5 glass-pill px-2.5 py-1.5 rounded-lg">
-                    <FileText className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                  <div className="flex items-center gap-2 glass-pill px-3 py-2 sm:py-2.5 rounded-xl shadow-2xs">
+                    <FileText className="w-4 h-4 text-slate-500 shrink-0" />
                     <span>School Tenders</span>
                   </div>
                 </div>
@@ -561,7 +561,7 @@ export const HomePage: React.FC = () => {
               <div className="pt-2">
                 <Link
                   href="/suppliers"
-                  className="w-full py-2.5 px-4 bg-[#0B1E36] hover:bg-[#132c4d] text-white font-bold text-sm rounded-xl text-center block transition-all shadow-sm hover:shadow"
+                  className="w-full py-3 sm:py-3.5 lg:py-4 px-6 bg-[#0B1E36] hover:bg-[#132c4d] text-white font-bold text-sm sm:text-base rounded-xl text-center block transition-all shadow-sm hover:shadow-md hover:scale-[1.01]"
                 >
                   Discover Tenders
                 </Link>
