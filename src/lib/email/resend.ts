@@ -143,6 +143,92 @@ export async function sendEntityVerificationEmail(payload: {
   });
 }
 
+export async function sendWelcomeEmail(payload: {
+  recipientEmail: string;
+  fullName: string;
+  role: 'parent' | 'school_owner' | 'professional' | 'supplier';
+}) {
+  const roleLabels: Record<string, { label: string; portal: string; portalPath: string; color: string }> = {
+    parent: {
+      label: 'Parent / Guardian',
+      portal: 'Parents Workspace',
+      portalPath: '/parents',
+      color: '#102A43',
+    },
+    school_owner: {
+      label: 'School Proprietor / Administrator',
+      portal: 'School Owners Portal',
+      portalPath: '/school-owners',
+      color: '#102A43',
+    },
+    professional: {
+      label: 'Licensed Teacher / Educator',
+      portal: 'Professionals Portal',
+      portalPath: '/professionals',
+      color: '#102A43',
+    },
+    supplier: {
+      label: 'Educational Supplier / Vendor',
+      portal: 'Suppliers Portal',
+      portalPath: '/suppliers',
+      color: '#102A43',
+    },
+  };
+
+  const { label, portal, portalPath, color } = roleLabels[payload.role] || roleLabels.parent;
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://skool-finder-gh-zydn.vercel.app';
+
+  return sendEmailSafe({
+    to: payload.recipientEmail,
+    subject: `Welcome to SkoolFinder Ghana — Your ${portal} Is Ready`,
+    html: `
+      <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;">
+        <!-- Header -->
+        <div style="background: linear-gradient(135deg, #0A1628 0%, #102A43 100%); padding: 28px 24px; text-align: center;">
+          <h1 style="color: #C5A55A; margin: 0 0 4px; font-size: 22px; font-weight: 900; letter-spacing: -0.5px;">
+            SkoolFinder<span style="color: #fff;">Ghana</span>
+          </h1>
+          <p style="color: #94a3b8; margin: 0; font-size: 11px; text-transform: uppercase; letter-spacing: 2px;">
+            Greater Accra Private Education Ecosystem
+          </p>
+        </div>
+
+        <!-- Body -->
+        <div style="padding: 28px 24px; background: #fff;">
+          <h2 style="color: ${color}; margin: 0 0 12px; font-size: 18px;">Welcome aboard, ${payload.fullName}! 🎉</h2>
+          <p style="color: #475569; font-size: 14px; line-height: 1.6; margin: 0 0 16px;">
+            Your <strong>${label}</strong> account has been successfully created on SkoolFinder Ghana — Greater Accra's dedicated private education platform.
+          </p>
+
+          <!-- Role badge -->
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px 16px; margin: 0 0 20px;">
+            <p style="margin: 0 0 4px; font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;">Your Portal</p>
+            <p style="margin: 0; font-size: 15px; color: #102A43; font-weight: 700;">${portal}</p>
+          </div>
+
+          <!-- CTA Button -->
+          <div style="text-align: center; margin: 24px 0;">
+            <a href="${appUrl}${portalPath}" style="display: inline-block; background: #C5A55A; color: #0A1628; text-decoration: none; font-weight: 800; font-size: 14px; padding: 12px 28px; border-radius: 8px; letter-spacing: 0.3px;">
+              → Open My ${portal}
+            </a>
+          </div>
+
+          <p style="color: #64748b; font-size: 13px; line-height: 1.6; margin: 0;">
+            If you have any questions, reply to this email or contact us at <a href="mailto:support@skoolfinder.com.gh" style="color: #102A43;">support@skoolfinder.com.gh</a>.
+          </p>
+        </div>
+
+        <!-- Footer -->
+        <div style="background: #f8fafc; padding: 16px 24px; border-top: 1px solid #e2e8f0; text-align: center;">
+          <p style="color: #94a3b8; font-size: 11px; margin: 0;">
+            © ${new Date().getFullYear()} SkoolFinder Ghana · Greater Accra Region, Ghana
+          </p>
+        </div>
+      </div>
+    `,
+  });
+}
+
 export async function sendSafeguardingAlertEmail(payload: {
   caseId: string;
   title: string;

@@ -128,17 +128,28 @@ export const SupabaseAuthForm: React.FC<SupabaseAuthFormProps> = ({ initialMode 
 
       if (error) throw error;
 
+      // Fire branded welcome email via Resend (non-blocking)
+      fetch('/api/welcome-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          fullName: fullName.trim() || email.split('@')[0],
+          role: accountRole,
+        }),
+      }).catch(() => {/* silent – welcome email is best-effort */});
+
       if (data.session) {
         setRole(accountRole);
         addToast({
-          title: 'Account Created',
-          message: `Welcome to SkoolFinder Ghana, ${fullName || email}!`,
+          title: 'Account Created 🎉',
+          message: `Welcome to SkoolFinder Ghana, ${fullName || email}! A welcome email is on its way.`,
           type: 'success',
         });
         window.location.assign(getRedirectDestination(accountRole));
       } else {
         setSuccessMsg(
-          `Confirmation email sent to ${email}. Verify your email address to access your protected portal.`
+          `✅ Account created! A confirmation + welcome email has been sent to ${email}. Verify your address to access your portal.`
         );
       }
     } catch (err: any) {
