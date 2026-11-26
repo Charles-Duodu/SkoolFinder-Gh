@@ -625,30 +625,31 @@ export const HomePage: React.FC = () => {
 
       {/* SECTION 7: FINAL CALL TO ACTION */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="glass-panel-dark rounded-3xl p-8 sm:p-12 text-white relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 shadow-glass-dark border border-white/20">
+        <div className="glass-panel-dark rounded-3xl p-8 sm:p-12 lg:p-16 text-white text-center relative overflow-hidden flex flex-col items-center justify-center shadow-glass-dark border border-white/20">
           {/* Ambient corner glows */}
           <div className="absolute -top-32 -right-32 w-80 h-80 bg-amber-400/15 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-blue-500/15 rounded-full blur-3xl pointer-events-none" />
           
-          <div className="space-y-3 max-w-xl relative z-10">
-            <span className="text-xs font-bold uppercase tracking-wider text-amber-400">
+          <div className="space-y-4 max-w-3xl mx-auto relative z-10">
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-amber-400/15 border border-amber-400/30 text-amber-400 text-xs font-bold uppercase tracking-wider shadow-2xs">
               Are you a School Proprietor or Administrator?
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold leading-tight">
+            </div>
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold leading-tight text-white tracking-tight">
               Give your institution the visibility it deserves across Greater Accra.
             </h2>
-            <p className="text-xs sm:text-sm text-slate-300">
+            <p className="text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed">
               Join dozens of private schools in Accra showcasing their academic standards, publishing vacancies, and connecting with prospective families.
             </p>
           </div>
-          <div className="flex flex-col sm:flex-row gap-3 shrink-0 relative z-10">
-            <Link href="/school-owners/register">
-              <Button variant="gold" size="lg" className="w-full justify-center shadow-lg hover:shadow-amber-400/25">
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8 relative z-10 w-full sm:w-auto">
+            <Link href="/school-owners/register" className="w-full sm:w-auto">
+              <Button variant="gold" size="lg" className="w-full sm:w-auto justify-center px-8 py-3.5 shadow-lg hover:shadow-amber-400/25 font-bold">
                 Register Your School
               </Button>
             </Link>
-            <Link href="/schools">
-              <Button variant="outline" size="lg" className="w-full justify-center bg-white/10 backdrop-blur-md border-white/30 text-white hover:bg-white/20">
+            <Link href="/schools" className="w-full sm:w-auto">
+              <Button variant="outline" size="lg" className="w-full sm:w-auto justify-center px-8 py-3.5 bg-white/10 backdrop-blur-md border-white/30 text-white hover:bg-white/20 font-semibold">
                 Explore Directory
               </Button>
             </Link>
