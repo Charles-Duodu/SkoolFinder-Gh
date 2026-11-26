@@ -14,7 +14,6 @@ import {
   Filter, 
   Scale, 
   RotateCcw, 
-  Grid, 
   List, 
   Map as MapIcon,
   SlidersHorizontal,
@@ -41,7 +40,7 @@ export const SchoolSearchPage: React.FC = () => {
   });
 
   const [sortBy, setSortBy] = useState<'featured' | 'name' | 'feeAsc' | 'feeDesc'>('featured');
-  const [viewMode, setViewMode] = useState<'grid' | 'list' | 'map'>('list');
+  const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
 
   const [enquirySchool, setEnquirySchool] = useState<School | null>(null);
@@ -166,11 +165,11 @@ export const SchoolSearchPage: React.FC = () => {
               <List className="w-4 h-4" />
             </button>
             <button
-              onClick={() => setViewMode('grid')}
-              className={`p-1.5 rounded ${viewMode === 'grid' ? 'bg-slate-100 text-brand-navy font-bold' : 'text-ink-muted'}`}
-              title="Grid View"
+              onClick={() => setViewMode('map')}
+              className={`p-1.5 rounded ${viewMode === 'map' ? 'bg-slate-100 text-brand-navy font-bold' : 'text-ink-muted'}`}
+              title="Accra Map View"
             >
-              <Grid className="w-4 h-4" />
+              <MapIcon className="w-4 h-4" />
             </button>
           </div>
 
@@ -363,30 +362,22 @@ export const SchoolSearchPage: React.FC = () => {
                 </select>
               </div>
 
-              {/* View Switcher */}
+              {/* View Switcher: List & Map */}
               <div className="flex items-center gap-1 border border-surface-border rounded-lg p-0.5 bg-slate-50">
                 <button
                   onClick={() => setViewMode('list')}
                   title="List View"
-                  className={`p-1.5 rounded-md text-xs transition-colors ${
+                  className={`flex items-center gap-1 px-2.5 py-1.5 rounded-md text-xs font-semibold transition-colors ${
                     viewMode === 'list' ? 'bg-white text-brand-navy shadow-sm font-bold' : 'text-slate-500 hover:text-slate-800'
                   }`}
                 >
                   <List className="w-3.5 h-3.5" />
-                </button>
-                <button
-                  onClick={() => setViewMode('grid')}
-                  title="Grid View"
-                  className={`p-1.5 rounded-md text-xs transition-colors ${
-                    viewMode === 'grid' ? 'bg-white text-brand-navy shadow-sm font-bold' : 'text-slate-500 hover:text-slate-800'
-                  }`}
-                >
-                  <Grid className="w-3.5 h-3.5" />
+                  <span>List</span>
                 </button>
                 <button
                   onClick={() => setViewMode('map')}
                   title="Accra Locality Map"
-                  className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs font-semibold transition-colors ${
+                  className={`flex items-center gap-1 px-2.5 py-1.5 rounded-md text-xs font-semibold transition-colors ${
                     viewMode === 'map' ? 'bg-brand-navy text-white shadow-sm' : 'text-slate-500 hover:text-slate-800'
                   }`}
                 >
@@ -470,13 +461,13 @@ export const SchoolSearchPage: React.FC = () => {
                 />
               )}
 
-              {/* Cards Grid / List */}
-              <div className={`grid gap-6 ${viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
+              {/* School Directory List View */}
+              <div className="grid grid-cols-1 gap-6">
                 {filteredSchools.map((school) => (
                   <SchoolCard
                     key={school.id}
                     school={school}
-                    variant={viewMode === 'list' ? 'list' : 'grid'}
+                    variant="list"
                     onOpenEnquiry={(s) => setEnquirySchool(s)}
                   />
                 ))}
