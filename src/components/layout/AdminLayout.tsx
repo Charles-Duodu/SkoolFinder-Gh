@@ -18,12 +18,12 @@ import {
   Layers, 
   BarChart3, 
   Sliders, 
-  Bell, 
-  Search, 
   Menu, 
   X,
-  ExternalLink
+  ExternalLink,
+  ChevronRight
 } from 'lucide-react';
+import { SignOutButton } from './SignOutButton';
 
 interface AdminNavItem {
   label: string;
@@ -151,20 +151,49 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
             ))}
           </div>
 
-          <div className="p-3 border-t border-slate-800 bg-slate-950/80 text-[11px] text-slate-400 flex items-center justify-between">
-            <span className="flex items-center gap-1.5 text-emerald-400">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              Gov Console Active
-            </span>
-            <Link href="/" className="text-slate-400 hover:text-white flex items-center gap-1 text-[10px]">
-              <span>Public View</span>
-              <ExternalLink className="w-3 h-3" />
-            </Link>
+          {/* Desktop Sidebar Footer with Sign Out */}
+          <div className="p-3 border-t border-slate-800 bg-slate-950/80 space-y-2">
+            <div className="text-[11px] text-slate-400 flex items-center justify-between">
+              <span className="flex items-center gap-1.5 text-emerald-400">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                Gov Console Active
+              </span>
+              <Link href="/" className="text-slate-400 hover:text-white flex items-center gap-1 text-[10px]">
+                <span>Public View</span>
+                <ExternalLink className="w-3 h-3" />
+              </Link>
+            </div>
+            <SignOutButton
+              className="w-full justify-center bg-slate-900 border-slate-800 text-slate-300 hover:text-rose-200 hover:bg-rose-950/40"
+              size="sm"
+            />
           </div>
         </aside>
 
-        {/* Mobile Header */}
+        {/* Workspace Layout Area */}
         <div className="flex-1 flex flex-col min-w-0 overflow-y-auto bg-surface-bg text-ink-primary">
+          
+          {/* Desktop Top Header Bar with Sign Out */}
+          <header className="bg-white border-b border-surface-border px-6 py-3.5 hidden lg:flex items-center justify-between sticky top-0 z-20 shadow-subtle">
+            <div className="flex items-center gap-2 text-xs text-ink-secondary">
+              <span className="font-semibold text-rose-600 uppercase tracking-wider">Super Admin Console</span>
+              <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+              <span className="font-medium text-slate-700">Governance & Ecosystem Management</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <Link href="/" className="flex items-center gap-1 text-xs text-ink-secondary hover:text-ink-primary mr-1">
+                <span>Public Directory</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </Link>
+              <SignOutButton
+                size="sm"
+                variant="outline"
+                className="border-rose-200 text-rose-700 hover:bg-rose-50 hover:border-rose-300"
+              />
+            </div>
+          </header>
+
+          {/* Mobile Header Bar */}
           <header className="bg-slate-950 text-white px-4 py-3 flex items-center justify-between border-b border-slate-800 lg:hidden">
             <div className="flex items-center gap-2">
               <button onClick={() => setMobileOpen(true)} className="p-1 rounded text-slate-300">
@@ -172,9 +201,12 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
               </button>
               <span className="font-bold text-xs uppercase tracking-wider text-rose-400">Super Admin Portal</span>
             </div>
-            <Link href="/" className="text-xs text-slate-400 hover:text-white">
-              Exit
-            </Link>
+            <div className="flex items-center gap-2">
+              <Link href="/" className="text-xs text-slate-400 hover:text-white mr-1">
+                Exit
+              </Link>
+              <SignOutButton size="sm" variant="ghost" className="text-slate-300 hover:text-white" />
+            </div>
           </header>
 
           {/* Mobile Sheet */}
@@ -186,7 +218,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                   <span className="font-bold text-xs uppercase tracking-wider">Navigation</span>
                   <button onClick={() => setMobileOpen(false)}><X className="w-5 h-5" /></button>
                 </div>
-                <div className="space-y-4 overflow-y-auto">
+                <div className="space-y-4 overflow-y-auto flex-1">
                   {navSections.map((sec, idx) => (
                     <div key={idx} className="space-y-1">
                       <div className="text-[10px] font-bold uppercase text-slate-500">{sec.group}</div>
@@ -206,6 +238,9 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                       ))}
                     </div>
                   ))}
+                </div>
+                <div className="pt-3 border-t border-slate-800">
+                  <SignOutButton className="w-full justify-center bg-rose-600 hover:bg-rose-700 text-white" size="sm" />
                 </div>
               </div>
             </div>

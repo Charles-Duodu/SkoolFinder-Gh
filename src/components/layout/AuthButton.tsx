@@ -2,15 +2,11 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { Button } from '../ui/Button';
-import { LogIn, LogOut, UserCheck } from 'lucide-react';
-import { useDemo } from '@/context/DemoContext';
+import { LogIn, UserCheck } from 'lucide-react';
 
 export const AuthButton: React.FC = () => {
-  const router = useRouter();
-  const { setRole, addToast } = useDemo();
   const [userEmail, setUserEmail] = useState<string | null>(null);
 
   useEffect(() => {
@@ -34,37 +30,16 @@ export const AuthButton: React.FC = () => {
     };
   }, []);
 
-  const handleSignOut = async () => {
-    const supabase = createClient();
-    if (!supabase) return;
-    await supabase.auth.signOut();
-    setUserEmail(null);
-    setRole('guest');
-    addToast({
-      title: 'Signed Out',
-      message: 'You have been securely signed out of SkoolFinder Ghana.',
-      type: 'info',
-    });
-    router.refresh();
-    router.push('/');
-  };
-
+  // When signed in: Display user status linking to their portal/dashboard.
+  // Sign Out is intentionally placed exclusively inside the dashboard layouts, not on the public header.
   if (userEmail) {
     return (
-      <div className="flex items-center gap-2">
-        <span className="hidden xl:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-50 border border-emerald-200 text-[11px] font-semibold text-emerald-900">
+      <Link href="/parents" title="Go to your portal workspace">
+        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 border border-emerald-200 text-xs font-semibold text-emerald-900 hover:bg-emerald-100 transition-colors">
           <UserCheck className="w-3.5 h-3.5 text-emerald-600" />
-          <span className="max-w-[130px] truncate">{userEmail}</span>
+          <span className="max-w-[140px] truncate">{userEmail}</span>
         </span>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={handleSignOut}
-          icon={<LogOut className="w-3.5 h-3.5" />}
-        >
-          Sign Out
-        </Button>
-      </div>
+      </Link>
     );
   }
 

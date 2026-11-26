@@ -14,6 +14,7 @@ import {
   ExternalLink
 } from 'lucide-react';
 import { Button } from '../ui/Button';
+import { SignOutButton } from './SignOutButton';
 
 export interface DashboardNavItem {
   id: string;
@@ -95,12 +96,13 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             })}
           </nav>
 
-          {/* Sidebar Footer */}
-          <div className="p-4 border-t border-surface-border bg-slate-50/50">
+          {/* Sidebar Footer with Sign Out */}
+          <div className="p-4 border-t border-surface-border bg-slate-50/50 space-y-3">
             <div className="text-[11px] text-ink-secondary flex items-center justify-between">
               <span>Persona Mode:</span>
               <span className="font-bold uppercase text-brand-navy">{role}</span>
             </div>
+            <SignOutButton className="w-full justify-center" size="sm" variant="outline" />
           </div>
         </aside>
 
@@ -144,13 +146,16 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                   );
                 })}
               </nav>
+              <div className="p-4 border-t border-surface-border bg-slate-50">
+                <SignOutButton className="w-full justify-center" size="sm" variant="outline" />
+              </div>
             </div>
           </div>
         )}
 
         {/* Main Workspace Area */}
         <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
-          {/* Top Bar */}
+          {/* Top Bar with Sign Out Button */}
           <header className="bg-white border-b border-surface-border px-4 sm:px-6 py-3.5 flex items-center justify-between sticky top-0 z-20 shadow-subtle">
             <div className="flex items-center gap-3">
               <button
@@ -175,6 +180,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 <span>Explore Schools</span>
                 <ExternalLink className="w-3.5 h-3.5" />
               </Link>
+              <SignOutButton size="sm" variant="outline" />
             </div>
           </header>
 
