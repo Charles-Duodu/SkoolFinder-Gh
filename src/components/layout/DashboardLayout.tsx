@@ -13,6 +13,7 @@ import {
   ExternalLink
 } from 'lucide-react';
 import { SignOutButton } from './SignOutButton';
+import { cn } from '../../lib/utils';
 
 export interface DashboardNavItem {
   id: string;
@@ -22,28 +23,48 @@ export interface DashboardNavItem {
   badge?: number | string;
 }
 
+export interface PlanWidgetConfig {
+  badge: string;
+  planName: string;
+  subtext: string;
+  buttonText: string;
+  onButtonClick?: () => void;
+  publicLink?: string;
+  publicLinkText?: string;
+}
+
 interface DashboardLayoutProps {
   portalName: string;
   portalSubtitle: string;
+  portalTag?: string;
   navItems?: DashboardNavItem[];
   activeTab?: string;
   onTabChange?: (tabId: string) => void;
   children: React.ReactNode;
   actionButton?: React.ReactNode;
+  sidebarVariant?: 'white' | 'blue';
+  groupTitle?: string;
+  planWidget?: PlanWidgetConfig;
 }
 
 export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   portalName,
   portalSubtitle,
+  portalTag,
   navItems = [],
   activeTab,
   onTabChange,
   children,
   actionButton,
+  sidebarVariant = 'white',
+  groupTitle,
+  planWidget,
 }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const pathname = usePathname();
   const { role } = useDemo();
+
+  const isBlue = sidebarVariant === 'blue';
 
   // Format subtitle to render bullet cleanly
   const formattedSubtitle = portalSubtitle.replace(/&bull;/g, '•');
@@ -63,36 +84,65 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   return (
     <div className="min-h-screen bg-surface-bg flex">
       {/* Desktop Left Sidebar (The sole, clickable navigation) */}
-      <aside className="hidden md:flex md:w-64 flex-col bg-white border-r border-surface-border shrink-0 sticky top-0 h-screen">
+      <aside className={cn(
+        "hidden md:flex md:w-64 flex-col shrink-0 sticky top-0 h-screen transition-colors select-none",
+        isBlue ? "bg-[#0B1E36] border-r border-slate-800 text-slate-100" : "bg-white border-r border-surface-border"
+      )}>
         {/* Brand & Portal Header */}
-        <div className="p-5 border-b border-surface-border">
+        <div className={cn("p-5 border-b", isBlue ? "border-slate-800" : "border-surface-border")}>
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 text-ink-secondary hover:text-brand-navy text-xs font-semibold mb-3 py-1 px-1.5 rounded-lg hover:bg-slate-50 transition-colors"
+            className={cn(
+              "inline-flex items-center gap-1.5 text-xs font-semibold mb-3 py-1 px-1.5 rounded-lg transition-colors",
+              isBlue ? "text-slate-400 hover:text-white hover:bg-white/5" : "text-ink-secondary hover:text-brand-navy hover:bg-slate-50"
+            )}
             title="Return to Public Directory"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Back to Public Directory</span>
           </Link>
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-brand-navy flex items-center justify-center text-amber-400 shrink-0 shadow-xs">
-              <GraduationCap className="w-4 h-4 text-amber-400" />
+            <div className={cn(
+              "w-9 h-9 rounded-xl flex items-center justify-center shrink-0 shadow-xs",
+              isBlue ? "bg-amber-400 text-slate-950 font-black" : "bg-brand-navy text-amber-400"
+            )}>
+              <GraduationCap className="w-5 h-5" />
             </div>
             <div className="min-w-0">
-              <h2 className="text-sm font-bold text-ink-primary leading-tight truncate">
+              <h2 className={cn("text-sm font-bold leading-tight truncate", isBlue ? "text-white font-serif" : "text-ink-primary")}>
                 {portalName}
               </h2>
-              <p className="text-[11px] text-ink-secondary truncate">
+              {portalTag && (
+                <p className="text-[10px] font-extrabold tracking-widest text-amber-400 uppercase leading-none mt-0.5">
+                  {portalTag}
+                </p>
+              )}
+              <p className={cn("text-[11px] truncate mt-0.5", isBlue ? "text-slate-400" : "text-ink-secondary")}>
                 {formattedSubtitle}
               </p>
             </div>
           </div>
         </div>
 
+        {/* Group Heading */}
+        {groupTitle && (
+          <div className={cn("px-4 pt-4 pb-1 text-[10px] font-black uppercase tracking-widest", isBlue ? "text-slate-400" : "text-ink-muted")}>
+            {groupTitle}
+          </div>
+        )}
+
         {/* Navigation Items (Interactive Tab Switchers) */}
         <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
           {navItems.map((item) => {
             const isActive = activeTab ? activeTab === item.id : pathname === item.path;
+
+            const activeClass = isBlue
+              ? 'bg-[#0078D4] text-white shadow-md border-l-4 border-amber-400 rounded-r-xl rounded-l-none pl-3 pr-3.5 py-2.5 font-bold'
+              : 'bg-brand-navy text-white shadow-sm rounded-xl px-3.5 py-2.5';
+
+            const inactiveClass = isBlue
+              ? 'text-slate-300 hover:text-white hover:bg-white/5 rounded-xl px-3.5 py-2.5 font-medium'
+              : 'text-ink-secondary hover:text-ink-primary hover:bg-slate-100 rounded-xl px-3.5 py-2.5';
 
             if (onTabChange) {
               return (
@@ -100,14 +150,12 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                   key={item.id}
                   type="button"
                   onClick={() => handleItemClick(item)}
-                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
-                    isActive
-                      ? 'bg-brand-navy text-white shadow-sm'
-                      : 'text-ink-secondary hover:text-ink-primary hover:bg-slate-100'
+                  className={`w-full flex items-center justify-between text-xs transition-all ${
+                    isActive ? activeClass : inactiveClass
                   }`}
                 >
                   <div className="flex items-center gap-3 min-w-0">
-                    <span className={isActive ? 'text-amber-400' : 'text-ink-muted shrink-0'}>
+                    <span className={isActive ? (isBlue ? 'text-white' : 'text-amber-400') : (isBlue ? 'text-slate-400' : 'text-ink-muted shrink-0')}>
                       {item.icon}
                     </span>
                     <span className="truncate">{item.label}</span>
@@ -116,8 +164,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     <span
                       className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ${
                         isActive
-                          ? 'bg-amber-400 text-slate-950'
-                          : 'bg-slate-200 text-slate-700'
+                          ? (isBlue ? 'bg-white/20 text-white' : 'bg-amber-400 text-slate-950')
+                          : (isBlue ? 'bg-slate-800 text-slate-300 border border-slate-700/60' : 'bg-slate-200 text-slate-700')
                       }`}
                     >
                       {item.badge}
@@ -131,14 +179,12 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               <Link
                 key={item.id}
                 href={item.path || '#'}
-                className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
-                  isActive
-                    ? 'bg-brand-navy text-white shadow-sm'
-                    : 'text-ink-secondary hover:text-ink-primary hover:bg-slate-100'
+                className={`flex items-center justify-between text-xs transition-all ${
+                  isActive ? activeClass : inactiveClass
                 }`}
               >
                 <div className="flex items-center gap-3 min-w-0">
-                  <span className={isActive ? 'text-amber-400' : 'text-ink-muted shrink-0'}>
+                  <span className={isActive ? (isBlue ? 'text-white' : 'text-amber-400') : (isBlue ? 'text-slate-400' : 'text-ink-muted shrink-0')}>
                     {item.icon}
                   </span>
                   <span className="truncate">{item.label}</span>
@@ -147,8 +193,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                   <span
                     className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ${
                       isActive
-                        ? 'bg-amber-400 text-slate-950'
-                        : 'bg-slate-200 text-slate-700'
+                        ? (isBlue ? 'bg-white/20 text-white' : 'bg-amber-400 text-slate-950')
+                        : (isBlue ? 'bg-slate-800 text-slate-300 border border-slate-700/60' : 'bg-slate-200 text-slate-700')
                     }`}
                   >
                     {item.badge}
@@ -159,13 +205,55 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           })}
         </nav>
 
-        {/* Sidebar Footer with Persona & Sign Out */}
-        <div className="p-4 border-t border-surface-border bg-slate-50/50 space-y-3">
-          <div className="text-[11px] text-ink-secondary flex items-center justify-between">
-            <span>Role Context:</span>
-            <span className="font-bold uppercase text-brand-navy">{role}</span>
+        {/* Optional Plan & Usage Widget */}
+        {planWidget && (
+          <div className={cn(
+            "mx-3 mb-3 p-3.5 rounded-2xl border space-y-2 backdrop-blur-md",
+            isBlue ? "bg-white/5 border-white/10" : "bg-slate-50 border-slate-200"
+          )}>
+            <div className="flex items-center justify-between gap-2">
+              <span className="bg-white text-slate-950 font-bold px-2 py-0.5 rounded-full text-[10px] shadow-2xs">
+                {planWidget.badge}
+              </span>
+              <span className={cn("text-[10px] font-semibold truncate", isBlue ? "text-slate-300" : "text-slate-600")}>
+                {planWidget.planName}
+              </span>
+            </div>
+            <p className={cn("text-[10px] leading-tight", isBlue ? "text-slate-400" : "text-slate-500")}>
+              {planWidget.subtext}
+            </p>
+            <button
+              type="button"
+              onClick={planWidget.onButtonClick}
+              className="w-full py-1.5 px-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-sm block text-center"
+            >
+              {planWidget.buttonText}
+            </button>
+            {planWidget.publicLink && (
+              <Link
+                href={planWidget.publicLink}
+                className={cn(
+                  "block text-center text-[10px] underline underline-offset-2 pt-0.5 transition-colors",
+                  isBlue ? "text-slate-400 hover:text-white" : "text-slate-500 hover:text-brand-navy"
+                )}
+              >
+                {planWidget.publicLinkText || 'Explore public page'}
+              </Link>
+            )}
           </div>
-          <SignOutButton className="w-full justify-center" size="sm" variant="outline" />
+        )}
+
+        {/* Sidebar Footer with Persona & Sign Out */}
+        <div className={cn("p-4 border-t space-y-3", isBlue ? "border-slate-800 bg-slate-950/60" : "border-surface-border bg-slate-50/50")}>
+          <div className={cn("text-[11px] flex items-center justify-between", isBlue ? "text-slate-400" : "text-ink-secondary")}>
+            <span>Role Context:</span>
+            <span className={cn("font-bold uppercase", isBlue ? "text-amber-400" : "text-brand-navy")}>{role}</span>
+          </div>
+          <SignOutButton
+            className={cn("w-full justify-center", isBlue && "border-slate-700 text-slate-200 hover:bg-white/5")}
+            size="sm"
+            variant="outline"
+          />
         </div>
       </aside>
 
@@ -176,23 +264,38 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm"
             onClick={() => setSidebarOpen(false)}
           />
-          <div className="relative w-72 bg-white flex flex-col z-10 shadow-floating h-full">
-            <div className="p-4 border-b border-surface-border flex items-center justify-between">
+          <div className={cn(
+            "relative w-72 flex flex-col z-10 shadow-floating h-full",
+            isBlue ? "bg-[#0B1E36] text-slate-100" : "bg-white text-ink-primary"
+          )}>
+            <div className={cn("p-4 border-b flex items-center justify-between", isBlue ? "border-slate-800" : "border-surface-border")}>
               <div className="flex items-center gap-2 min-w-0">
-                <div className="w-7 h-7 rounded-lg bg-brand-navy flex items-center justify-center text-amber-400 shrink-0">
-                  <GraduationCap className="w-4 h-4 text-amber-400" />
+                <div className={cn(
+                  "w-7 h-7 rounded-lg flex items-center justify-center shrink-0",
+                  isBlue ? "bg-amber-400 text-slate-950" : "bg-brand-navy text-amber-400"
+                )}>
+                  <GraduationCap className="w-4 h-4" />
                 </div>
-                <span className="font-bold text-sm text-brand-navy truncate">
-                  {portalName}
-                </span>
+                <div className="min-w-0">
+                  <span className={cn("font-bold text-sm truncate block", isBlue ? "text-white" : "text-brand-navy")}>
+                    {portalName}
+                  </span>
+                  {portalTag && <span className="text-[10px] font-bold text-amber-400 uppercase block">{portalTag}</span>}
+                </div>
               </div>
               <button
                 onClick={() => setSidebarOpen(false)}
-                className="p-1 rounded-lg text-ink-secondary hover:bg-slate-100"
+                className={cn("p-1 rounded-lg", isBlue ? "text-slate-400 hover:bg-white/10" : "text-ink-secondary hover:bg-slate-100")}
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
+
+            {groupTitle && (
+              <div className={cn("px-4 pt-3 pb-1 text-[10px] font-black uppercase tracking-widest", isBlue ? "text-slate-400" : "text-ink-muted")}>
+                {groupTitle}
+              </div>
+            )}
 
             <nav className="p-3 space-y-1 overflow-y-auto flex-1">
               {navItems.map((item) => {
@@ -202,14 +305,14 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     key={item.id}
                     type="button"
                     onClick={() => handleItemClick(item)}
-                    className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
+                    className={`w-full flex items-center justify-between text-xs transition-all ${
                       isActive
-                        ? 'bg-brand-navy text-white shadow-sm'
-                        : 'text-ink-secondary hover:text-ink-primary hover:bg-slate-100'
+                        ? (isBlue ? 'bg-[#0078D4] text-white shadow-md border-l-4 border-amber-400 rounded-r-xl rounded-l-none pl-3 pr-3.5 py-2.5 font-bold' : 'bg-brand-navy text-white shadow-sm rounded-xl px-3.5 py-2.5')
+                        : (isBlue ? 'text-slate-300 hover:text-white hover:bg-white/5 rounded-xl px-3.5 py-2.5 font-medium' : 'text-ink-secondary hover:text-ink-primary hover:bg-slate-100 rounded-xl px-3.5 py-2.5')
                     }`}
                   >
                     <div className="flex items-center gap-3 min-w-0">
-                      <span className={isActive ? 'text-amber-400' : 'text-ink-muted shrink-0'}>
+                      <span className={isActive ? (isBlue ? 'text-white' : 'text-amber-400') : (isBlue ? 'text-slate-400' : 'text-ink-muted shrink-0')}>
                         {item.icon}
                       </span>
                       <span className="truncate">{item.label}</span>
@@ -218,8 +321,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                       <span
                         className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ${
                           isActive
-                            ? 'bg-amber-400 text-slate-950'
-                            : 'bg-slate-200 text-slate-700'
+                            ? (isBlue ? 'bg-white/20 text-white' : 'bg-amber-400 text-slate-950')
+                            : (isBlue ? 'bg-slate-800 text-slate-300 border border-slate-700/60' : 'bg-slate-200 text-slate-700')
                         }`}
                       >
                         {item.badge}
@@ -230,8 +333,38 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               })}
             </nav>
 
-            <div className="p-4 border-t border-surface-border bg-slate-50">
-              <SignOutButton className="w-full justify-center" size="sm" variant="outline" />
+            {planWidget && (
+              <div className={cn(
+                "mx-3 mb-3 p-3 rounded-xl border space-y-2",
+                isBlue ? "bg-white/5 border-white/10" : "bg-slate-50 border-slate-200"
+              )}>
+                <div className="flex items-center justify-between gap-2">
+                  <span className="bg-white text-slate-950 font-bold px-2 py-0.5 rounded-full text-[10px]">
+                    {planWidget.badge}
+                  </span>
+                  <span className={cn("text-[10px] font-semibold truncate", isBlue ? "text-slate-300" : "text-slate-600")}>
+                    {planWidget.planName}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSidebarOpen(false);
+                    planWidget.onButtonClick?.();
+                  }}
+                  className="w-full py-1.5 px-3 rounded-lg bg-blue-600 text-white text-xs font-bold"
+                >
+                  {planWidget.buttonText}
+                </button>
+              </div>
+            )}
+
+            <div className={cn("p-4 border-t", isBlue ? "border-slate-800 bg-slate-950/60" : "border-surface-border bg-slate-50")}>
+              <SignOutButton
+                className={cn("w-full justify-center", isBlue && "border-slate-700 text-slate-200 hover:bg-white/5")}
+                size="sm"
+                variant="outline"
+              />
             </div>
           </div>
         </div>

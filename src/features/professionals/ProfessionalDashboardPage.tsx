@@ -23,7 +23,14 @@ import {
   Clock, 
   CheckCircle2,
   Calendar,
-  Sparkles
+  Sparkles,
+  Home,
+  CreditCard,
+  BarChart3,
+  ShieldCheck,
+  TrendingUp,
+  Zap,
+  Check
 } from 'lucide-react';
 
 interface ProfessionalDashboardPageProps {
@@ -35,7 +42,7 @@ export const ProfessionalDashboardPage: React.FC<ProfessionalDashboardPageProps>
   const [showWelcome, setShowWelcome] = useState(welcomeNotice);
   const pro = state.professionals.find(p => p.id === 'pro-01') || state.professionals[0];
 
-  const [activeTab, setActiveTab] = useState<'overview' | 'jobs' | 'applications' | 'portfolio' | 'services' | 'settings'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'jobs' | 'applications' | 'portfolio' | 'services' | 'billing' | 'analytics' | 'settings'>('overview');
 
   // Applications submitted by this professional
   const myApplications = state.applications.filter(a => a.professionalId === pro.id || a.applicantName === pro.fullName);
@@ -55,12 +62,14 @@ export const ProfessionalDashboardPage: React.FC<ProfessionalDashboardPageProps>
   });
 
   const navItems: DashboardNavItem[] = [
-    { id: 'overview', label: 'Career Overview', path: '#', icon: <LayoutDashboard className="w-4 h-4" /> },
-    { id: 'jobs', label: 'Explore Vacancies', path: '#', icon: <Search className="w-4 h-4" />, badge: state.vacancies.length },
-    { id: 'applications', label: 'My Applications', path: '#', icon: <FileCheck2 className="w-4 h-4" />, badge: myApplications.length },
-    { id: 'portfolio', label: 'CV & NTC Credentials', path: '#', icon: <GraduationCap className="w-4 h-4" /> },
-    { id: 'services', label: 'Tutoring Services', path: '#', icon: <BookOpen className="w-4 h-4" />, badge: pro.servicesOffered.length },
-    { id: 'settings', label: 'Account Settings', path: '#', icon: <Settings className="w-4 h-4" /> },
+    { id: 'overview', label: 'Overview', path: '#', icon: <Home className="w-4 h-4" /> },
+    { id: 'jobs', label: 'Career opportunities', path: '#', icon: <Briefcase className="w-4 h-4" />, badge: state.vacancies.length },
+    { id: 'applications', label: 'Career management', path: '#', icon: <BookOpen className="w-4 h-4" />, badge: myApplications.length },
+    { id: 'services', label: 'Services', path: '#', icon: <Sparkles className="w-4 h-4" />, badge: pro.servicesOffered.length },
+    { id: 'portfolio', label: 'Activities & profile', path: '#', icon: <ShieldCheck className="w-4 h-4" /> },
+    { id: 'billing', label: 'Membership & Billing', path: '#', icon: <CreditCard className="w-4 h-4" /> },
+    { id: 'analytics', label: 'Insights & analytics', path: '#', icon: <BarChart3 className="w-4 h-4" /> },
+    { id: 'settings', label: 'Security & privacy', path: '#', icon: <Settings className="w-4 h-4" /> },
   ];
 
   const handleApply = (e: React.FormEvent) => {
@@ -91,8 +100,20 @@ export const ProfessionalDashboardPage: React.FC<ProfessionalDashboardPageProps>
 
   return (
     <DashboardLayout
-      portalName="Educators & Specialists Portal"
-      portalSubtitle={`${pro.fullName} &bull; ${pro.title}`}
+      portalName="SkoolFinder"
+      portalTag="PROFESSIONALS"
+      portalSubtitle={`${pro.fullName} • Senior Physics Facilitator`}
+      sidebarVariant="blue"
+      groupTitle="YOUR WORKSPACE"
+      planWidget={{
+        badge: 'Free active',
+        planName: 'Career + Services',
+        subtext: 'Approved activities, within your plan.',
+        buttonText: 'View plan & usage',
+        onButtonClick: () => setActiveTab('billing'),
+        publicLink: '/professionals',
+        publicLinkText: 'Explore public page',
+      }}
       navItems={navItems}
       activeTab={activeTab}
       onTabChange={(tabId) => setActiveTab(tabId as any)}
@@ -362,6 +383,155 @@ export const ProfessionalDashboardPage: React.FC<ProfessionalDashboardPageProps>
           <Input label="Primary Email" defaultValue={pro.email} />
           <div className="pt-2">
             <Button variant="primary">Save Changes</Button>
+          </div>
+        </div>
+      )}
+
+      {/* VIEW: MEMBERSHIP & BILLING */}
+      {activeTab === 'billing' && (
+        <div className="space-y-6 max-w-4xl">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h2 className="text-xl font-bold text-ink-primary">Membership & Subscription Plan</h2>
+              <p className="text-xs text-ink-secondary">Manage your educator account tier, activity allowances, and billing preferences</p>
+            </div>
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 self-start sm:self-auto">
+              <Check className="w-3.5 h-3.5" />
+              Active Free Tier
+            </span>
+          </div>
+
+          {/* Current Plan Overview Card */}
+          <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-white/80 shadow-glass space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200/60">
+              <div>
+                <span className="text-[10px] font-black uppercase tracking-widest text-[#0078D4] bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-200/50">
+                  CURRENT MEMBERSHIP
+                </span>
+                <h3 className="text-2xl font-black text-brand-navy mt-2">Career + Services (Free Launch Plan)</h3>
+                <p className="text-xs text-ink-secondary mt-1">
+                  Enjoy verified educator discovery, school vacancy applications, and public tutoring listings with zero monthly fees.
+                </p>
+              </div>
+              <div className="text-right sm:shrink-0">
+                <span className="text-3xl font-black text-brand-navy">GHS 0</span>
+                <span className="text-xs text-ink-secondary block">per month</span>
+              </div>
+            </div>
+
+            {/* Plan Allowances & Usage Meters */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="p-4 rounded-2xl bg-white/70 border border-slate-200/80 space-y-2">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-semibold text-ink-primary">Direct Applications</span>
+                  <span className="font-bold text-[#0078D4]">{myApplications.length} / 10</span>
+                </div>
+                <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                  <div className="bg-[#0078D4] h-full rounded-full" style={{ width: `${Math.min(100, (myApplications.length / 10) * 100)}%` }} />
+                </div>
+                <p className="text-[10px] text-ink-muted">Monthly allowance resets in 12 days</p>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-white/70 border border-slate-200/80 space-y-2">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-semibold text-ink-primary">Tutoring Listings</span>
+                  <span className="font-bold text-amber-600">{pro.servicesOffered.length} / 5</span>
+                </div>
+                <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                  <div className="bg-amber-400 h-full rounded-full" style={{ width: `${Math.min(100, (pro.servicesOffered.length / 5) * 100)}%` }} />
+                </div>
+                <p className="text-[10px] text-ink-muted">Publicly visible across Greater Accra</p>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-white/70 border border-slate-200/80 space-y-2">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-semibold text-ink-primary">Verification Status</span>
+                  <span className="font-bold text-emerald-600">NTC Verified</span>
+                </div>
+                <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                  <div className="bg-emerald-500 h-full rounded-full w-full" />
+                </div>
+                <p className="text-[10px] text-ink-muted">License: {pro.ntcLicenseNumber}</p>
+              </div>
+            </div>
+
+            {/* Pro Upgrade Teaser */}
+            <div className="p-5 rounded-2xl bg-gradient-to-r from-blue-900 via-indigo-900 to-[#0B1E36] text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-md">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <Zap className="w-4 h-4 text-amber-400" />
+                  <h4 className="text-sm font-bold">Upgrade to Educator Pro</h4>
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 font-bold">RECOMMENDED</span>
+                </div>
+                <p className="text-xs text-slate-300">
+                  Get featured placement in school headhunter searches, unlimited applications, and SMS job alerts.
+                </p>
+              </div>
+              <Button variant="gold" size="sm" className="shrink-0 shadow-md">
+                Upgrade for GHS 45/mo
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* VIEW: INSIGHTS & ANALYTICS */}
+      {activeTab === 'analytics' && (
+        <div className="space-y-6 max-w-5xl">
+          <div>
+            <h2 className="text-xl font-bold text-ink-primary">Insights & Professional Analytics</h2>
+            <p className="text-xs text-ink-secondary">Real-time statistics on your profile visibility, recruiter searches, and tutoring leads</p>
+          </div>
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="glass-panel p-5 rounded-2xl border border-white/80 shadow-glass">
+              <span className="text-xs text-ink-muted font-medium flex items-center justify-between">
+                <span>Profile Views</span>
+                <TrendingUp className="w-3.5 h-3.5 text-emerald-600" />
+              </span>
+              <p className="text-2xl font-black text-ink-primary mt-1">384</p>
+              <span className="text-[11px] text-emerald-600 font-semibold mt-1 block">+24% this week</span>
+            </div>
+
+            <div className="glass-panel p-5 rounded-2xl border border-white/80 shadow-glass">
+              <span className="text-xs text-ink-muted font-medium">Search Appearances</span>
+              <p className="text-2xl font-black text-ink-primary mt-1">92</p>
+              <span className="text-[11px] text-brand-navy font-semibold mt-1 block">Accra Private Schools</span>
+            </div>
+
+            <div className="glass-panel p-5 rounded-2xl border border-white/80 shadow-glass">
+              <span className="text-xs text-ink-muted font-medium">Application Acceptance</span>
+              <p className="text-2xl font-black text-ink-primary mt-1">100%</p>
+              <span className="text-[11px] text-emerald-600 font-semibold mt-1 block">Review underway</span>
+            </div>
+
+            <div className="glass-panel p-5 rounded-2xl border border-white/80 shadow-glass">
+              <span className="text-xs text-ink-muted font-medium">Parent Inquiries</span>
+              <p className="text-2xl font-black text-ink-primary mt-1">6</p>
+              <span className="text-[11px] text-amber-600 font-semibold mt-1 block">East Legon & Achimota</span>
+            </div>
+          </div>
+
+          {/* Activity Breakdown */}
+          <div className="glass-panel rounded-3xl p-6 border border-white/80 shadow-glass space-y-4">
+            <h3 className="text-sm font-bold text-ink-primary">Recruiter Engagement Trends</h3>
+            <p className="text-xs text-ink-secondary">
+              Headmasters and department heads from East Legon Cambridge Academy and Achimota Preparatory reviewed your Physics and STEM qualifications over the past 7 days.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+              <div className="p-3.5 rounded-xl bg-white/70 border text-xs space-y-1">
+                <span className="text-[10px] text-ink-muted uppercase font-bold">Top Matched Category</span>
+                <p className="font-bold text-ink-primary">Senior High STEM / Physics</p>
+              </div>
+              <div className="p-3.5 rounded-xl bg-white/70 border text-xs space-y-1">
+                <span className="text-[10px] text-ink-muted uppercase font-bold">Popular Location</span>
+                <p className="font-bold text-ink-primary">East Legon & Spintex</p>
+              </div>
+              <div className="p-3.5 rounded-xl bg-white/70 border text-xs space-y-1">
+                <span className="text-[10px] text-ink-muted uppercase font-bold">Curriculum Demand</span>
+                <p className="font-bold text-ink-primary">Cambridge IGCSE + GES</p>
+              </div>
+            </div>
           </div>
         </div>
       )}
