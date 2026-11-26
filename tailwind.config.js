@@ -12,9 +12,9 @@ export default {
           navy: '#102A43',
           'navy-dark': '#0B1F33',
           'navy-light': '#1D3B58',
-          gold: '#C5A55A',
-          'gold-light': '#DDC07E',
-          'gold-dark': '#A5873D',
+          gold: '#FBBF24',
+          'gold-light': '#FCD34D',
+          'gold-dark': '#F59E0B',
         },
         surface: {
           bg: '#F6F8FB',

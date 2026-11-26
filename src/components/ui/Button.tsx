@@ -23,7 +23,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({
     secondary: "bg-surface-muted hover:bg-slate-200 text-ink-primary focus:ring-slate-400",
     outline: "border border-surface-border hover:bg-surface-muted text-ink-primary focus:ring-brand-navy",
     ghost: "text-ink-primary hover:bg-surface-muted focus:ring-slate-300",
-    gold: "bg-brand-gold hover:bg-brand-gold-dark text-brand-navy-dark font-semibold focus:ring-brand-gold shadow-sm",
+    gold: "bg-amber-400 hover:bg-amber-300 active:bg-amber-500 text-slate-950 font-bold focus:ring-amber-400 shadow-sm",
     danger: "bg-rose-600 hover:bg-rose-700 text-white focus:ring-rose-500",
   };
 

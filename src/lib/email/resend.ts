@@ -117,7 +117,7 @@ export async function sendEnquiryNotificationEmail(payload: {
         <h2 style="color: #102A43;">New Admissions Enquiry</h2>
         <p><strong>From:</strong> ${payload.parentName} (${payload.parentEmail})</p>
         <p><strong>Subject:</strong> ${payload.subject}</p>
-        <blockquote style="background: #f8fafc; padding: 12px; border-left: 4px solid #C5A55A;">${payload.message}</blockquote>
+        <blockquote style="background: #f8fafc; padding: 12px; border-left: 4px solid #FBBF24;">${payload.message}</blockquote>
         <p style="font-size: 13px; color: #64748b;">Respond directly from your SkoolFinder School Dashboard.</p>
       </div>
     `,
@@ -208,7 +208,7 @@ export async function sendWelcomeEmail(payload: {
 
           <!-- CTA Button -->
           <div style="text-align: center; margin: 24px 0;">
-            <a href="${appUrl}${portalPath}" style="display: inline-block; background: #C5A55A; color: #0A1628; text-decoration: none; font-weight: 800; font-size: 14px; padding: 12px 28px; border-radius: 8px; letter-spacing: 0.3px;">
+            <a href="${appUrl}${portalPath}" style="display: inline-block; background: #FBBF24; color: #0A1628; text-decoration: none; font-weight: 800; font-size: 14px; padding: 12px 28px; border-radius: 8px; letter-spacing: 0.3px;">
               → Open My ${portal}
             </a>
           </div>
