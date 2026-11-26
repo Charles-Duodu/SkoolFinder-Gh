@@ -39,14 +39,19 @@ export const HomePage: React.FC = () => {
   // Hero Rotational Floating Slides
   const heroSlides = [
     {
-      image: '/images/hero-2.jpg',
-      alt: 'Ghanaian high school students engaged in STEM science laboratory robotics and learning',
-      tagline: 'Modern Science & Innovation Labs'
-    },
-    {
       image: '/images/hero-1.jpg',
       alt: 'Ghanaian teacher and early-grade pupils learning and building with wooden blocks',
       tagline: 'Early Childhood & Foundation Learning'
+    },
+    {
+      image: '/images/hero-2.jpg',
+      alt: 'Students engaged in learning at modern library and innovation resource centre',
+      tagline: 'Modern Science & Innovation Labs'
+    },
+    {
+      image: '/images/hero-3.jpg',
+      alt: 'Dedicated teacher guiding engaged classroom students',
+      tagline: 'Vetted Teachers & Holistic Education'
     }
   ];
 
