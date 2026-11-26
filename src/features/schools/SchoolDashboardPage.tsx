@@ -171,7 +171,7 @@ export const SchoolDashboardPage: React.FC<SchoolDashboardPageProps> = ({ welcom
             <span>{item.label}</span>
             {item.badge !== undefined && (
               <span className={`text-[10px] font-bold px-1.5 py-0.2 rounded-full ${
-                activeTab === item.id ? 'bg-brand-gold text-brand-navy-dark' : 'bg-slate-200 text-slate-700'
+                activeTab === item.id ? 'bg-amber-400 text-slate-950' : 'bg-slate-200 text-slate-700'
               }`}>
                 {item.badge}
               </span>
