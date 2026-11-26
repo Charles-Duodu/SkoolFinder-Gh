@@ -97,7 +97,7 @@ export const HomePage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-16 lg:space-y-24 pb-16">
+    <div className="space-y-12 lg:space-y-16 pb-12 lg:pb-16">
       
       {/* SECTION 2: HERO & PRIMARY SCHOOL SEARCH WITH ROTATIONAL FLOATING IMAGES */}
       <section 
@@ -584,7 +584,7 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* SECTION 5 & 6: HOW IT WORKS */}
-      <section className="py-16 relative overflow-hidden">
+      <section className="pt-6 pb-2 sm:pt-8 sm:pb-4 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-2xl mx-auto mb-12">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full glass-badge text-xs font-bold uppercase tracking-[0.2em] text-[#0B1E36] mb-2 shadow-2xs">
@@ -635,7 +635,7 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* SECTION 7: FINAL CALL TO ACTION */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-6 sm:pb-8">
         <div className="glass-panel-dark rounded-3xl p-8 sm:p-12 text-white relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 shadow-glass-dark border border-white/20">
           {/* Ambient corner glows */}
           <div className="absolute -top-32 -right-32 w-80 h-80 bg-amber-400/15 rounded-full blur-3xl pointer-events-none" />
