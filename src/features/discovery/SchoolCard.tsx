@@ -41,7 +41,7 @@ export const SchoolCard: React.FC<SchoolCardProps> = ({ school, onOpenEnquiry })
     .toUpperCase();
 
   return (
-    <div className="bg-white rounded-2xl border border-surface-border overflow-hidden shadow-subtle hover:shadow-elevated transition-all flex flex-col group">
+    <div className="glass-panel glass-panel-hover rounded-3xl overflow-hidden shadow-glass hover:shadow-glass-hover flex flex-col group relative">
       
       {/* Cover Image & Badges */}
       <div className="relative h-44 sm:h-48 w-full bg-gradient-to-br from-brand-navy-dark via-brand-navy to-slate-900 overflow-hidden">
@@ -85,10 +85,10 @@ export const SchoolCard: React.FC<SchoolCardProps> = ({ school, onOpenEnquiry })
               src={school.crestUrl}
               alt={`${school.name} crest`}
               onError={() => setCrestError(true)}
-              className="w-12 h-12 rounded-xl object-cover bg-white p-0.5 border-2 border-white shadow-md shrink-0"
+              className="w-12 h-12 rounded-xl object-cover bg-white/95 backdrop-blur-md p-0.5 border-2 border-white shadow-md shrink-0"
             />
           ) : (
-            <div className="w-12 h-12 rounded-xl bg-brand-navy-dark border-2 border-brand-gold flex items-center justify-center text-brand-gold font-black text-sm shadow-md shrink-0">
+            <div className="w-12 h-12 rounded-xl bg-brand-navy-dark/90 backdrop-blur-md border-2 border-brand-gold flex items-center justify-center text-brand-gold font-black text-sm shadow-md shrink-0">
               {initials}
             </div>
           )}
@@ -113,12 +113,12 @@ export const SchoolCard: React.FC<SchoolCardProps> = ({ school, onOpenEnquiry })
             {school.curricula.map((curr) => (
               <span
                 key={curr}
-                className="text-[11px] font-semibold px-2 py-0.5 rounded-md bg-blue-50 text-blue-800 border border-blue-200"
+                className="text-[11px] font-semibold px-2.5 py-0.5 rounded-lg text-blue-900 border border-blue-200/60 bg-blue-50/70 backdrop-blur-xs shadow-2xs"
               >
                 {curr}
               </span>
             ))}
-            <span className="text-[11px] font-medium px-2 py-0.5 rounded-md bg-slate-100 text-slate-700">
+            <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-lg text-slate-700 border border-slate-200/60 bg-white/60 backdrop-blur-xs shadow-2xs">
               {school.boardingStatus}
             </span>
           </div>
@@ -129,7 +129,7 @@ export const SchoolCard: React.FC<SchoolCardProps> = ({ school, onOpenEnquiry })
         </div>
 
         {/* Highlight Specs */}
-        <div className="grid grid-cols-2 gap-2 pt-3 border-t border-surface-border text-xs text-ink-secondary">
+        <div className="grid grid-cols-2 gap-2 pt-3 border-t border-slate-200/60 text-xs text-ink-secondary">
           <div className="flex items-center gap-1.5">
             <Users className="w-3.5 h-3.5 text-brand-navy" />
             <span>Ratio: <strong className="text-ink-primary font-semibold">{school.studentTeacherRatio}</strong></span>
@@ -149,17 +149,17 @@ export const SchoolCard: React.FC<SchoolCardProps> = ({ school, onOpenEnquiry })
         {/* Action Buttons */}
         <div className="pt-2 flex items-center gap-2">
           <Link href={`/schools/${school.slug}`} className="flex-1">
-            <Button variant="outline" size="sm" className="w-full justify-center">
+            <Button variant="outline" size="sm" className="w-full justify-center bg-white/70 backdrop-blur-sm border-white/80 hover:bg-white/95 shadow-xs">
               View Profile
             </Button>
           </Link>
           
           <button
             onClick={() => toggleCompareSchool(school.id)}
-            className={`p-2 rounded-lg border text-xs font-medium transition-colors flex items-center justify-center shrink-0 ${
+            className={`p-2 rounded-xl border text-xs font-medium transition-all flex items-center justify-center shrink-0 backdrop-blur-sm shadow-xs ${
               isCompared
                 ? 'bg-brand-navy text-white border-brand-navy'
-                : 'border-surface-border hover:bg-slate-50 text-ink-secondary'
+                : 'border-slate-200/70 bg-white/70 hover:bg-white text-ink-secondary'
             }`}
             title={isCompared ? 'Remove from Comparison' : 'Add to Compare'}
           >
@@ -171,7 +171,7 @@ export const SchoolCard: React.FC<SchoolCardProps> = ({ school, onOpenEnquiry })
               variant="gold"
               size="sm"
               onClick={() => onOpenEnquiry(school)}
-              className="shrink-0"
+              className="shrink-0 shadow-xs"
             >
               Enquire
             </Button>

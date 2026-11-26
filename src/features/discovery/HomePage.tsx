@@ -167,8 +167,11 @@ export const HomePage: React.FC = () => {
           </div>
 
           {/* Floating Glassmorphic Search Bar Card */}
-          <div className="mt-8 max-w-5xl mx-auto bg-[#0B1E36]/90 backdrop-blur-md rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-white/20 shadow-floating text-left">
-            <form onSubmit={handleSearchSubmit} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3.5 items-end">
+          <div className="mt-8 max-w-5xl mx-auto glass-panel-dark rounded-2xl sm:rounded-3xl p-5 sm:p-6 border border-white/25 shadow-2xl text-left relative overflow-hidden">
+            {/* Top specular highlight edge */}
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/50 to-transparent" />
+            
+            <form onSubmit={handleSearchSubmit} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3.5 items-end relative z-10">
               
               {/* Suburb / Locality */}
               <div className="lg:col-span-4">
@@ -183,7 +186,7 @@ export const HomePage: React.FC = () => {
                     onChange={(e) => setSelectedLocality(e.target.value)}
                     placeholder="e.g. Cantonments, East Legon, Spintex..."
                     list="hero-localities-list"
-                    className="w-full px-3.5 py-3 text-sm text-slate-900 bg-white border border-slate-200 rounded-xl outline-none placeholder:text-slate-400 font-medium transition-all focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30 shadow-sm"
+                    className="w-full px-3.5 py-3 text-sm text-slate-900 bg-white/95 backdrop-blur-md border border-white/90 rounded-xl outline-none placeholder:text-slate-400 font-medium transition-all focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30 shadow-xs"
                   />
                   <datalist id="hero-localities-list">
                     {localities.map(loc => <option key={loc} value={loc} />)}
@@ -200,7 +203,7 @@ export const HomePage: React.FC = () => {
                 <select
                   value={selectedLevel}
                   onChange={(e) => setSelectedLevel(e.target.value)}
-                  className="w-full px-3.5 py-3 text-sm text-slate-900 bg-white border border-slate-200 rounded-xl outline-none font-medium transition-all focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30 cursor-pointer shadow-sm"
+                  className="w-full px-3.5 py-3 text-sm text-slate-900 bg-white/95 backdrop-blur-md border border-white/90 rounded-xl outline-none font-medium transition-all focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30 cursor-pointer shadow-xs"
                 >
                   <option value="" className="bg-white text-slate-900">All Levels (Crèche to SHS)</option>
                   {levels.map(lvl => (
@@ -218,7 +221,7 @@ export const HomePage: React.FC = () => {
                 <select
                   value={selectedCurriculum}
                   onChange={(e) => setSelectedCurriculum(e.target.value)}
-                  className="w-full px-3.5 py-3 text-sm text-slate-900 bg-white border border-slate-200 rounded-xl outline-none font-medium transition-all focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30 cursor-pointer shadow-sm"
+                  className="w-full px-3.5 py-3 text-sm text-slate-900 bg-white/95 backdrop-blur-md border border-white/90 rounded-xl outline-none font-medium transition-all focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30 cursor-pointer shadow-xs"
                 >
                   <option value="" className="bg-white text-slate-900">All Curricula</option>
                   {curricula.map(curr => (
@@ -265,8 +268,8 @@ export const HomePage: React.FC = () => {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
           <div>
-            <div className="flex items-center gap-2 text-xs font-bold text-brand-gold uppercase tracking-wider">
-              <Award className="w-4 h-4" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-badge text-xs font-bold text-amber-700 uppercase tracking-wider shadow-2xs mb-2">
+              <Award className="w-4 h-4 text-amber-600" />
               <span>Accra Exemplary Institutions</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold text-ink-primary mt-1">
@@ -296,7 +299,7 @@ export const HomePage: React.FC = () => {
       {/* SECTION: EXPLORE SCHOOLS FOR FREE — TWO WAYS */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
-          <div className="text-xs font-bold uppercase tracking-[0.2em] text-[#0B1E36]">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full glass-badge text-xs font-bold uppercase tracking-[0.2em] text-[#0B1E36] mb-2 shadow-2xs">
             YOUR SEARCH. YOUR PACE.
           </div>
           <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#0B1E36] tracking-tight mt-1.5">
@@ -310,7 +313,10 @@ export const HomePage: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
           
           {/* Card 1: Explore as a guest */}
-          <div className="bg-white rounded-3xl border border-slate-200/90 p-7 sm:p-9 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+          <div className="glass-panel glass-panel-hover rounded-3xl p-7 sm:p-9 shadow-glass hover:shadow-glass-hover flex flex-col justify-between relative overflow-hidden group">
+            {/* Specular top highlight */}
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/80 to-transparent" />
+
             <div>
               <h3 className="font-serif text-2xl sm:text-[28px] font-bold text-[#0B1E36] leading-tight">
                 Explore as a guest
@@ -352,8 +358,12 @@ export const HomePage: React.FC = () => {
           </div>
 
           {/* Card 2: Register as Parent */}
-          <div className="bg-[#0B1E36] rounded-3xl p-7 sm:p-9 text-white shadow-xl flex flex-col justify-between hover:shadow-2xl transition-shadow">
-            <div>
+          <div className="glass-panel-dark rounded-3xl p-7 sm:p-9 text-white shadow-glass-dark hover:shadow-2xl transition-all flex flex-col justify-between relative overflow-hidden group">
+            {/* Ambient sapphire/gold glow in corner */}
+            <div className="absolute -top-24 -right-24 w-56 h-56 bg-amber-400/10 rounded-full blur-2xl pointer-events-none" />
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+
+            <div className="relative z-10">
               <h3 className="font-serif text-2xl sm:text-[28px] font-bold text-white leading-tight">
                 Register as Parent
               </h3>
@@ -377,7 +387,7 @@ export const HomePage: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-center gap-4 flex-wrap pt-2">
+            <div className="flex items-center gap-4 flex-wrap pt-2 relative z-10">
               <Link
                 href="/sign-up"
                 className="px-6 py-3 bg-amber-400 hover:bg-amber-300 active:bg-amber-500 text-slate-950 font-bold text-sm rounded-xl transition-all shadow-md hover:shadow-lg"
@@ -405,7 +415,7 @@ export const HomePage: React.FC = () => {
       {/* SECTION 4: OUR EDUCATION ECOSYSTEM */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
-          <div className="text-xs font-bold uppercase tracking-[0.2em] text-[#0B1E36]">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full glass-badge text-xs font-bold uppercase tracking-[0.2em] text-[#0B1E36] mb-2 shadow-2xs">
             OUR ECOSYSTEM
           </div>
           <h2 className="text-2xl sm:text-4xl font-extrabold text-[#0B1E36] tracking-tight mt-1.5">
@@ -419,13 +429,14 @@ export const HomePage: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
           
           {/* Card 1: School Owners */}
-          <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm hover:shadow-md transition-all flex flex-col overflow-hidden">
-            <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-100">
+          <div className="glass-panel glass-panel-hover rounded-3xl overflow-hidden shadow-glass hover:shadow-glass-hover flex flex-col group relative">
+            <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-900/10">
               <img
                 src="/images/ecosystem-schools.jpg"
                 alt="School Owners"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
               <div className="absolute bottom-0 inset-x-0 h-1 bg-amber-400" />
             </div>
 
@@ -442,11 +453,11 @@ export const HomePage: React.FC = () => {
                 </p>
 
                 <div className="grid grid-cols-2 gap-2 pt-4 text-[11px] font-semibold text-[#0B1E36]">
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex items-center gap-1.5 glass-pill px-2.5 py-1.5 rounded-lg">
                     <Users className="w-3.5 h-3.5 text-slate-500 shrink-0" />
                     <span>Admissions Support</span>
                   </div>
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex items-center gap-1.5 glass-pill px-2.5 py-1.5 rounded-lg">
                     <Briefcase className="w-3.5 h-3.5 text-slate-500 shrink-0" />
                     <span>Vacancies & Tenders</span>
                   </div>
@@ -465,13 +476,14 @@ export const HomePage: React.FC = () => {
           </div>
 
           {/* Card 2: Teachers & Professionals */}
-          <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm hover:shadow-md transition-all flex flex-col overflow-hidden">
-            <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-100">
+          <div className="glass-panel glass-panel-hover rounded-3xl overflow-hidden shadow-glass hover:shadow-glass-hover flex flex-col group relative">
+            <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-900/10">
               <img
                 src="/images/ecosystem-teachers.jpg"
                 alt="Teachers & Professionals"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
               <div className="absolute bottom-0 inset-x-0 h-1 bg-amber-400" />
             </div>
 
@@ -488,13 +500,13 @@ export const HomePage: React.FC = () => {
                 </p>
 
                 <div className="grid grid-cols-2 gap-2 pt-4 text-[11px] font-semibold text-[#0B1E36]">
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex items-center gap-1.5 glass-pill px-2.5 py-1.5 rounded-lg">
                     <Briefcase className="w-3.5 h-3.5 text-slate-500 shrink-0" />
                     <span>Education Jobs</span>
                   </div>
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex items-center gap-1.5 glass-pill px-2.5 py-1.5 rounded-lg">
                     <Users className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-                    <span>Tutoring & Specialist Services</span>
+                    <span>Tutoring Services</span>
                   </div>
                 </div>
               </div>
@@ -511,13 +523,14 @@ export const HomePage: React.FC = () => {
           </div>
 
           {/* Card 3: Suppliers & Services */}
-          <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm hover:shadow-md transition-all flex flex-col overflow-hidden">
-            <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-100">
+          <div className="glass-panel glass-panel-hover rounded-3xl overflow-hidden shadow-glass hover:shadow-glass-hover flex flex-col group relative">
+            <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-900/10">
               <img
                 src="/images/ecosystem-suppliers.jpg"
                 alt="Suppliers & Services"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
               <div className="absolute bottom-0 inset-x-0 h-1 bg-amber-400" />
             </div>
 
@@ -534,11 +547,11 @@ export const HomePage: React.FC = () => {
                 </p>
 
                 <div className="grid grid-cols-2 gap-2 pt-4 text-[11px] font-semibold text-[#0B1E36]">
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex items-center gap-1.5 glass-pill px-2.5 py-1.5 rounded-lg">
                     <Truck className="w-3.5 h-3.5 text-slate-500 shrink-0" />
                     <span>Products & Services</span>
                   </div>
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex items-center gap-1.5 glass-pill px-2.5 py-1.5 rounded-lg">
                     <FileText className="w-3.5 h-3.5 text-slate-500 shrink-0" />
                     <span>School Tenders</span>
                   </div>
@@ -560,9 +573,12 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* SECTION 5 & 6: HOW IT WORKS */}
-      <section className="bg-slate-50 py-16 border-y border-surface-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-16 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-2xl mx-auto mb-12">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full glass-badge text-xs font-bold uppercase tracking-[0.2em] text-[#0B1E36] mb-2 shadow-2xs">
+              STEP-BY-STEP GUIDANCE
+            </div>
             <h2 className="text-2xl sm:text-3xl font-bold text-ink-primary">
               How SkoolFinder Works for Parents
             </h2>
@@ -573,31 +589,31 @@ export const HomePage: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
             
-            <div className="bg-white rounded-2xl p-6 border border-surface-border relative text-center space-y-3">
-              <div className="w-10 h-10 rounded-full bg-brand-navy text-brand-gold font-bold flex items-center justify-center mx-auto text-base">
+            <div className="glass-panel glass-panel-hover rounded-3xl p-7 text-center space-y-4 shadow-glass hover:shadow-glass-hover relative group border border-white/80">
+              <div className="w-12 h-12 rounded-2xl bg-brand-navy text-amber-400 font-black flex items-center justify-center mx-auto text-lg shadow-md group-hover:scale-110 transition-transform">
                 1
               </div>
-              <h3 className="text-base font-bold text-ink-primary">Search & Filter</h3>
+              <h3 className="text-lg font-bold text-ink-primary">Search & Filter</h3>
               <p className="text-xs text-ink-secondary leading-relaxed">
                 Filter by your neighborhood (East Legon, Tema, Dansoman, etc.), preferred curriculum (GES, Cambridge, IB), and education level.
               </p>
             </div>
 
-            <div className="bg-white rounded-2xl p-6 border border-surface-border relative text-center space-y-3">
-              <div className="w-10 h-10 rounded-full bg-brand-navy text-brand-gold font-bold flex items-center justify-center mx-auto text-base">
+            <div className="glass-panel glass-panel-hover rounded-3xl p-7 text-center space-y-4 shadow-glass hover:shadow-glass-hover relative group border border-white/80">
+              <div className="w-12 h-12 rounded-2xl bg-brand-navy text-amber-400 font-black flex items-center justify-center mx-auto text-lg shadow-md group-hover:scale-110 transition-transform">
                 2
               </div>
-              <h3 className="text-base font-bold text-ink-primary">Compare Side-by-Side</h3>
+              <h3 className="text-lg font-bold text-ink-primary">Compare Side-by-Side</h3>
               <p className="text-xs text-ink-secondary leading-relaxed">
                 Review fee structures, student-teacher ratios, transport services, boarding facilities, and past examination performance.
               </p>
             </div>
 
-            <div className="bg-white rounded-2xl p-6 border border-surface-border relative text-center space-y-3">
-              <div className="w-10 h-10 rounded-full bg-brand-navy text-brand-gold font-bold flex items-center justify-center mx-auto text-base">
+            <div className="glass-panel glass-panel-hover rounded-3xl p-7 text-center space-y-4 shadow-glass hover:shadow-glass-hover relative group border border-white/80">
+              <div className="w-12 h-12 rounded-2xl bg-brand-navy text-amber-400 font-black flex items-center justify-center mx-auto text-lg shadow-md group-hover:scale-110 transition-transform">
                 3
               </div>
-              <h3 className="text-base font-bold text-ink-primary">Contact Admissions</h3>
+              <h3 className="text-lg font-bold text-ink-primary">Contact Admissions</h3>
               <p className="text-xs text-ink-secondary leading-relaxed">
                 Send an immediate digital inquiry to the school registrar or book a campus walk-through directly through the platform.
               </p>
@@ -609,9 +625,13 @@ export const HomePage: React.FC = () => {
 
       {/* SECTION 7: FINAL CALL TO ACTION */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-brand-navy rounded-3xl p-8 sm:p-12 text-white relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="space-y-3 max-w-xl">
-            <span className="text-xs font-bold uppercase tracking-wider text-brand-gold">
+        <div className="glass-panel-dark rounded-3xl p-8 sm:p-12 text-white relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 shadow-glass-dark border border-white/20">
+          {/* Ambient corner glows */}
+          <div className="absolute -top-32 -right-32 w-80 h-80 bg-amber-400/15 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-blue-500/15 rounded-full blur-3xl pointer-events-none" />
+          
+          <div className="space-y-3 max-w-xl relative z-10">
+            <span className="text-xs font-bold uppercase tracking-wider text-amber-400">
               Are you a School Proprietor or Administrator?
             </span>
             <h2 className="text-2xl sm:text-3xl font-extrabold leading-tight">
@@ -621,14 +641,14 @@ export const HomePage: React.FC = () => {
               Join dozens of private schools in Accra showcasing their academic standards, publishing vacancies, and connecting with prospective families.
             </p>
           </div>
-          <div className="flex flex-col sm:flex-row gap-3 shrink-0">
+          <div className="flex flex-col sm:flex-row gap-3 shrink-0 relative z-10">
             <Link href="/school-owners/register">
-              <Button variant="gold" size="lg" className="w-full justify-center">
+              <Button variant="gold" size="lg" className="w-full justify-center shadow-lg hover:shadow-amber-400/25">
                 Register Your School
               </Button>
             </Link>
             <Link href="/schools">
-              <Button variant="outline" size="lg" className="w-full justify-center border-slate-600 text-white hover:bg-white/10">
+              <Button variant="outline" size="lg" className="w-full justify-center bg-white/10 backdrop-blur-md border-white/30 text-white hover:bg-white/20">
                 Explore Directory
               </Button>
             </Link>

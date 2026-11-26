@@ -36,7 +36,7 @@ export const PublicNavbar: React.FC = () => {
   ];
 
   return (
-    <header className="bg-white border-b border-surface-border sticky top-0 z-40 shadow-subtle w-full">
+    <header className="glass-nav sticky top-0 z-40 w-full transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           
@@ -58,15 +58,15 @@ export const PublicNavbar: React.FC = () => {
                 <Link
                   key={link.path}
                   href={link.path}
-                  className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm font-medium transition-all ${
                     isActive
-                      ? 'text-brand-navy font-semibold bg-brand-navy/5'
-                      : 'text-ink-secondary hover:text-brand-navy hover:bg-slate-50'
+                      ? 'text-brand-navy font-bold bg-white/80 shadow-xs border border-white/90 backdrop-blur-md'
+                      : 'text-ink-secondary hover:text-brand-navy hover:bg-white/50 backdrop-blur-xs'
                   }`}
                 >
                   {link.label}
                   {link.badge && (
-                    <span className="px-1.5 py-0.2 rounded-full text-xs font-bold bg-brand-gold text-brand-navy-dark">
+                    <span className="px-1.5 py-0.2 rounded-full text-xs font-bold bg-brand-gold text-brand-navy-dark shadow-xs">
                       {link.badge}
                     </span>
                   )}
@@ -78,12 +78,12 @@ export const PublicNavbar: React.FC = () => {
           {/* Action CTAs */}
           <div className="hidden sm:flex items-center gap-2.5">
             <Link href="/parents">
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="bg-white/60 backdrop-blur-md border-white/80 hover:bg-white/90 shadow-xs">
                 Parent Portal
               </Button>
             </Link>
             <Link href="/super-admin/dashboard">
-              <Button variant="gold" size="sm" icon={<ShieldCheck className="w-4 h-4 text-brand-navy-dark" />}>
+              <Button variant="gold" size="sm" icon={<ShieldCheck className="w-4 h-4 text-brand-navy-dark" />} className="shadow-md hover:shadow-amber-400/20">
                 Super Admin
               </Button>
             </Link>
@@ -101,7 +101,7 @@ export const PublicNavbar: React.FC = () => {
             </Link>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg text-ink-secondary hover:text-brand-navy hover:bg-slate-100 focus:outline-none"
+              className="p-2 rounded-xl text-ink-secondary hover:text-brand-navy hover:bg-white/60 focus:outline-none backdrop-blur-sm"
               aria-label="Toggle Navigation Menu"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -112,7 +112,7 @@ export const PublicNavbar: React.FC = () => {
 
       {/* Mobile Drawer Navigation */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-surface-border bg-white px-4 pt-3 pb-6 space-y-2 animate-in slide-in-from-top duration-200">
+        <div className="lg:hidden border-t border-white/60 bg-white/90 backdrop-blur-xl px-4 pt-3 pb-6 space-y-2 animate-in slide-in-from-top duration-200 shadow-xl">
           {navLinks.map((link) => (
             <Link
               key={link.path}

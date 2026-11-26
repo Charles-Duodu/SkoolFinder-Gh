@@ -40,6 +40,9 @@ export default {
         'elevated': '0 4px 6px -1px rgba(16, 42, 67, 0.07), 0 2px 4px -2px rgba(16, 42, 67, 0.05)',
         'floating': '0 10px 25px -3px rgba(16, 42, 67, 0.1), 0 4px 6px -4px rgba(16, 42, 67, 0.05)',
         'gold-glow': '0 0 15px rgba(197, 165, 90, 0.25)',
+        'glass': '0 8px 32px 0 rgba(16, 42, 67, 0.07), inset 0 1px 1px 0 rgba(255, 255, 255, 0.8)',
+        'glass-hover': '0 16px 40px -4px rgba(16, 42, 67, 0.12), inset 0 1px 1px 0 rgba(255, 255, 255, 1)',
+        'glass-dark': '0 16px 40px 0 rgba(0, 0, 0, 0.3), inset 0 1px 0 0 rgba(255, 255, 255, 0.18)',
       }
     },
   },
