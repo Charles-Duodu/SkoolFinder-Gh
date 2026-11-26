@@ -209,7 +209,7 @@ export const HomePage: React.FC = () => {
               </div>
 
               {/* Curriculum */}
-              <div className="lg:col-span-3">
+              <div className="lg:col-span-2">
                 <label className="block text-[11px] font-bold text-white uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
                   <BookOpen className="w-3.5 h-3.5 text-teal-300 shrink-0" />
                   <span>CURRICULUM</span>
@@ -227,13 +227,13 @@ export const HomePage: React.FC = () => {
               </div>
 
               {/* Search Schools Button */}
-              <div className="lg:col-span-2">
+              <div className="lg:col-span-3">
                 <button
                   type="submit"
-                  className="w-full py-3 px-4 bg-amber-400 hover:bg-amber-300 active:bg-amber-500 text-slate-950 font-black text-sm rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 group hover:shadow-amber-400/30 hover:scale-[1.02]"
+                  className="w-full py-3 px-4 bg-amber-400 hover:bg-amber-300 active:bg-amber-500 text-slate-950 font-bold text-sm sm:text-base rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 whitespace-nowrap group hover:shadow-amber-400/30 hover:scale-[1.02]"
                 >
                   <span className="text-base leading-none">🔍</span>
-                  <span>Search Schools</span>
+                  <span className="whitespace-nowrap font-bold">Search Schools</span>
                 </button>
               </div>
 
