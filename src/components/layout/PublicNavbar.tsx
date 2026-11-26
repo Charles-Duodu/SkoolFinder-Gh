@@ -1,5 +1,8 @@
+'use client';
+
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useDemo } from '../../context/DemoContext';
 import { 
   Search, 
@@ -14,10 +17,11 @@ import {
   Sparkles
 } from 'lucide-react';
 import { Button } from '../ui/Button';
+import { AuthButton } from './AuthButton';
 
 export const PublicNavbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const location = useLocation();
+  const pathname = usePathname();
   const { state } = useDemo();
 
   const comparisonCount = state.parent.comparisonSchoolIds.length;
@@ -36,7 +40,7 @@ export const PublicNavbar: React.FC = () => {
         <div className="flex items-center justify-between h-16">
           
           {/* Brand Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
+          <Link href="/" className="flex items-center gap-3 group">
             <div className="w-10 h-10 rounded-xl bg-brand-navy flex items-center justify-center text-brand-gold shadow-sm group-hover:scale-105 transition-transform">
               <School className="w-6 h-6" />
             </div>
@@ -58,11 +62,11 @@ export const PublicNavbar: React.FC = () => {
           {/* Desktop Navigation Links */}
           <nav className="hidden lg:flex items-center space-x-1">
             {navLinks.map((link) => {
-              const isActive = location.pathname === link.path;
+              const isActive = pathname === link.path;
               return (
                 <Link
                   key={link.path}
-                  to={link.path}
+                  href={link.path}
                   className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                     isActive
                       ? 'text-brand-navy font-semibold bg-brand-navy/5'
@@ -82,12 +86,13 @@ export const PublicNavbar: React.FC = () => {
 
           {/* Action CTAs */}
           <div className="hidden sm:flex items-center gap-2.5">
-            <Link to="/parents">
+            <AuthButton />
+            <Link href="/parents">
               <Button variant="outline" size="sm">
                 Parent Portal
               </Button>
             </Link>
-            <Link to="/school-owners?tab=register">
+            <Link href="/school-owners?tab=register">
               <Button variant="gold" size="sm" icon={<Sparkles className="w-4 h-4 text-brand-navy-dark" />}>
                 Register School
               </Button>
@@ -96,7 +101,7 @@ export const PublicNavbar: React.FC = () => {
 
           {/* Mobile menu button */}
           <div className="lg:hidden flex items-center gap-2">
-            <Link to="/compare" className="relative p-2 text-ink-secondary hover:text-brand-navy">
+            <Link href="/compare" className="relative p-2 text-ink-secondary hover:text-brand-navy">
               <Scale className="w-5 h-5" />
               {comparisonCount > 0 && (
                 <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-brand-gold text-brand-navy text-[10px] font-bold flex items-center justify-center">
@@ -121,7 +126,7 @@ export const PublicNavbar: React.FC = () => {
           {navLinks.map((link) => (
             <Link
               key={link.path}
-              to={link.path}
+              href={link.path}
               onClick={() => setMobileMenuOpen(false)}
               className="flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium text-ink-primary hover:bg-slate-50"
             >
@@ -137,17 +142,17 @@ export const PublicNavbar: React.FC = () => {
             </Link>
           ))}
           <div className="pt-3 border-t border-surface-border flex flex-col gap-2">
-            <Link to="/parents/dashboard" onClick={() => setMobileMenuOpen(false)}>
+            <Link href="/parents/dashboard" onClick={() => setMobileMenuOpen(false)}>
               <Button variant="outline" className="w-full justify-center">
                 Parent Workspace
               </Button>
             </Link>
-            <Link to="/school-owners/register" onClick={() => setMobileMenuOpen(false)}>
+            <Link href="/school-owners/register" onClick={() => setMobileMenuOpen(false)}>
               <Button variant="gold" className="w-full justify-center">
                 Register Your School
               </Button>
             </Link>
-            <Link to="/super-admin/dashboard" onClick={() => setMobileMenuOpen(false)}>
+            <Link href="/super-admin/dashboard" onClick={() => setMobileMenuOpen(false)}>
               <Button variant="ghost" className="w-full justify-center text-xs text-ink-muted">
                 Super Admin Governance
               </Button>

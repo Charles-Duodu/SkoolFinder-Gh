@@ -1,12 +1,14 @@
+'use client';
+
 import React from 'react';
 import { useDemo } from '../../context/DemoContext';
 import { UserRole } from '../../types';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { ShieldCheck, UserCheck, School, Briefcase, Truck, RotateCcw, Compass, ArrowRight } from 'lucide-react';
 
 export const DemoRoleBar: React.FC = () => {
   const { role, setRole, resetDemoData } = useDemo();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const roleOptions: { role: UserRole; label: string; name: string; path: string; icon: React.ReactNode }[] = [
     {
@@ -55,13 +57,13 @@ export const DemoRoleBar: React.FC = () => {
 
   const handleRoleSelect = (targetRole: UserRole, targetPath: string) => {
     setRole(targetRole);
-    navigate(targetPath);
+    router.push(targetPath);
   };
 
   const handleReset = () => {
     if (window.confirm('Reset all interactive demo state (applications, RFQs, enquiries, jobs) back to initial seed data?')) {
       resetDemoData();
-      navigate('/');
+      router.push('/');
     }
   };
 
@@ -103,7 +105,7 @@ export const DemoRoleBar: React.FC = () => {
           <button
             onClick={() => {
               const current = roleOptions.find(o => o.role === role);
-              if (current) navigate(current.path);
+              if (current) router.push(current.path);
             }}
             className="flex items-center gap-1 px-2 py-1 rounded bg-white/10 hover:bg-white/20 text-slate-200 text-[11px] font-medium transition-colors"
           >

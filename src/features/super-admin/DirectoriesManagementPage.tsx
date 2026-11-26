@@ -1,9 +1,13 @@
+'use client';
+
 import React, { useState } from 'react';
 import { useDemo } from '../../context/DemoContext';
 import { AdminLayout } from '../../components/layout/AdminLayout';
 import { StatusBadge } from '../../components/ui/StatusBadge';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
+import { Modal } from '../../components/ui/Modal';
+import { GreaterAccraLocality, CurriculumType, EducationLevel } from '../../types';
 import { formatGHS, formatDate } from '../../lib/utils';
 import { 
   School, 
@@ -15,7 +19,8 @@ import {
   Search, 
   ExternalLink,
   MapPin,
-  Clock
+  Clock,
+  Plus
 } from 'lucide-react';
 
 interface DirectoriesPageProps {
@@ -23,9 +28,67 @@ interface DirectoriesPageProps {
 }
 
 export const DirectoriesManagementPage: React.FC<DirectoriesPageProps> = ({ initialTab = 'schools' }) => {
-  const { state } = useDemo();
+  const { state, preloadSchool } = useDemo();
   const [activeTab, setActiveTab] = useState<'schools' | 'parents' | 'professionals' | 'suppliers' | 'recruitment' | 'procurement'>(initialTab);
   const [searchTerm, setSearchTerm] = useState('');
+
+  // Pre-load Day-1 School Modal state
+  const [preloadModalOpen, setPreloadModalOpen] = useState(false);
+  const [preName, setPreName] = useState('');
+  const [preLocality, setPreLocality] = useState<GreaterAccraLocality>('East Legon');
+  const [preAddress, setPreAddress] = useState('');
+  const [preDigital, setPreDigital] = useState('GA-240-1102');
+  const [preCurriculum, setPreCurriculum] = useState<CurriculumType>('GES / NaCCA');
+  const [preEmail, setPreEmail] = useState('');
+  const [prePhone, setPrePhone] = useState('+233 30 200 0000');
+  const [preMinFee, setPreMinFee] = useState(12000);
+  const [preMaxFee, setPreMaxFee] = useState(25000);
+
+  const handlePreloadSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!preName.trim()) return;
+    const slug = preName
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+
+    preloadSchool({
+      name: preName,
+      slug: `${slug}-${Date.now().toString().slice(-3)}`,
+      tagline: `Verified private educational institution in ${preLocality}, Greater Accra`,
+      crestUrl: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=160&auto=format&fit=crop&q=80',
+      coverImageUrl: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=1200&auto=format&fit=crop&q=80',
+      galleryImages: ['https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=800&auto=format&fit=crop&q=80'],
+      locality: preLocality,
+      digitalAddress: preDigital,
+      address: preAddress || `${preLocality}, Greater Accra`,
+      phone: prePhone,
+      email: preEmail || `admissions@${slug || 'school'}.edu.gh`,
+      yearEstablished: 2015,
+      ownershipType: 'Private',
+      educationLevels: ['Creche & Nursery', 'Kindergarten', 'Primary'] as EducationLevel[],
+      curricula: [preCurriculum],
+      boardingStatus: 'Day Only',
+      gender: 'Co-educational',
+      facilities: ['Modern Science Lab', 'ICT Innovation Suite', 'School Bus Fleet'],
+      annualFeeRange: { min: preMinFee, max: preMaxFee, currency: 'GHS' },
+      studentTeacherRatio: '15:1',
+      averageClassSize: 20,
+      aboutText: `${preName} is a pre-loaded verified private school in ${preLocality}, Greater Accra. School administrators can claim ownership of this profile anytime.`,
+      admissionsOverview: 'Contact the school admissions office directly or submit an online enquiry via SkoolFinder Ghana.',
+      contactPerson: {
+        name: 'Admissions Desk',
+        role: 'Admissions Office',
+        phone: prePhone,
+        email: preEmail || `admissions@${slug || 'school'}.edu.gh`,
+      },
+    });
+
+    setPreName('');
+    setPreAddress('');
+    setPreEmail('');
+    setPreloadModalOpen(false);
+  };
 
   return (
     <AdminLayout>
@@ -64,21 +127,32 @@ export const DirectoriesManagementPage: React.FC<DirectoriesPageProps> = ({ init
         {/* TAB: SCHOOLS */}
         {activeTab === 'schools' && (
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
                 <h2 className="text-xl font-bold text-ink-primary">Schools Registry</h2>
-                <p className="text-xs text-ink-secondary">Directory of private basic and senior high institutions</p>
+                <p className="text-xs text-ink-secondary">
+                  Pre-load real Greater Accra schools on Day 1 or monitor verified institutional listings
+                </p>
               </div>
+              <Button
+                variant="gold"
+                size="sm"
+                onClick={() => setPreloadModalOpen(true)}
+                icon={<Plus className="w-4 h-4 text-brand-navy-dark" />}
+              >
+                Pre-Load Verified School
+              </Button>
             </div>
 
-            <div className="bg-white rounded-2xl border border-surface-border overflow-hidden shadow-subtle">
-              <table className="w-full text-left text-xs border-collapse">
+            <div className="bg-white rounded-2xl border border-surface-border overflow-x-auto shadow-subtle">
+              <table className="w-full text-left text-xs border-collapse min-w-[700px]">
                 <thead>
                   <tr className="bg-slate-50 border-b font-bold text-ink-muted uppercase">
                     <th className="p-4">School Details</th>
                     <th className="p-4">Locality</th>
                     <th className="p-4">Curricula</th>
                     <th className="p-4">Annual Tuition</th>
+                    <th className="p-4">Ownership / Claim</th>
                     <th className="p-4">Verification</th>
                   </tr>
                 </thead>
@@ -97,6 +171,17 @@ export const DirectoriesManagementPage: React.FC<DirectoriesPageProps> = ({ init
                       <td className="p-4 font-medium text-ink-secondary">{s.locality}</td>
                       <td className="p-4 text-ink-secondary">{s.curricula.join(', ')}</td>
                       <td className="p-4 font-bold text-brand-navy">{formatGHS(s.annualFeeRange.min)} – {formatGHS(s.annualFeeRange.max)}</td>
+                      <td className="p-4">
+                        {s.isClaimed === false ? (
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200">
+                            Unclaimed (Pre-Loaded)
+                          </span>
+                        ) : (
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                            Claimed by School
+                          </span>
+                        )}
+                      </td>
                       <td className="p-4"><StatusBadge status={s.verificationStatus} /></td>
                     </tr>
                   ))}
@@ -236,6 +321,110 @@ export const DirectoriesManagementPage: React.FC<DirectoriesPageProps> = ({ init
         )}
 
       </div>
+
+      {/* Super Admin Pre-Load Day-1 Accra School Modal */}
+      <Modal
+        isOpen={preloadModalOpen}
+        onClose={() => setPreloadModalOpen(false)}
+        title="Pre-Load Verified Greater Accra School"
+        maxWidth="lg"
+      >
+        <form onSubmit={handlePreloadSubmit} className="space-y-4">
+          <div className="p-3 bg-blue-50 border border-blue-200 rounded-xl text-xs text-blue-900">
+            Pre-loaded schools publish immediately to the public directory as <strong>Approved</strong> and <strong>Unclaimed</strong> so parents find real options on Day 1. School owners can claim them later.
+          </div>
+
+          <Input
+            label="Official School Name"
+            value={preName}
+            onChange={(e) => setPreName(e.target.value)}
+            placeholder="e.g. Roman Ridge International Academy"
+            required
+          />
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-semibold text-ink-primary mb-1">Accra Locality</label>
+              <select
+                value={preLocality}
+                onChange={(e) => setPreLocality(e.target.value as GreaterAccraLocality)}
+                className="w-full text-xs p-2.5 border border-surface-border rounded-lg bg-white outline-none"
+              >
+                {(['East Legon', 'Cantonments', 'Airport Residential', 'Osu', 'Tema', 'Spintex', 'Achimota', 'Dansoman', 'Madina', 'Adenta', 'Ridge', 'Labone', 'Dzorwulu', 'Legon'] as GreaterAccraLocality[]).map((loc) => (
+                  <option key={loc} value={loc}>{loc}</option>
+                ))}
+              </select>
+            </div>
+
+            <Input
+              label="GhanaPost Digital Address"
+              value={preDigital}
+              onChange={(e) => setPreDigital(e.target.value)}
+              placeholder="GA-240-1102"
+              required
+            />
+          </div>
+
+          <Input
+            label="Street Address / Landmark"
+            value={preAddress}
+            onChange={(e) => setPreAddress(e.target.value)}
+            placeholder="e.g. 12 Agostinho Neto Road, Airport Residential"
+          />
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-semibold text-ink-primary mb-1">Primary Curriculum</label>
+              <select
+                value={preCurriculum}
+                onChange={(e) => setPreCurriculum(e.target.value as CurriculumType)}
+                className="w-full text-xs p-2.5 border border-surface-border rounded-lg bg-white outline-none"
+              >
+                {(['GES / NaCCA', 'Cambridge International', 'International Baccalaureate (IB)', 'Montessori', 'British-Ghanaian Dual'] as CurriculumType[]).map((cur) => (
+                  <option key={cur} value={cur}>{cur}</option>
+                ))}
+              </select>
+            </div>
+
+            <Input
+              label="Public Admissions Email"
+              type="email"
+              value={preEmail}
+              onChange={(e) => setPreEmail(e.target.value)}
+              placeholder="admissions@school.edu.gh"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <Input
+              label="Contact Phone"
+              value={prePhone}
+              onChange={(e) => setPrePhone(e.target.value)}
+            />
+            <Input
+              label="Min Annual Fee (GHS)"
+              type="number"
+              value={preMinFee}
+              onChange={(e) => setPreMinFee(Number(e.target.value))}
+            />
+            <Input
+              label="Max Annual Fee (GHS)"
+              type="number"
+              value={preMaxFee}
+              onChange={(e) => setPreMaxFee(Number(e.target.value))}
+            />
+          </div>
+
+          <div className="flex justify-end gap-2 pt-3 border-t border-surface-border">
+            <Button type="button" variant="outline" onClick={() => setPreloadModalOpen(false)}>
+              Cancel
+            </Button>
+            <Button type="submit" variant="gold">
+              Publish Unclaimed Listing
+            </Button>
+          </div>
+        </form>
+      </Modal>
     </AdminLayout>
   );
 };

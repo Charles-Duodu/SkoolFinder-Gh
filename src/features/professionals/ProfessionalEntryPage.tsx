@@ -1,16 +1,18 @@
+'use client';
+
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import Link from 'next/link';
 import { Button } from '../../components/ui/Button';
 import { ProfessionalMode } from '../../types';
-import { 
-  Briefcase, 
-  GraduationCap, 
-  BookOpen, 
-  Award, 
-  Sparkles, 
-  ArrowRight, 
-  CheckCircle2, 
-  Clock, 
+import {
+  Briefcase,
+  GraduationCap,
+  BookOpen,
+  Award,
+  Sparkles,
+  ArrowRight,
+  CheckCircle2,
+  Clock,
   Search,
   UserCheck
 } from 'lucide-react';
@@ -21,7 +23,6 @@ interface ProfessionalEntryPageProps {
 }
 
 export const ProfessionalEntryPage: React.FC<ProfessionalEntryPageProps> = ({ onStartRegister, onOpenDashboard }) => {
-  const navigate = useNavigate();
   const [selectedMode, setSelectedMode] = useState<ProfessionalMode>('both');
 
   const modes: { mode: ProfessionalMode; title: string; desc: string; badge: string }[] = [
@@ -47,7 +48,7 @@ export const ProfessionalEntryPage: React.FC<ProfessionalEntryPageProps> = ({ on
 
   return (
     <div className="space-y-16 lg:space-y-24 pb-20">
-      
+
       {/* Hero */}
       <section className="bg-gradient-to-b from-brand-navy-dark via-brand-navy to-brand-navy-light text-white pt-16 pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
@@ -70,7 +71,7 @@ export const ProfessionalEntryPage: React.FC<ProfessionalEntryPageProps> = ({ on
                 Create Professional Profile
               </Button>
             ) : (
-              <Link to="/professionals/register">
+              <Link href="/professionals/register">
                 <Button variant="gold" size="lg" className="w-full sm:w-auto">
                   Create Professional Profile
                 </Button>
@@ -82,7 +83,7 @@ export const ProfessionalEntryPage: React.FC<ProfessionalEntryPageProps> = ({ on
                 View Sample Dashboard
               </Button>
             ) : (
-              <Link to="/professionals/dashboard">
+              <Link href="/professionals/dashboard">
                 <Button variant="outline" size="lg" className="w-full sm:w-auto border-slate-600 text-white hover:bg-white/10">
                   View Sample Dashboard
                 </Button>
@@ -110,11 +111,10 @@ export const ProfessionalEntryPage: React.FC<ProfessionalEntryPageProps> = ({ on
               <div
                 key={m.mode}
                 onClick={() => setSelectedMode(m.mode)}
-                className={`p-6 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between ${
-                  isSelected
+                className={`p-6 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between ${isSelected
                     ? 'border-brand-navy bg-white ring-2 ring-brand-navy shadow-elevated'
                     : 'border-surface-border bg-white hover:border-slate-300 shadow-subtle'
-                }`}
+                  }`}
               >
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
@@ -128,7 +128,7 @@ export const ProfessionalEntryPage: React.FC<ProfessionalEntryPageProps> = ({ on
                 </div>
 
                 <div className="pt-6">
-                  <Link to={`/professionals/register?mode=${m.mode}`}>
+                  <Link href={`/professionals/register?mode=${m.mode}`}>
                     <Button variant={isSelected ? 'primary' : 'outline'} size="sm" className="w-full justify-center">
                       Select & Continue
                     </Button>

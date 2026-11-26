@@ -1,0 +1,137 @@
+-- ==============================================================================
+-- SkoolFinder Ghana - Starter Greater Accra Seed Data (Optional Day-1 Directory)
+-- Run this in Supabase SQL Editor AFTER running supabase/schema.sql
+-- ==============================================================================
+
+INSERT INTO public.schools (
+  id, name, slug, tagline, crest_url, cover_image_url, gallery_images,
+  locality, digital_address, address, phone, email, website, year_established,
+  ownership_type, education_levels, curricula, boarding_status, gender,
+  facilities, annual_fee_min, annual_fee_max, student_teacher_ratio, class_size_avg,
+  about_text, admissions_overview, admissions_deadline,
+  contact_person_name, contact_person_role, contact_person_phone,
+  verification_status, featured, plan_tier, is_claimed
+) VALUES
+(
+  'sch-01',
+  'Achimota Preparatory & International School',
+  'achimota-preparatory-international',
+  'Excellence in holistic basic and primary education in Accra since 1958',
+  'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=160&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=1200&auto=format&fit=crop&q=80',
+  ARRAY[
+    'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=800&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&auto=format&fit=crop&q=80'
+  ],
+  'Achimota',
+  'GA-112-9042',
+  'Near Achimota Forest Reserve, Forest Road, Accra',
+  '+233 30 240 1928',
+  'admissions@achimotaprep.edu.gh',
+  'https://achimotaprep.edu.gh',
+  1958,
+  'Private',
+  ARRAY['Creche & Nursery', 'Kindergarten', 'Primary', 'Junior High School'],
+  ARRAY['GES / NaCCA', 'British-Ghanaian Dual'],
+  'Day Only',
+  'Co-educational',
+  ARRAY['Modern Science Lab', 'ICT Innovation Suite', 'Multi-purpose Sports Complex', 'Library & Media Resource Room', 'School Bus Fleet'],
+  14500, 26000, '14:1', 22,
+  'Achimota Preparatory & International School has provided generations of young Ghanaians with a rigorous, nurturing, and disciplined foundation.',
+  'Admissions open annually for September and January intakes. Prospective pupils sit a diagnostic assessment in English & Mathematics.',
+  '2026-07-31',
+  'Mrs. Janet Quaye', 'Head of Admissions', '+233 24 411 9087',
+  'approved', true, 'free_launch', true
+),
+(
+  'sch-02',
+  'East Legon Cambridge Academy',
+  'east-legon-cambridge-academy',
+  'World-class British curriculum education from Early Years through IGCSE',
+  'https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=160&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1200&auto=format&fit=crop&q=80',
+  ARRAY[
+    'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&auto=format&fit=crop&q=80'
+  ],
+  'East Legon',
+  'GA-419-2081',
+  '14 Boundary Road, American House, East Legon, Accra',
+  '+233 30 255 4100',
+  'admissions@eastlegoncambridge.edu.gh',
+  'https://eastlegoncambridge.edu.gh',
+  2011,
+  'International Private',
+  ARRAY['Creche & Nursery', 'Kindergarten', 'Primary', 'Junior High School', 'Senior High School'],
+  ARRAY['Cambridge International'],
+  'Day Only',
+  'Co-educational',
+  ARRAY['Robotics & Coding Lab', 'Olympic-standard Swimming Pool', 'Modern Science Lab', 'ICT Innovation Suite', 'Sick Bay with Pediatric Nurse'],
+  38000, 75000, '10:1', 18,
+  'Located in East Legon, our Cambridge accredited school prepares global citizens equipped for Oxbridge, Ivy League, and top African universities.',
+  'Rolling admissions throughout the academic calendar with entrance testing and parent tours available weekly.',
+  '2026-08-15',
+  'Mr. David Boateng', 'Director of Enrollment', '+233 20 890 1234',
+  'approved', true, 'free_launch', false
+),
+(
+  'sch-03',
+  'Cantonments Montessori & Childcare Centre',
+  'cantonments-montessori-centre',
+  'Child-centered developmental foundation for infants, toddlers and kindergarteners',
+  'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=160&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=1200&auto=format&fit=crop&q=80',
+  ARRAY[
+    'https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=800&auto=format&fit=crop&q=80'
+  ],
+  'Cantonments',
+  'GA-054-7731',
+  '7th Circular Road, Cantonments, Accra',
+  '+233 30 277 8899',
+  'info@cantonmentsmontessori.com.gh',
+  'https://cantonmentsmontessori.com.gh',
+  2016,
+  'Private',
+  ARRAY['Creche & Nursery', 'Kindergarten', 'Primary'],
+  ARRAY['Montessori', 'British-Ghanaian Dual'],
+  'Day Only',
+  'Co-educational',
+  ARRAY['Montessori Prepared Environments', 'Air-conditioned Classrooms', 'Sick Bay', 'French Language Immersion'],
+  22000, 42000, '6:1', 14,
+  'Authentic Montessori early years learning community situated in serene Cantonments.',
+  'Parents tour campus prior to developmental observation and admission confirmation.',
+  '2026-08-30',
+  'Ms. Efua Sackey', 'Principal & Founder', '+233 24 778 2210',
+  'approved', true, 'free_launch', false
+),
+(
+  'sch-04',
+  'Tema Community International College',
+  'tema-community-international-college',
+  'Academic rigour, science leadership and disciplined boarding in Tema Metropolis',
+  'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=160&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1562774053-701939374585?w=1200&auto=format&fit=crop&q=80',
+  ARRAY[
+    'https://images.unsplash.com/photo-1562774053-701939374585?w=800&auto=format&fit=crop&q=80'
+  ],
+  'Tema',
+  'GT-024-4410',
+  'Community 6 Education Enclave, Tema',
+  '+233 30 320 5511',
+  'admissions@temacollege.edu.gh',
+  'https://temacollege.edu.gh',
+  2004,
+  'Private',
+  ARRAY['Primary', 'Junior High School', 'Senior High School'],
+  ARRAY['GES / NaCCA', 'International Baccalaureate (IB)'],
+  'Day & Boarding',
+  'Co-educational',
+  ARRAY['Boarding Hostels', 'Modern Science Lab', 'Sports Complex', 'School Bus Fleet', 'Library & Media Resource Room'],
+  26000, 52000, '12:1', 20,
+  'Serving families across Tema and Spintex with dual WASSCE and IB Diploma pathways.',
+  'Competitive diagnostic exam in Mathematics, Integrated Science, and English Literature.',
+  '2026-08-10',
+  'Dr. Samuel Adjei', 'Vice Principal Academics', '+233 24 910 3321',
+  'approved', true, 'free_launch', false
+)
+ON CONFLICT (id) DO NOTHING;

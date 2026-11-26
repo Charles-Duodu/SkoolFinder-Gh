@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { useDemo } from '../../context/DemoContext';
 import { CheckCircle2, AlertCircle, Info, AlertTriangle, X } from 'lucide-react';

@@ -1,24 +1,26 @@
+'use client';
+
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { useDemo } from '../../context/DemoContext';
 import { DashboardLayout, DashboardNavItem } from '../../components/layout/DashboardLayout';
 import { SchoolCard } from '../discovery/SchoolCard';
 import { formatGHS, formatDate } from '../../lib/utils';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
-import { 
-  LayoutDashboard, 
-  Bookmark, 
-  Star, 
-  Scale, 
-  MessageSquare, 
-  Bell, 
-  Settings, 
-  Search, 
-  ArrowRight, 
-  CheckCircle2, 
-  Clock, 
-  Plus, 
+import {
+  LayoutDashboard,
+  Bookmark,
+  Star,
+  Scale,
+  MessageSquare,
+  Bell,
+  Settings,
+  Search,
+  ArrowRight,
+  CheckCircle2,
+  Clock,
+  Plus,
   Trash2,
   ExternalLink,
   GraduationCap,
@@ -64,7 +66,7 @@ export const ParentsPortalPage: React.FC = () => {
         path: '#', // using tab switching for seamless prototype experience
       }))}
       actionButton={
-        <Link to="/schools">
+        <Link href="/schools">
           <Button variant="gold" size="sm" icon={<Search className="w-3.5 h-3.5 text-brand-navy-dark" />}>
             Search Accra Schools
           </Button>
@@ -77,18 +79,16 @@ export const ParentsPortalPage: React.FC = () => {
           <button
             key={item.id}
             onClick={() => setActiveTab(item.id as any)}
-            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors ${
-              activeTab === item.id
-                ? 'bg-brand-navy text-white shadow-sm'
-                : 'text-ink-secondary hover:text-ink-primary hover:bg-slate-100'
-            }`}
+            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors ${activeTab === item.id
+              ? 'bg-brand-navy text-white shadow-sm'
+              : 'text-ink-secondary hover:text-ink-primary hover:bg-slate-100'
+              }`}
           >
             {item.icon}
             <span>{item.label}</span>
             {item.badge !== undefined && (
-              <span className={`text-[10px] font-bold px-1.5 py-0.2 rounded-full ${
-                activeTab === item.id ? 'bg-brand-gold text-brand-navy-dark' : 'bg-slate-200 text-slate-700'
-              }`}>
+              <span className={`text-[10px] font-bold px-1.5 py-0.2 rounded-full ${activeTab === item.id ? 'bg-brand-gold text-brand-navy-dark' : 'bg-slate-200 text-slate-700'
+                }`}>
                 {item.badge}
               </span>
             )}
@@ -113,7 +113,7 @@ export const ParentsPortalPage: React.FC = () => {
               </p>
             </div>
             <div className="flex gap-2">
-              <Link to="/schools">
+              <Link href="/schools">
                 <Button variant="gold" size="sm">Find More Schools</Button>
               </Link>
               <button
@@ -127,8 +127,8 @@ export const ParentsPortalPage: React.FC = () => {
 
           {/* KPI Summary Cards */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <div 
-              onClick={() => setActiveTab('applications')} 
+            <div
+              onClick={() => setActiveTab('applications')}
               className="bg-white p-5 rounded-xl border border-surface-border shadow-subtle cursor-pointer hover:border-brand-navy transition-colors"
             >
               <div className="flex items-center justify-between">
@@ -139,8 +139,8 @@ export const ParentsPortalPage: React.FC = () => {
               <span className="text-[11px] text-emerald-700 font-semibold mt-1 block">Track entry status</span>
             </div>
 
-            <div 
-              onClick={() => setActiveTab('saved')} 
+            <div
+              onClick={() => setActiveTab('saved')}
               className="bg-white p-5 rounded-xl border border-surface-border shadow-subtle cursor-pointer hover:border-brand-navy transition-colors"
             >
               <div className="flex items-center justify-between">
@@ -151,8 +151,8 @@ export const ParentsPortalPage: React.FC = () => {
               <span className="text-[11px] text-ink-secondary mt-1 block">In East Legon & Cantonments</span>
             </div>
 
-            <div 
-              onClick={() => setActiveTab('shortlist')} 
+            <div
+              onClick={() => setActiveTab('shortlist')}
               className="bg-white p-5 rounded-xl border border-surface-border shadow-subtle cursor-pointer hover:border-brand-navy transition-colors"
             >
               <div className="flex items-center justify-between">
@@ -163,8 +163,8 @@ export const ParentsPortalPage: React.FC = () => {
               <span className="text-[11px] text-ink-secondary mt-1 block">Priority application list</span>
             </div>
 
-            <div 
-              onClick={() => setActiveTab('enquiries')} 
+            <div
+              onClick={() => setActiveTab('enquiries')}
               className="bg-white p-5 rounded-xl border border-surface-border shadow-subtle cursor-pointer hover:border-brand-navy transition-colors"
             >
               <div className="flex items-center justify-between">
@@ -207,9 +207,8 @@ export const ParentsPortalPage: React.FC = () => {
                 <div key={enq.id} className="p-4 rounded-xl border border-surface-border bg-slate-50/50 space-y-2">
                   <div className="flex items-center justify-between">
                     <strong className="text-xs font-bold text-brand-navy">{enq.schoolName}</strong>
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                      enq.status === 'Responded' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
-                    }`}>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${enq.status === 'Responded' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
+                      }`}>
                       {enq.status}
                     </span>
                   </div>
@@ -252,7 +251,7 @@ export const ParentsPortalPage: React.FC = () => {
                 Track assessment dates, admissions offers, and verify submitted credentials
               </p>
             </div>
-            <Link to="/schools">
+            <Link href="/schools">
               <Button variant="gold" size="sm" icon={<Plus className="w-4 h-4 text-brand-navy-dark" />}>
                 Apply to a New School
               </Button>
@@ -266,7 +265,7 @@ export const ParentsPortalPage: React.FC = () => {
               <p className="text-xs text-ink-muted max-w-sm mx-auto">
                 Explore our Greater Accra school profiles and click "Apply for Admission" to lodge a digital student application.
               </p>
-              <Link to="/schools"><Button variant="primary" size="sm">Browse Accra Schools</Button></Link>
+              <Link href="/schools"><Button variant="primary" size="sm">Browse Accra Schools</Button></Link>
             </div>
           ) : (
             <div className="space-y-4">
@@ -359,7 +358,7 @@ export const ParentsPortalPage: React.FC = () => {
                           >
                             Calculate Fees
                           </Button>
-                          <Link to={`/schools/${targetSchool.slug}`}>
+                          <Link href={`/schools/${targetSchool.slug}`}>
                             <Button variant="ghost" size="sm" icon={<ExternalLink className="w-3.5 h-3.5" />}>
                               View School Profile
                             </Button>
@@ -387,7 +386,7 @@ export const ParentsPortalPage: React.FC = () => {
               <h2 className="text-xl font-bold text-ink-primary">Saved Schools Directory</h2>
               <p className="text-xs text-ink-secondary">Review, compare, or organize your saved private school options</p>
             </div>
-            <Link to="/schools">
+            <Link href="/schools">
               <Button variant="outline" size="sm">Browse More</Button>
             </Link>
           </div>
@@ -396,7 +395,7 @@ export const ParentsPortalPage: React.FC = () => {
             <div className="bg-white p-12 rounded-2xl border text-center space-y-3">
               <Bookmark className="w-8 h-8 text-ink-muted mx-auto" />
               <p className="text-sm font-semibold">No saved schools yet.</p>
-              <Link to="/schools"><Button variant="gold" size="sm">Explore Directory</Button></Link>
+              <Link href="/schools"><Button variant="gold" size="sm">Explore Directory</Button></Link>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -406,9 +405,8 @@ export const ParentsPortalPage: React.FC = () => {
                   <div className="mt-2 flex items-center justify-between px-1">
                     <button
                       onClick={() => toggleShortlistSchool(school.id)}
-                      className={`text-xs font-semibold flex items-center gap-1 ${
-                        parent.shortlistedSchoolIds.includes(school.id) ? 'text-amber-600' : 'text-ink-secondary hover:text-ink-primary'
-                      }`}
+                      className={`text-xs font-semibold flex items-center gap-1 ${parent.shortlistedSchoolIds.includes(school.id) ? 'text-amber-600' : 'text-ink-secondary hover:text-ink-primary'
+                        }`}
                     >
                       <Star className="w-3.5 h-3.5 fill-current" />
                       <span>{parent.shortlistedSchoolIds.includes(school.id) ? 'Shortlisted' : 'Add to Shortlist'}</span>
@@ -456,7 +454,7 @@ export const ParentsPortalPage: React.FC = () => {
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <Link to={`/schools/${school.slug}`}>
+                    <Link href={`/schools/${school.slug}`}>
                       <Button variant="outline" size="sm">View Profile</Button>
                     </Link>
                     <button
@@ -482,7 +480,7 @@ export const ParentsPortalPage: React.FC = () => {
               <h2 className="text-xl font-bold text-ink-primary">School Comparison Matrix</h2>
               <p className="text-xs text-ink-secondary">Comparing {comparedSchools.length} selected institutions</p>
             </div>
-            <Link to="/compare">
+            <Link href="/compare">
               <Button variant="gold" size="sm">Open Full Matrix View</Button>
             </Link>
           </div>
@@ -498,7 +496,7 @@ export const ParentsPortalPage: React.FC = () => {
               ))}
             </div>
             <div className="pt-2">
-              <Link to="/compare">
+              <Link href="/compare">
                 <Button variant="primary" size="sm">Launch Comparison Page</Button>
               </Link>
             </div>
@@ -524,9 +522,8 @@ export const ParentsPortalPage: React.FC = () => {
                     <h3 className="text-sm font-bold text-ink-primary">{enq.schoolName}</h3>
                     <p className="text-[11px] text-ink-secondary">Target Level: {enq.childTargetLevel} &bull; Sent: {formatDate(enq.submittedAt)}</p>
                   </div>
-                  <span className={`text-xs px-2.5 py-0.5 rounded-full font-bold w-fit ${
-                    enq.status === 'Responded' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
-                  }`}>
+                  <span className={`text-xs px-2.5 py-0.5 rounded-full font-bold w-fit ${enq.status === 'Responded' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
+                    }`}>
                     {enq.status}
                   </span>
                 </div>

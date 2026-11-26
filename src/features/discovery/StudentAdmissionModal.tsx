@@ -1,23 +1,26 @@
+'use client';
+
 import React, { useState } from 'react';
 import { School, EducationLevel } from '../../types';
 import { useDemo } from '../../context/DemoContext';
+import { uploadToSupabaseStorage } from '@/lib/supabase/storage';
 import { Modal } from '../../components/ui/Modal';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { Select } from '../../components/ui/Select';
-import { 
-  CheckCircle2, 
-  FileText, 
-  Upload, 
-  User, 
-  Calendar, 
-  ShieldCheck, 
-  MapPin, 
-  Phone, 
-  Mail, 
-  GraduationCap, 
-  ArrowRight, 
-  ArrowLeft 
+import {
+  CheckCircle2,
+  FileText,
+  Upload,
+  User,
+  Calendar,
+  ShieldCheck,
+  MapPin,
+  Phone,
+  Mail,
+  GraduationCap,
+  ArrowRight,
+  ArrowLeft
 } from 'lucide-react';
 
 interface StudentAdmissionModalProps {
@@ -27,8 +30,9 @@ interface StudentAdmissionModalProps {
 }
 
 export const StudentAdmissionModal: React.FC<StudentAdmissionModalProps> = ({ school, isOpen, onClose }) => {
-  const { state, submitAdmissionApplication, setRole } = useDemo();
+  const { state, submitAdmissionApplication, setRole, addToast } = useDemo();
   const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
+  const [uploadingDoc, setUploadingDoc] = useState(false);
 
   // Step 1: Student
   const [studentName, setStudentName] = useState('Nana Yaw Mensah');
@@ -58,11 +62,37 @@ export const StudentAdmissionModal: React.FC<StudentAdmissionModalProps> = ({ sc
   const [submittedAppId, setSubmittedAppId] = useState('');
 
   const toggleDoc = (docName: string) => {
-    setAttachedDocs(prev => 
-      prev.includes(docName) 
-        ? prev.filter(d => d !== docName) 
+    setAttachedDocs(prev =>
+      prev.includes(docName)
+        ? prev.filter(d => d !== docName)
         : [...prev, docName]
     );
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingDoc(true);
+    try {
+      const res = await uploadToSupabaseStorage('private-vault', 'admissions', file);
+      if (!res.ok) {
+        addToast({
+          title: 'Upload Requires Sign-In',
+          message: res.error || 'Could not upload file.',
+          type: 'warning',
+        });
+        return;
+      }
+      setAttachedDocs((prev) => Array.from(new Set([...prev, res.path])));
+      addToast({
+        title: 'Document Uploaded',
+        message: `${file.name} securely stored in Supabase private-vault.`,
+        type: 'success',
+      });
+    } finally {
+      setUploadingDoc(false);
+      e.target.value = '';
+    }
   };
 
   const handleNextStep = () => {
@@ -113,9 +143,8 @@ export const StudentAdmissionModal: React.FC<StudentAdmissionModalProps> = ({ sc
         <div className="mb-6 border-b border-surface-border pb-4">
           <div className="flex items-center justify-between max-w-md mx-auto text-xs font-semibold">
             <div className={`flex items-center gap-1.5 ${step >= 1 ? 'text-brand-navy font-bold' : 'text-slate-400'}`}>
-              <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${
-                step > 1 ? 'bg-emerald-500 text-white' : step === 1 ? 'bg-brand-navy text-white' : 'bg-slate-200 text-slate-600'
-              }`}>
+              <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${step > 1 ? 'bg-emerald-500 text-white' : step === 1 ? 'bg-brand-navy text-white' : 'bg-slate-200 text-slate-600'
+                }`}>
                 {step > 1 ? '✓' : '1'}
               </div>
               <span>Student Bio</span>
@@ -124,9 +153,8 @@ export const StudentAdmissionModal: React.FC<StudentAdmissionModalProps> = ({ sc
             <div className={`h-0.5 w-12 ${step >= 2 ? 'bg-brand-navy' : 'bg-slate-200'}`} />
 
             <div className={`flex items-center gap-1.5 ${step >= 2 ? 'text-brand-navy font-bold' : 'text-slate-400'}`}>
-              <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${
-                step > 2 ? 'bg-emerald-500 text-white' : step === 2 ? 'bg-brand-navy text-white' : 'bg-slate-200 text-slate-600'
-              }`}>
+              <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${step > 2 ? 'bg-emerald-500 text-white' : step === 2 ? 'bg-brand-navy text-white' : 'bg-slate-200 text-slate-600'
+                }`}>
                 {step > 2 ? '✓' : '2'}
               </div>
               <span>Guardian</span>
@@ -135,9 +163,8 @@ export const StudentAdmissionModal: React.FC<StudentAdmissionModalProps> = ({ sc
             <div className={`h-0.5 w-12 ${step >= 3 ? 'bg-brand-navy' : 'bg-slate-200'}`} />
 
             <div className={`flex items-center gap-1.5 ${step >= 3 ? 'text-brand-navy font-bold' : 'text-slate-400'}`}>
-              <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${
-                step === 3 ? 'bg-brand-navy text-white' : 'bg-slate-200 text-slate-600'
-              }`}>
+              <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${step === 3 ? 'bg-brand-navy text-white' : 'bg-slate-200 text-slate-600'
+                }`}>
                 3
               </div>
               <span>Records</span>
@@ -332,9 +359,8 @@ export const StudentAdmissionModal: React.FC<StudentAdmissionModalProps> = ({ sc
                 return (
                   <label
                     key={doc}
-                    className={`flex items-center justify-between p-3 rounded-xl border text-xs cursor-pointer transition-colors ${
-                      isChecked ? 'bg-emerald-50/60 border-emerald-300' : 'bg-slate-50 border-slate-200 hover:bg-slate-100'
-                    }`}
+                    className={`flex items-center justify-between p-3 rounded-xl border text-xs cursor-pointer transition-colors ${isChecked ? 'bg-emerald-50/60 border-emerald-300' : 'bg-slate-50 border-slate-200 hover:bg-slate-100'
+                      }`}
                   >
                     <div className="flex items-center gap-2.5">
                       <input
@@ -354,6 +380,23 @@ export const StudentAdmissionModal: React.FC<StudentAdmissionModalProps> = ({ sc
                   </label>
                 );
               })}
+            </div>
+
+            <div className="mt-3 p-3 rounded-xl border-2 border-dashed border-slate-300 bg-slate-50/70 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div className="flex items-center gap-2 text-xs text-ink-secondary">
+                <Upload className="w-4 h-4 text-brand-navy shrink-0" />
+                <span>Upload real PDF / image records to encrypted Supabase Storage (`private-vault`)</span>
+              </div>
+              <label className="inline-flex items-center justify-center px-3 py-1.5 rounded-lg bg-brand-navy text-white text-xs font-semibold cursor-pointer hover:bg-brand-navy-dark shrink-0">
+                {uploadingDoc ? 'Uploading...' : 'Choose File'}
+                <input
+                  type="file"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  onChange={handleFileUpload}
+                  disabled={uploadingDoc}
+                  className="hidden"
+                />
+              </label>
             </div>
           </div>
 

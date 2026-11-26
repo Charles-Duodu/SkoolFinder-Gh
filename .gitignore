@@ -11,8 +11,12 @@ lerna-debug.log*
 node_modules/
 
 # Production build outputs
+.next/
+out/
 dist/
 dist-ssr/
+next-env.d.ts
+*.tsbuildinfo
 *.local
 
 # Editor directories and files

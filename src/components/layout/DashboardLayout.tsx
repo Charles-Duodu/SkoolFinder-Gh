@@ -1,11 +1,14 @@
+'use client';
+
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useDemo } from '../../context/DemoContext';
-import { 
-  ChevronRight, 
-  Menu, 
-  X, 
-  Bell, 
+import {
+  ChevronRight,
+  Menu,
+  X,
+  Bell,
   ArrowLeft,
   School,
   ExternalLink
@@ -36,18 +39,18 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   actionButton
 }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const location = useLocation();
+  const pathname = usePathname();
   const { role } = useDemo();
 
   return (
     <div className="min-h-screen bg-surface-bg flex flex-col">
       <div className="flex-1 flex overflow-hidden">
-        
+
         {/* Desktop Sidebar */}
         <aside className="hidden md:flex md:w-64 flex-col bg-white border-r border-surface-border">
           {/* Portal Brand Block */}
           <div className="p-5 border-b border-surface-border">
-            <Link to="/" className="flex items-center gap-2 text-ink-secondary hover:text-brand-navy text-xs font-semibold mb-3">
+            <Link href="/" className="flex items-center gap-2 text-ink-secondary hover:text-brand-navy text-xs font-semibold mb-3">
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>Back to Public Directory</span>
             </Link>
@@ -65,16 +68,15 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           {/* Navigation Items */}
           <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
             {navItems.map((item) => {
-              const isActive = location.pathname === item.path;
+              const isActive = pathname === item.path;
               return (
                 <Link
                   key={item.id}
-                  to={item.path}
-                  className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
-                    isActive
+                  href={item.path}
+                  className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${isActive
                       ? 'bg-brand-navy text-white shadow-sm'
                       : 'text-ink-secondary hover:text-ink-primary hover:bg-slate-100'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center gap-3">
                     <span className={isActive ? 'text-brand-gold' : 'text-ink-muted'}>
@@ -83,9 +85,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     <span>{item.label}</span>
                   </div>
                   {item.badge !== undefined && (
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                      isActive ? 'bg-brand-gold text-brand-navy-dark' : 'bg-slate-200 text-slate-700'
-                    }`}>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${isActive ? 'bg-brand-gold text-brand-navy-dark' : 'bg-slate-200 text-slate-700'
+                      }`}>
                       {item.badge}
                     </span>
                   )}
@@ -121,15 +122,14 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               </div>
               <nav className="p-3 space-y-1 overflow-y-auto flex-1">
                 {navItems.map((item) => {
-                  const isActive = location.pathname === item.path;
+                  const isActive = pathname === item.path;
                   return (
                     <Link
                       key={item.id}
-                      to={item.path}
+                      href={item.path}
                       onClick={() => setSidebarOpen(false)}
-                      className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold ${
-                        isActive ? 'bg-brand-navy text-white' : 'text-ink-secondary hover:bg-slate-100'
-                      }`}
+                      className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold ${isActive ? 'bg-brand-navy text-white' : 'text-ink-secondary hover:bg-slate-100'
+                        }`}
                     >
                       <div className="flex items-center gap-3">
                         <span className={isActive ? 'text-brand-gold' : 'text-ink-muted'}>{item.icon}</span>
@@ -164,14 +164,14 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 <span>{portalName}</span>
                 <ChevronRight className="w-3.5 h-3.5" />
                 <span className="font-semibold text-ink-primary">
-                  {navItems.find(i => i.path === location.pathname)?.label || 'Overview'}
+                  {navItems.find(i => i.path === pathname)?.label || 'Overview'}
                 </span>
               </div>
             </div>
 
             <div className="flex items-center gap-3">
               {actionButton}
-              <Link to="/schools" className="hidden sm:flex items-center gap-1 text-xs text-brand-navy font-semibold hover:underline">
+              <Link href="/schools" className="hidden sm:flex items-center gap-1 text-xs text-brand-navy font-semibold hover:underline">
                 <span>Explore Schools</span>
                 <ExternalLink className="w-3.5 h-3.5" />
               </Link>

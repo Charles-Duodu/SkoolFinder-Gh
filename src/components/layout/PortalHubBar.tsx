@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { LayoutDashboard, FileText, Info, Sparkles, CheckCircle2 } from 'lucide-react';
 

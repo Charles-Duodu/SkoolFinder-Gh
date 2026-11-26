@@ -1,7 +1,9 @@
+'use client';
+
 import React, { useState } from 'react';
 import { School, GreaterAccraLocality } from '../../types';
 import { MapPin, Navigation, School as SchoolIcon, ArrowRight, ExternalLink, Sparkles } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { formatGHS } from '../../lib/utils';
 import { Button } from '../../components/ui/Button';
 
@@ -52,7 +54,7 @@ export const AccraLocalityMap: React.FC<AccraLocalityMapProps> = ({
 
   return (
     <div className="bg-white rounded-2xl border border-surface-border p-5 lg:p-6 shadow-subtle space-y-6">
-      
+
       {/* Header and Filter Chips Bar */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-surface-border">
         <div>
@@ -86,11 +88,10 @@ export const AccraLocalityMap: React.FC<AccraLocalityMapProps> = ({
       <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
         <button
           onClick={() => onSelectLocality('')}
-          className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-colors ${
-            !selectedLocality 
-              ? 'bg-brand-navy text-white shadow-sm' 
+          className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-colors ${!selectedLocality
+              ? 'bg-brand-navy text-white shadow-sm'
               : 'bg-slate-100 text-ink-secondary hover:bg-slate-200'
-          }`}
+            }`}
         >
           All Greater Accra ({schools.length})
         </button>
@@ -103,17 +104,15 @@ export const AccraLocalityMap: React.FC<AccraLocalityMapProps> = ({
               onClick={() => onSelectLocality(isSelected ? '' : node.name)}
               onMouseEnter={() => setHoveredLocality(node.name)}
               onMouseLeave={() => setHoveredLocality(null)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-colors flex items-center gap-1.5 ${
-                isSelected
+              className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-colors flex items-center gap-1.5 ${isSelected
                   ? 'bg-brand-gold text-brand-navy-dark shadow-sm'
                   : 'bg-slate-50 border border-surface-border text-ink-secondary hover:bg-slate-100 hover:text-ink-primary'
-              }`}
+                }`}
             >
               <MapPin className="w-3 h-3 text-brand-navy" />
               <span>{node.name}</span>
-              <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${
-                isSelected ? 'bg-brand-navy text-white' : 'bg-slate-200 text-slate-700'
-              }`}>
+              <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${isSelected ? 'bg-brand-navy text-white' : 'bg-slate-200 text-slate-700'
+                }`}>
                 {count}
               </span>
             </button>
@@ -123,12 +122,12 @@ export const AccraLocalityMap: React.FC<AccraLocalityMapProps> = ({
 
       {/* Interactive Map Canvas + Locality Details Split */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        
+
         {/* SVG Geographical Visual Canvas (7 Cols) */}
         <div className="lg:col-span-7 relative bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 shadow-inner h-[380px] sm:h-[440px]">
           {/* Subtle Grid Backdrop */}
           <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#94A3B8_1px,transparent_1px)] [background-size:20px_20px]" />
-          
+
           {/* Coastline / Gulf of Guinea ocean representation at the bottom */}
           <div className="absolute bottom-0 inset-x-0 h-28 bg-gradient-to-t from-sky-950/80 to-transparent pointer-events-none" />
           <div className="absolute bottom-3 left-4 text-[10px] font-mono text-sky-400/60 flex items-center gap-1">
@@ -176,23 +175,20 @@ export const AccraLocalityMap: React.FC<AccraLocalityMapProps> = ({
                 )}
 
                 {/* Marker Pill / Icon */}
-                <div className={`relative px-2.5 py-1 rounded-full text-xs font-bold transition-transform duration-200 flex items-center gap-1.5 shadow-md ${
-                  isSelected
+                <div className={`relative px-2.5 py-1 rounded-full text-xs font-bold transition-transform duration-200 flex items-center gap-1.5 shadow-md ${isSelected
                     ? 'bg-brand-gold text-brand-navy-dark scale-110 ring-2 ring-white'
                     : isHovered
-                    ? 'bg-white text-brand-navy scale-105 ring-1 ring-brand-gold'
-                    : hasSchools
-                    ? 'bg-slate-800 text-slate-200 border border-slate-700 hover:bg-slate-700'
-                    : 'bg-slate-800/60 text-slate-400 border border-slate-800'
-                }`}>
-                  <span className={`w-2 h-2 rounded-full shrink-0 ${
-                    isSelected ? 'bg-brand-navy' : hasSchools ? 'bg-brand-gold' : 'bg-slate-600'
-                  }`} />
+                      ? 'bg-white text-brand-navy scale-105 ring-1 ring-brand-gold'
+                      : hasSchools
+                        ? 'bg-slate-800 text-slate-200 border border-slate-700 hover:bg-slate-700'
+                        : 'bg-slate-800/60 text-slate-400 border border-slate-800'
+                  }`}>
+                  <span className={`w-2 h-2 rounded-full shrink-0 ${isSelected ? 'bg-brand-navy' : hasSchools ? 'bg-brand-gold' : 'bg-slate-600'
+                    }`} />
                   <span className="text-[11px] truncate max-w-[85px] sm:max-w-none">{node.name}</span>
                   {hasSchools && (
-                    <span className={`text-[9px] px-1 rounded font-extrabold ${
-                      isSelected ? 'bg-brand-navy text-white' : 'bg-brand-navy/60 text-brand-gold'
-                    }`}>
+                    <span className={`text-[9px] px-1 rounded font-extrabold ${isSelected ? 'bg-brand-navy text-white' : 'bg-brand-navy/60 text-brand-gold'
+                      }`}>
                       {count}
                     </span>
                   )}
@@ -265,7 +261,7 @@ export const AccraLocalityMap: React.FC<AccraLocalityMapProps> = ({
                       <span className="text-[10px] font-normal text-slate-400 ml-1">/yr</span>
                     </span>
                     <Link
-                      to={`/schools/${school.slug}`}
+                      href={`/schools/${school.slug}`}
                       className="text-xs font-semibold text-brand-navy hover:text-brand-gold flex items-center gap-1"
                     >
                       <span>Explore</span>

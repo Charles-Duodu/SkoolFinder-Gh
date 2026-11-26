@@ -1,18 +1,21 @@
+'use client';
+
 import React, { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useDemo } from '../../context/DemoContext';
+import { uploadToSupabaseStorage } from '@/lib/supabase/storage';
 import { ProfessionalMode, GreaterAccraLocality, EducationLevel, VerificationStatus } from '../../types';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { Select } from '../../components/ui/Select';
 import { StatusBadge } from '../../components/ui/StatusBadge';
-import { 
-  Briefcase, 
-  CheckCircle2, 
-  ArrowRight, 
-  ArrowLeft, 
-  FileText, 
-  Clock, 
+import {
+  Briefcase,
+  CheckCircle2,
+  ArrowRight,
+  ArrowLeft,
+  FileText,
+  Clock,
   GraduationCap
 } from 'lucide-react';
 
@@ -21,17 +24,19 @@ interface ProfessionalOnboardingPageProps {
 }
 
 export const ProfessionalOnboardingPage: React.FC<ProfessionalOnboardingPageProps> = ({ onComplete }) => {
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const { addProfessional, setRole } = useDemo();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { addProfessional, setRole, addToast } = useDemo();
 
   const [step, setStep] = useState(1);
   const [submittedStatus, setSubmittedStatus] = useState<VerificationStatus | null>(null);
+  const [cvUrl, setCvUrl] = useState('');
+  const [uploadingCv, setUploadingCv] = useState(false);
 
   // Form
   const [fullName, setFullName] = useState('Kofi Addo Mensah');
   const [title, setTitle] = useState('Senior Mathematics & Physics Facilitator');
-  const [mode, setMode] = useState<ProfessionalMode>((searchParams.get('mode') as ProfessionalMode) || 'both');
+  const [mode, setMode] = useState<ProfessionalMode>((searchParams?.get('mode') as ProfessionalMode) || 'both');
   const [locality, setLocality] = useState<GreaterAccraLocality>('East Legon');
   const [phone, setPhone] = useState('+233 24 388 9102');
   const [email, setEmail] = useState('kofi.addo.edu@gmail.com');
@@ -58,6 +63,7 @@ export const ProfessionalOnboardingPage: React.FC<ProfessionalOnboardingPageProp
       subjects: subjects.split(',').map(s => s.trim()),
       targetLevels: ['Junior High School', 'Senior High School'],
       employmentPreference: 'Full-time',
+      ...(cvUrl ? { cvUrl } : {}),
       servicesOffered: [
         {
           id: `srv-${Date.now()}`,
@@ -74,7 +80,7 @@ export const ProfessionalOnboardingPage: React.FC<ProfessionalOnboardingPageProp
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-      
+
       <div className="text-center space-y-2">
         <h1 className="text-2xl sm:text-3xl font-extrabold text-ink-primary">
           Teacher & Professional Onboarding
@@ -107,7 +113,7 @@ export const ProfessionalOnboardingPage: React.FC<ProfessionalOnboardingPageProp
                   if (onComplete) {
                     onComplete();
                   } else {
-                    navigate('/professionals/dashboard');
+                    router.push('/professionals/dashboard');
                   }
                 }}
                 className="w-full justify-center"
@@ -119,7 +125,7 @@ export const ProfessionalOnboardingPage: React.FC<ProfessionalOnboardingPageProp
                 size="sm"
                 onClick={() => {
                   setRole('super_admin');
-                  navigate('/super-admin/approvals');
+                  router.push('/super-admin/approvals');
                 }}
                 className="w-full justify-center"
               >
@@ -177,11 +183,33 @@ export const ProfessionalOnboardingPage: React.FC<ProfessionalOnboardingPageProp
                   <label className="block text-xs font-semibold mb-1 uppercase">Professional Summary</label>
                   <textarea rows={4} value={summary} onChange={e => setSummary(e.target.value)} className="w-full border rounded-lg p-3 text-sm focus:border-brand-navy outline-none" />
                 </div>
-                <div className="p-4 border-2 border-dashed rounded-xl text-center space-y-1">
+                <label className="block p-4 border-2 border-dashed rounded-xl text-center space-y-1 cursor-pointer hover:bg-slate-50">
                   <FileText className="w-6 h-6 text-brand-navy mx-auto" />
-                  <span className="text-xs font-bold block">Simulated CV & License Upload</span>
-                  <span className="text-[11px] text-emerald-600 font-semibold">&bull; Kofi_Addo_Mensah_CV.pdf attached</span>
-                </div>
+                  <span className="text-xs font-bold block">
+                    {uploadingCv ? 'Uploading CV...' : 'Upload CV & NTC License (Supabase private-vault)'}
+                  </span>
+                  <span className="text-[11px] text-emerald-600 font-semibold block truncate">
+                    {cvUrl ? `Uploaded: ${cvUrl}` : 'Click to attach PDF or continue with profile summary'}
+                  </span>
+                  <input
+                    type="file"
+                    accept=".pdf,.doc,.docx,.jpg,.png"
+                    className="hidden"
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      setUploadingCv(true);
+                      const res = await uploadToSupabaseStorage('private-vault', 'professionals-cv', file);
+                      setUploadingCv(false);
+                      if (res.ok) {
+                        setCvUrl(res.path);
+                        addToast({ title: 'CV Uploaded', message: `${file.name} stored in private-vault.`, type: 'success' });
+                      } else {
+                        addToast({ title: 'Upload Notice', message: res.error || 'Sign in first to upload CV.', type: 'warning' });
+                      }
+                    }}
+                  />
+                </label>
               </div>
             )}
 

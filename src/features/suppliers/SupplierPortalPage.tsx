@@ -1,5 +1,7 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { useDemo } from '../../context/DemoContext';
 import { PortalHubBar, PortalHubMode } from '../../components/layout/PortalHubBar';
 import { SupplierEntryPage } from './SupplierEntryPage';
@@ -12,10 +14,11 @@ interface SupplierPortalPageProps {
 }
 
 export const SupplierPortalPage: React.FC<SupplierPortalPageProps> = ({ initialTab }) => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const { role, setRole } = useDemo();
 
-  const queryTab = searchParams.get('tab') as PortalHubMode | null;
+  const queryTab = searchParams?.get('tab') as PortalHubMode | null;
   const defaultMode: PortalHubMode = initialTab || queryTab || (role === 'supplier' ? 'dashboard' : 'overview');
 
   const [activeMode, setActiveMode] = useState<PortalHubMode>(defaultMode);
@@ -31,7 +34,7 @@ export const SupplierPortalPage: React.FC<SupplierPortalPageProps> = ({ initialT
 
   const handleModeChange = (mode: PortalHubMode) => {
     setActiveMode(mode);
-    setSearchParams({ tab: mode });
+    router.replace(`/suppliers?tab=${mode}`);
     if (mode === 'dashboard' && role !== 'supplier') {
       setRole('supplier');
     }
@@ -41,7 +44,7 @@ export const SupplierPortalPage: React.FC<SupplierPortalPageProps> = ({ initialT
     setRole('supplier');
     setWelcomeNotice(true);
     setActiveMode('dashboard');
-    setSearchParams({ tab: 'dashboard' });
+    router.replace('/suppliers?tab=dashboard');
   };
 
   return (

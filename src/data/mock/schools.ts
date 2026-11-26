@@ -141,6 +141,7 @@ export const mockSchools: School[] = [
     averageClassSize: 12,
     verificationStatus: 'approved',
     featured: true,
+    isClaimed: false,
     aboutText: 'Dedicated to the fundamental early years of human development, Cantonments Montessori provides an authentic AMI-aligned environment fostering curiosity, self-confidence, motor refinement, and independence in early learners.',
     admissionsOverview: 'Children admitted from 6 months old through 8 years. Termly intake available upon classroom space vacancy.',
     contactPerson: {

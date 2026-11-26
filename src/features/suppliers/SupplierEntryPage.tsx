@@ -1,5 +1,7 @@
+'use client';
+
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { Button } from '../../components/ui/Button';
 import { SupplierCategory } from '../../types';
 import {
@@ -53,7 +55,7 @@ export const SupplierEntryPage: React.FC<SupplierEntryPageProps> = ({ onStartReg
                 Register as a Verified Supplier
               </Button>
             ) : (
-              <Link to="/suppliers/register">
+              <Link href="/suppliers/register">
                 <Button variant="gold" size="lg" className="w-full sm:w-auto">
                   Register as a Verified Supplier
                 </Button>
@@ -65,7 +67,7 @@ export const SupplierEntryPage: React.FC<SupplierEntryPageProps> = ({ onStartReg
                 View Sample Supplier Dashboard
               </Button>
             ) : (
-              <Link to="/suppliers/dashboard">
+              <Link href="/suppliers/dashboard">
                 <Button variant="outline" size="lg" className="w-full sm:w-auto border-slate-600 text-white hover:bg-white/10">
                   View Sample Supplier Dashboard
                 </Button>

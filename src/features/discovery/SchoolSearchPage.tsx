@@ -1,5 +1,8 @@
+'use client';
+
 import React, { useState, useMemo } from 'react';
-import { useSearchParams, Link } from 'react-router-dom';
+import Link from 'next/link';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { useDemo } from '../../context/DemoContext';
 import { SchoolCard } from './SchoolCard';
 import { ParentEnquiryModal } from './ParentEnquiryModal';
@@ -21,18 +24,19 @@ import {
 import { Button } from '../../components/ui/Button';
 
 export const SchoolSearchPage: React.FC = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const { state } = useDemo();
 
-  const [query, setQuery] = useState(searchParams.get('q') || '');
-  const [selectedLocality, setSelectedLocality] = useState(searchParams.get('locality') || '');
-  const [selectedLevel, setSelectedLevel] = useState(searchParams.get('level') || '');
-  const [selectedCurriculum, setSelectedCurriculum] = useState(searchParams.get('curriculum') || '');
+  const [query, setQuery] = useState(searchParams?.get('q') || '');
+  const [selectedLocality, setSelectedLocality] = useState(searchParams?.get('locality') || '');
+  const [selectedLevel, setSelectedLevel] = useState(searchParams?.get('level') || '');
+  const [selectedCurriculum, setSelectedCurriculum] = useState(searchParams?.get('curriculum') || '');
   const [selectedBoarding, setSelectedBoarding] = useState('');
   
   // Multi-select Facility Highlights
   const [selectedFacilities, setSelectedFacilities] = useState<string[]>(() => {
-    const fac = searchParams.get('facility');
+    const fac = searchParams?.get('facility');
     return fac ? [fac] : [];
   });
 
@@ -122,7 +126,7 @@ export const SchoolSearchPage: React.FC = () => {
     setSelectedCurriculum('');
     setSelectedBoarding('');
     setSelectedFacilities([]);
-    setSearchParams({});
+    router.push('/schools');
   };
 
   const hasActiveFilters = Boolean(
@@ -146,7 +150,7 @@ export const SchoolSearchPage: React.FC = () => {
         {/* View mode & Compare shortcut */}
         <div className="flex items-center gap-3">
           {state.parent.comparisonSchoolIds.length > 0 && (
-            <Link to="/compare">
+            <Link href="/compare">
               <Button variant="gold" size="sm" icon={<Scale className="w-4 h-4 text-brand-navy-dark" />}>
                 Compare ({state.parent.comparisonSchoolIds.length})
               </Button>

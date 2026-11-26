@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { School, EducationLevel } from '../../types';
 import { formatGHS } from '../../lib/utils';

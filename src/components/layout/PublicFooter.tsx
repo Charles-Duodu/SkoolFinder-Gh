@@ -1,5 +1,7 @@
+'use client';
+
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { School, MapPin, Shield, BookOpen, Users, Phone, Mail, ShieldAlert } from 'lucide-react';
 import { SafeguardingReportModal } from '../../features/discovery/SafeguardingReportModal';
 
@@ -59,13 +61,13 @@ export const PublicFooter: React.FC = () => {
               Educational Portals
             </h4>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/schools" className="hover:text-brand-gold transition-colors">School Search Directory</Link></li>
-              <li><Link to="/compare" className="hover:text-brand-gold transition-colors">Compare Schools</Link></li>
-              <li><Link to="/parents/dashboard" className="hover:text-brand-gold transition-colors">Parents Workspace</Link></li>
-              <li><Link to="/school-owners" className="hover:text-brand-gold transition-colors">School Owners Portal</Link></li>
-              <li><Link to="/professionals" className="hover:text-brand-gold transition-colors">Teachers & Professionals</Link></li>
-              <li><Link to="/suppliers" className="hover:text-brand-gold transition-colors">Suppliers & Tenders</Link></li>
-              <li><Link to="/super-admin/dashboard" className="hover:text-brand-gold transition-colors">Super Admin Console</Link></li>
+              <li><Link href="/schools" className="hover:text-brand-gold transition-colors">School Search Directory</Link></li>
+              <li><Link href="/compare" className="hover:text-brand-gold transition-colors">Compare Schools</Link></li>
+              <li><Link href="/parents/dashboard" className="hover:text-brand-gold transition-colors">Parents Workspace</Link></li>
+              <li><Link href="/school-owners" className="hover:text-brand-gold transition-colors">School Owners Portal</Link></li>
+              <li><Link href="/professionals" className="hover:text-brand-gold transition-colors">Teachers & Professionals</Link></li>
+              <li><Link href="/suppliers" className="hover:text-brand-gold transition-colors">Suppliers & Tenders</Link></li>
+              <li><Link href="/super-admin/dashboard" className="hover:text-brand-gold transition-colors">Super Admin Console</Link></li>
               <li>
                 <button
                   onClick={() => setSafeguardingOpen(true)}
@@ -86,7 +88,7 @@ export const PublicFooter: React.FC = () => {
             <ul className="space-y-2 text-sm">
               {levels.map((lvl) => (
                 <li key={lvl}>
-                  <Link to={`/schools?level=${encodeURIComponent(lvl)}`} className="hover:text-brand-gold transition-colors">
+                  <Link href={`/schools?level=${encodeURIComponent(lvl)}`} className="hover:text-brand-gold transition-colors">
                     {lvl}
                   </Link>
                 </li>
@@ -103,7 +105,7 @@ export const PublicFooter: React.FC = () => {
               {localities.map((loc) => (
                 <Link
                   key={loc}
-                  to={`/schools?locality=${encodeURIComponent(loc)}`}
+                  href={`/schools?locality=${encodeURIComponent(loc)}`}
                   className="px-2 py-0.5 rounded text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors"
                 >
                   {loc}
@@ -124,7 +126,7 @@ export const PublicFooter: React.FC = () => {
               <Shield className="w-3.5 h-3.5 text-brand-gold" />
               <span>Frontend Interactive Demonstration Prototype</span>
             </span>
-            <Link to="/super-admin/dashboard" className="text-slate-400 hover:text-white underline">
+            <Link href="/super-admin/dashboard" className="text-slate-400 hover:text-white underline">
               Admin Governance
             </Link>
           </div>

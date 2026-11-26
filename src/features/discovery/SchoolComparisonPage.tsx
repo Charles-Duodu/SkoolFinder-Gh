@@ -1,5 +1,7 @@
+'use client';
+
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { useDemo } from '../../context/DemoContext';
 import { formatGHS } from '../../lib/utils';
 import { Button } from '../../components/ui/Button';
@@ -16,7 +18,7 @@ export const SchoolComparisonPage: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-      
+
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-surface-border pb-6">
         <div>
@@ -32,7 +34,7 @@ export const SchoolComparisonPage: React.FC = () => {
           </p>
         </div>
 
-        <Link to="/schools">
+        <Link href="/schools">
           <Button variant="outline" size="sm" icon={<Plus className="w-4 h-4" />}>
             Add More Schools
           </Button>
@@ -48,7 +50,7 @@ export const SchoolComparisonPage: React.FC = () => {
           <p className="text-xs text-ink-secondary">
             Click the "Compare" scale icon on any school card in the directory to add institutions to this side-by-side matrix.
           </p>
-          <Link to="/schools">
+          <Link href="/schools">
             <Button variant="gold" size="sm">
               Browse Schools Directory
             </Button>
@@ -72,7 +74,7 @@ export const SchoolComparisonPage: React.FC = () => {
                           className="w-8 h-8 rounded-lg object-cover bg-white border border-surface-border shrink-0"
                         />
                         <div className="min-w-0">
-                          <Link to={`/schools/${s.slug}`} className="font-bold text-xs hover:text-brand-navy truncate block">
+                          <Link href={`/schools/${s.slug}`} className="font-bold text-xs hover:text-brand-navy truncate block">
                             {s.name}
                           </Link>
                           <span className="text-[10px] text-ink-secondary">{s.locality}</span>
@@ -91,7 +93,7 @@ export const SchoolComparisonPage: React.FC = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-surface-border text-xs">
-              
+
               {/* Locality */}
               <tr>
                 <td className="p-4 font-bold text-ink-primary bg-slate-50/30">Locality</td>
@@ -199,7 +201,7 @@ export const SchoolComparisonPage: React.FC = () => {
                     >
                       Calculate Fees
                     </Button>
-                    <Link to={`/schools/${s.slug}`} className="block">
+                    <Link href={`/schools/${s.slug}`} className="block">
                       <Button variant="primary" size="sm" className="w-full justify-center text-xs">
                         View Full Profile
                       </Button>

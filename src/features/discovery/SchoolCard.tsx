@@ -1,5 +1,7 @@
+'use client';
+
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { School } from '../../types';
 import { useDemo } from '../../context/DemoContext';
 import { formatGHS } from '../../lib/utils';
@@ -146,7 +148,7 @@ export const SchoolCard: React.FC<SchoolCardProps> = ({ school, onOpenEnquiry })
 
         {/* Action Buttons */}
         <div className="pt-2 flex items-center gap-2">
-          <Link to={`/schools/${school.slug}`} className="flex-1">
+          <Link href={`/schools/${school.slug}`} className="flex-1">
             <Button variant="outline" size="sm" className="w-full justify-center">
               View Profile
             </Button>

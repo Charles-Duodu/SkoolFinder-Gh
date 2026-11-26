@@ -1,5 +1,7 @@
+'use client';
+
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { useDemo } from '../../context/DemoContext';
 import { AdminLayout } from '../../components/layout/AdminLayout';
 import { StatusBadge } from '../../components/ui/StatusBadge';
@@ -78,7 +80,7 @@ export const SuperAdminDashboardPage: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <Link to="/super-admin/approvals">
+            <Link href="/super-admin/approvals">
               <Button variant="danger" size="sm" icon={<CheckSquare className="w-3.5 h-3.5" />}>
                 Review Queue ({totalPendingApprovals})
               </Button>
@@ -102,7 +104,7 @@ export const SuperAdminDashboardPage: React.FC = () => {
                 </p>
               </div>
             </div>
-            <Link to="/super-admin/approvals">
+            <Link href="/super-admin/approvals">
               <Button variant="gold" size="sm">
                 Open Applications Centre
               </Button>
@@ -112,7 +114,7 @@ export const SuperAdminDashboardPage: React.FC = () => {
 
         {/* Executive KPI Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <Link to="/super-admin/schools" className="bg-white p-5 rounded-2xl border border-surface-border shadow-subtle hover:border-brand-navy transition-colors">
+          <Link href="/super-admin/schools" className="bg-white p-5 rounded-2xl border border-surface-border shadow-subtle hover:border-brand-navy transition-colors">
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-ink-muted">Registered Schools</span>
               <School className="w-4 h-4 text-brand-navy" />
@@ -125,7 +127,7 @@ export const SuperAdminDashboardPage: React.FC = () => {
             </div>
           </Link>
 
-          <Link to="/super-admin/parents" className="bg-white p-5 rounded-2xl border border-surface-border shadow-subtle hover:border-brand-navy transition-colors">
+          <Link href="/super-admin/parents" className="bg-white p-5 rounded-2xl border border-surface-border shadow-subtle hover:border-brand-navy transition-colors">
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-ink-muted">Parent Demonstration Users</span>
               <Users className="w-4 h-4 text-blue-600" />
@@ -134,7 +136,7 @@ export const SuperAdminDashboardPage: React.FC = () => {
             <span className="text-[11px] text-ink-secondary mt-1 block">Active across Greater Accra</span>
           </Link>
 
-          <Link to="/super-admin/professionals" className="bg-white p-5 rounded-2xl border border-surface-border shadow-subtle hover:border-brand-navy transition-colors">
+          <Link href="/super-admin/professionals" className="bg-white p-5 rounded-2xl border border-surface-border shadow-subtle hover:border-brand-navy transition-colors">
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-ink-muted">Teachers & Pros</span>
               <Briefcase className="w-4 h-4 text-emerald-600" />
@@ -143,7 +145,7 @@ export const SuperAdminDashboardPage: React.FC = () => {
             <span className="text-[11px] text-emerald-600 font-bold mt-1 block">NTC Vetting Active</span>
           </Link>
 
-          <Link to="/super-admin/suppliers" className="bg-white p-5 rounded-2xl border border-surface-border shadow-subtle hover:border-brand-navy transition-colors">
+          <Link href="/super-admin/suppliers" className="bg-white p-5 rounded-2xl border border-surface-border shadow-subtle hover:border-brand-navy transition-colors">
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-ink-muted">Suppliers & Vendors</span>
               <Truck className="w-4 h-4 text-purple-600" />

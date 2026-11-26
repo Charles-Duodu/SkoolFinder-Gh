@@ -74,6 +74,8 @@ export interface School {
   averageClassSize: number;
   verificationStatus: VerificationStatus;
   featured: boolean;
+  isClaimed?: boolean;
+  planTier?: 'free_launch' | 'standard' | 'pro' | 'enterprise';
   aboutText: string;
   admissionsOverview: string;
   admissionsDeadline?: string;

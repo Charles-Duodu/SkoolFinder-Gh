@@ -1,24 +1,29 @@
+'use client';
+
 import React, { useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import { useDemo } from '../../context/DemoContext';
 import { formatGHS } from '../../lib/utils';
 import { StatusBadge } from '../../components/ui/StatusBadge';
 import { Button } from '../../components/ui/Button';
+import { Modal } from '../../components/ui/Modal';
+import { Input } from '../../components/ui/Input';
 import { ParentEnquiryModal } from './ParentEnquiryModal';
 import { StudentAdmissionModal } from './StudentAdmissionModal';
 import { SchoolFeeCalculatorModal } from './SchoolFeeCalculatorModal';
 import { SafeguardingReportModal } from './SafeguardingReportModal';
-import { 
-  MapPin, 
-  Phone, 
-  Mail, 
-  Globe, 
-  Calendar, 
-  Scale, 
-  Bookmark, 
-  Users, 
-  Building, 
-  CheckCircle2, 
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Globe,
+  Calendar,
+  Scale,
+  Bookmark,
+  Users,
+  Building,
+  CheckCircle2,
   ArrowLeft,
   Share2,
   ExternalLink,
@@ -30,13 +35,16 @@ import {
 } from 'lucide-react';
 
 export const SchoolDetailPage: React.FC = () => {
-  const { slug } = useParams<{ slug: string }>();
-  const navigate = useNavigate();
-  const { state, toggleSaveSchool, toggleCompareSchool } = useDemo();
+  const params = useParams<{ slug: string }>();
+  const slug = params?.slug;
+  const { state, toggleSaveSchool, toggleCompareSchool, claimSchool } = useDemo();
   const [enquiryOpen, setEnquiryOpen] = useState(false);
   const [admissionOpen, setAdmissionOpen] = useState(false);
   const [calculatorOpen, setCalculatorOpen] = useState(false);
   const [safeguardingOpen, setSafeguardingOpen] = useState(false);
+  const [claimOpen, setClaimOpen] = useState(false);
+  const [claimantName, setClaimantName] = useState('');
+  const [claimantEmail, setClaimantEmail] = useState('');
   const [activeTab, setActiveTab] = useState<'overview' | 'academics' | 'facilities' | 'admissions' | 'gallery'>('overview');
 
   const school = state.schools.find(s => s.slug === slug || s.id === slug);
@@ -46,7 +54,7 @@ export const SchoolDetailPage: React.FC = () => {
       <div className="max-w-4xl mx-auto px-4 py-16 text-center space-y-4">
         <h2 className="text-2xl font-bold text-ink-primary">School Profile Not Found</h2>
         <p className="text-sm text-ink-secondary">The requested private school could not be located in the Greater Accra registry.</p>
-        <Link to="/schools">
+        <Link href="/schools">
           <Button variant="primary">Return to Directory</Button>
         </Link>
       </div>
@@ -63,11 +71,11 @@ export const SchoolDetailPage: React.FC = () => {
 
   return (
     <div className="pb-20">
-      
+
       {/* Top Breadcrumb & Actions Bar */}
       <div className="bg-white border-b border-surface-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
-          <Link to="/schools" className="flex items-center gap-1.5 text-xs text-ink-secondary hover:text-brand-navy font-semibold">
+          <Link href="/schools" className="flex items-center gap-1.5 text-xs text-ink-secondary hover:text-brand-navy font-semibold">
             <ArrowLeft className="w-4 h-4" />
             <span>Back to All Schools</span>
           </Link>
@@ -75,18 +83,16 @@ export const SchoolDetailPage: React.FC = () => {
           <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={() => toggleSaveSchool(school.id)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
-                isSaved ? 'bg-brand-gold text-brand-navy-dark border-brand-gold' : 'border-surface-border hover:bg-slate-50 text-ink-secondary'
-              }`}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${isSaved ? 'bg-brand-gold text-brand-navy-dark border-brand-gold' : 'border-surface-border hover:bg-slate-50 text-ink-secondary'
+                }`}
             >
               <Bookmark className="w-3.5 h-3.5 fill-current" />
               <span>{isSaved ? 'Saved' : 'Save'}</span>
             </button>
             <button
               onClick={() => toggleCompareSchool(school.id)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
-                isCompared ? 'bg-brand-navy text-white border-brand-navy' : 'border-surface-border hover:bg-slate-50 text-ink-secondary'
-              }`}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${isCompared ? 'bg-brand-navy text-white border-brand-navy' : 'border-surface-border hover:bg-slate-50 text-ink-secondary'
+                }`}
             >
               <Scale className="w-3.5 h-3.5" />
               <span>{isCompared ? 'In Comparison' : 'Compare'}</span>
@@ -155,10 +161,10 @@ export const SchoolDetailPage: React.FC = () => {
       {/* Content Layout */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
+
           {/* Main 2-Col Body */}
           <div className="lg:col-span-2 space-y-8">
-            
+
             {/* Tabs Bar */}
             <div className="flex border-b border-surface-border space-x-6 text-sm font-semibold">
               {[
@@ -171,9 +177,8 @@ export const SchoolDetailPage: React.FC = () => {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`pb-3 border-b-2 transition-colors ${
-                    activeTab === tab.id ? 'border-brand-navy text-brand-navy font-bold' : 'border-transparent text-ink-secondary hover:text-ink-primary'
-                  }`}
+                  className={`pb-3 border-b-2 transition-colors ${activeTab === tab.id ? 'border-brand-navy text-brand-navy font-bold' : 'border-transparent text-ink-secondary hover:text-ink-primary'
+                    }`}
                 >
                   {tab.label}
                 </button>
@@ -367,14 +372,14 @@ export const SchoolDetailPage: React.FC = () => {
 
           {/* Sidebar CTA & Related Schools */}
           <div className="space-y-6">
-            
+
             {/* Quick Admissions Actions Box */}
             <div className="bg-white rounded-2xl p-6 border border-surface-border shadow-subtle space-y-3.5">
               <h3 className="text-base font-bold text-ink-primary">Admissions & Enquiries</h3>
               <p className="text-xs text-ink-secondary leading-relaxed">
                 Connect with {school.contactPerson.name} ({school.contactPerson.role}) or submit your child's entry application online.
               </p>
-              
+
               <div className="space-y-2 pt-1">
                 <Button
                   variant="primary"
@@ -385,7 +390,7 @@ export const SchoolDetailPage: React.FC = () => {
                 >
                   Apply for Admission
                 </Button>
-                
+
                 <Button
                   variant="outline"
                   size="sm"
@@ -422,6 +427,27 @@ export const SchoolDetailPage: React.FC = () => {
               </div>
             </div>
 
+            {/* Unclaimed School Proprietor Claim Banner */}
+            {school.isClaimed === false && (
+              <div className="bg-amber-50/90 rounded-2xl p-5 border border-amber-200 space-y-3">
+                <div className="flex items-center gap-2 text-xs font-bold text-amber-900 uppercase tracking-wider">
+                  <Building className="w-4 h-4 text-amber-700" />
+                  <span>Unclaimed School Listing</span>
+                </div>
+                <p className="text-xs text-amber-950/90 leading-relaxed">
+                  Are you the Proprietor or Admissions Officer of <strong>{school.name}</strong>? Claim this verified listing to manage enquiries, publish vacancies, and receive applications.
+                </p>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setClaimOpen(true)}
+                  className="w-full justify-center bg-white border-amber-300 text-amber-950 hover:bg-amber-100"
+                >
+                  Claim & Manage This School
+                </Button>
+              </div>
+            )}
+
             {/* Related Schools in Greater Accra */}
             {relatedSchools.length > 0 && (
               <div className="bg-white rounded-2xl p-5 border border-surface-border space-y-4">
@@ -432,7 +458,7 @@ export const SchoolDetailPage: React.FC = () => {
                   {relatedSchools.map(rel => (
                     <Link
                       key={rel.id}
-                      to={`/schools/${rel.slug}`}
+                      href={`/schools/${rel.slug}`}
                       className="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-50 transition-colors group"
                     >
                       <img
@@ -485,6 +511,53 @@ export const SchoolDetailPage: React.FC = () => {
         isOpen={safeguardingOpen}
         onClose={() => setSafeguardingOpen(false)}
       />
+
+      {/* Claim Unclaimed School Ownership Modal */}
+      <Modal
+        isOpen={claimOpen}
+        onClose={() => setClaimOpen(false)}
+        title={`Claim Ownership — ${school.name}`}
+        maxWidth="md"
+      >
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (!claimantName.trim() || !claimantEmail.trim()) return;
+            claimSchool(school.id, claimantName, claimantEmail);
+            setClaimOpen(false);
+            setClaimantName('');
+            setClaimantEmail('');
+          }}
+          className="space-y-4"
+        >
+          <p className="text-xs text-ink-secondary leading-relaxed">
+            Submit your official school contact details to claim <strong>{school.name}</strong>. Once verified by our Greater Accra onboarding desk, this listing connects directly to your School Management Dashboard.
+          </p>
+          <Input
+            label="Authorized Representative Name"
+            value={claimantName}
+            onChange={(e) => setClaimantName(e.target.value)}
+            placeholder="e.g. Mrs. Akua Mensah (Proprietor)"
+            required
+          />
+          <Input
+            label="Official School Email Address"
+            type="email"
+            value={claimantEmail}
+            onChange={(e) => setClaimantEmail(e.target.value)}
+            placeholder="e.g. principal@school.edu.gh"
+            required
+          />
+          <div className="flex justify-end gap-2 pt-3 border-t border-surface-border">
+            <Button type="button" variant="outline" onClick={() => setClaimOpen(false)}>
+              Cancel
+            </Button>
+            <Button type="submit" variant="gold">
+              Submit Ownership Claim
+            </Button>
+          </div>
+        </form>
+      </Modal>
 
     </div>
   );

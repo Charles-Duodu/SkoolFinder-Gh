@@ -1,18 +1,20 @@
+'use client';
+
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { useDemo } from '../../context/DemoContext';
 import { SupplierCategory, GreaterAccraLocality, VerificationStatus } from '../../types';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { Select } from '../../components/ui/Select';
 import { StatusBadge } from '../../components/ui/StatusBadge';
-import { 
-  Truck, 
-  CheckCircle2, 
-  ArrowRight, 
-  ArrowLeft, 
-  FileText, 
-  Clock 
+import {
+  Truck,
+  CheckCircle2,
+  ArrowRight,
+  ArrowLeft,
+  FileText,
+  Clock
 } from 'lucide-react';
 
 interface SupplierOnboardingPageProps {
@@ -20,7 +22,7 @@ interface SupplierOnboardingPageProps {
 }
 
 export const SupplierOnboardingPage: React.FC<SupplierOnboardingPageProps> = ({ onComplete }) => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { addSupplier, setRole } = useDemo();
 
   const [step, setStep] = useState(1);
@@ -67,7 +69,7 @@ export const SupplierOnboardingPage: React.FC<SupplierOnboardingPageProps> = ({ 
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-      
+
       <div className="text-center space-y-2">
         <h1 className="text-2xl sm:text-3xl font-extrabold text-ink-primary">
           Supplier & Vendor Registration
@@ -100,7 +102,7 @@ export const SupplierOnboardingPage: React.FC<SupplierOnboardingPageProps> = ({ 
                   if (onComplete) {
                     onComplete();
                   } else {
-                    navigate('/suppliers/dashboard');
+                    router.push('/suppliers/dashboard');
                   }
                 }}
                 className="w-full justify-center"
@@ -112,7 +114,7 @@ export const SupplierOnboardingPage: React.FC<SupplierOnboardingPageProps> = ({ 
                 size="sm"
                 onClick={() => {
                   setRole('super_admin');
-                  navigate('/super-admin/approvals');
+                  router.push('/super-admin/approvals');
                 }}
                 className="w-full justify-center"
               >

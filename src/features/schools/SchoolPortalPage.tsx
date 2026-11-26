@@ -1,5 +1,7 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { useDemo } from '../../context/DemoContext';
 import { PortalHubBar, PortalHubMode } from '../../components/layout/PortalHubBar';
 import { SchoolEntryPage } from './SchoolEntryPage';
@@ -12,11 +14,12 @@ interface SchoolPortalPageProps {
 }
 
 export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({ initialTab }) => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const { role, setRole } = useDemo();
 
   // Determine initial active mode from prop, query parameter, or user's active role
-  const queryTab = searchParams.get('tab') as PortalHubMode | null;
+  const queryTab = searchParams?.get('tab') as PortalHubMode | null;
   const defaultMode: PortalHubMode = initialTab || queryTab || (role === 'school_owner' ? 'dashboard' : 'overview');
 
   const [activeMode, setActiveMode] = useState<PortalHubMode>(defaultMode);
@@ -33,7 +36,7 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({ initialTab }
 
   const handleModeChange = (mode: PortalHubMode) => {
     setActiveMode(mode);
-    setSearchParams({ tab: mode });
+    router.replace(`/school-owners?tab=${mode}`);
     if (mode === 'dashboard' && role !== 'school_owner') {
       setRole('school_owner');
     }
@@ -43,7 +46,7 @@ export const SchoolPortalPage: React.FC<SchoolPortalPageProps> = ({ initialTab }
     setRole('school_owner');
     setWelcomeNotice(true);
     setActiveMode('dashboard');
-    setSearchParams({ tab: 'dashboard' });
+    router.replace('/school-owners?tab=dashboard');
   };
 
   return (

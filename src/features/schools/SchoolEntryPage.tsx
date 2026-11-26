@@ -1,5 +1,7 @@
+'use client';
+
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { Button } from '../../components/ui/Button';
 import { 
   School, 
@@ -46,7 +48,7 @@ export const SchoolEntryPage: React.FC<SchoolEntryPageProps> = ({ onStartRegiste
                 Register Your School (Free Demo)
               </Button>
             ) : (
-              <Link to="/school-owners/register">
+              <Link href="/school-owners/register">
                 <Button variant="gold" size="lg" className="w-full sm:w-auto">
                   Register Your School (Free Demo)
                 </Button>
@@ -58,7 +60,7 @@ export const SchoolEntryPage: React.FC<SchoolEntryPageProps> = ({ onStartRegiste
                 View Sample School Dashboard
               </Button>
             ) : (
-              <Link to="/school-owners/dashboard">
+              <Link href="/school-owners/dashboard">
                 <Button variant="outline" size="lg" className="w-full sm:w-auto border-slate-600 text-white hover:bg-white/10">
                   View Sample School Dashboard
                 </Button>
@@ -160,7 +162,7 @@ export const SchoolEntryPage: React.FC<SchoolEntryPageProps> = ({ onStartRegiste
           </div>
 
           <div className="text-center pt-8">
-            <Link to="/school-owners/register">
+            <Link href="/school-owners/register">
               <Button variant="gold" size="lg">Start School Application</Button>
             </Link>
           </div>

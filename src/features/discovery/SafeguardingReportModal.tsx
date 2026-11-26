@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { School, SafeguardingCase } from '../../types';
 import { useDemo } from '../../context/DemoContext';

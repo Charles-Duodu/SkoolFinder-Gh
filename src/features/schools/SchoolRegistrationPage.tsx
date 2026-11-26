@@ -1,19 +1,22 @@
+'use client';
+
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { useDemo } from '../../context/DemoContext';
+import { uploadToSupabaseStorage } from '@/lib/supabase/storage';
 import { GreaterAccraLocality, EducationLevel, CurriculumType, VerificationStatus } from '../../types';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { Select } from '../../components/ui/Select';
 import { StatusBadge } from '../../components/ui/StatusBadge';
-import { 
-  School, 
-  CheckCircle2, 
-  ArrowRight, 
-  ArrowLeft, 
-  Upload, 
-  FileText, 
-  Clock, 
+import {
+  School,
+  CheckCircle2,
+  ArrowRight,
+  ArrowLeft,
+  Upload,
+  FileText,
+  Clock,
   AlertTriangle,
   RotateCcw
 } from 'lucide-react';
@@ -23,11 +26,14 @@ interface SchoolRegistrationPageProps {
 }
 
 export const SchoolRegistrationPage: React.FC<SchoolRegistrationPageProps> = ({ onComplete }) => {
-  const navigate = useNavigate();
-  const { addSchool, setRole } = useDemo();
+  const router = useRouter();
+  const { addSchool, setRole, addToast } = useDemo();
 
   const [step, setStep] = useState(1);
   const [submittedStatus, setSubmittedStatus] = useState<VerificationStatus | null>(null);
+  const [crestUrl, setCrestUrl] = useState('https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=160&auto=format&fit=crop&q=80');
+  const [gesDocPath, setGesDocPath] = useState('GES_Cert_2026.pdf');
+  const [uploadingFile, setUploadingFile] = useState(false);
 
   // Form State
   const [schoolName, setSchoolName] = useState('');
@@ -66,7 +72,7 @@ export const SchoolRegistrationPage: React.FC<SchoolRegistrationPageProps> = ({ 
       name: schoolName || 'New Greater Accra International Academy',
       slug: (schoolName || 'new-accra-academy').toLowerCase().replace(/\s+/g, '-'),
       tagline: tagline || 'Committed to child development and academic distinction',
-      crestUrl: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=160&auto=format&fit=crop&q=80',
+      crestUrl,
       coverImageUrl: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=1200&auto=format&fit=crop&q=80',
       galleryImages: ['https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=800&auto=format&fit=crop&q=80'],
       locality,
@@ -99,7 +105,7 @@ export const SchoolRegistrationPage: React.FC<SchoolRegistrationPageProps> = ({ 
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-      
+
       {/* Title */}
       <div className="text-center space-y-2">
         <h1 className="text-2xl sm:text-3xl font-extrabold text-ink-primary">
@@ -142,7 +148,7 @@ export const SchoolRegistrationPage: React.FC<SchoolRegistrationPageProps> = ({ 
                   if (onComplete) {
                     onComplete();
                   } else {
-                    navigate('/school-owners/dashboard');
+                    router.push('/school-owners/dashboard');
                   }
                 }}
                 className="w-full justify-center"
@@ -154,7 +160,7 @@ export const SchoolRegistrationPage: React.FC<SchoolRegistrationPageProps> = ({ 
                 size="sm"
                 onClick={() => {
                   setRole('super_admin');
-                  navigate('/super-admin/approvals');
+                  router.push('/super-admin/approvals');
                 }}
                 className="w-full justify-center"
               >
@@ -166,15 +172,15 @@ export const SchoolRegistrationPage: React.FC<SchoolRegistrationPageProps> = ({ 
       ) : (
         /* 8-Step Wizard */
         <div className="bg-white rounded-2xl border border-surface-border shadow-subtle overflow-hidden">
-          
+
           {/* Stepper Header */}
           <div className="bg-slate-50 border-b border-surface-border p-4 sm:p-5">
             <div className="flex items-center justify-between text-xs mb-2">
               <span className="font-bold text-brand-navy uppercase tracking-wider">
                 Step {step} of 8: {
                   [
-                    'Account Information', 'School Identity', 'Location & Campus', 
-                    'Education Levels', 'Curriculum & Academics', 'Facilities', 
+                    'Account Information', 'School Identity', 'Location & Campus',
+                    'Education Levels', 'Curriculum & Academics', 'Facilities',
                     'Supporting Documents', 'Review & Submission'
                   ][step - 1]
                 }
@@ -182,7 +188,7 @@ export const SchoolRegistrationPage: React.FC<SchoolRegistrationPageProps> = ({ 
               <span className="text-ink-secondary font-medium">{Math.round((step / 8) * 100)}% Completed</span>
             </div>
             <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
-              <div 
+              <div
                 className="bg-brand-navy h-full transition-all duration-300"
                 style={{ width: `${(step / 8) * 100}%` }}
               />
@@ -191,7 +197,7 @@ export const SchoolRegistrationPage: React.FC<SchoolRegistrationPageProps> = ({ 
 
           {/* Step Contents */}
           <form onSubmit={handleSubmit} className="p-6 sm:p-8 space-y-6">
-            
+
             {/* STEP 1 */}
             {step === 1 && (
               <div className="space-y-4">
@@ -317,21 +323,59 @@ export const SchoolRegistrationPage: React.FC<SchoolRegistrationPageProps> = ({ 
             {/* STEP 7 */}
             {step === 7 && (
               <div className="space-y-4">
-                <h3 className="text-base font-bold text-ink-primary">Supporting Compliance Documents (Simulated)</h3>
+                <h3 className="text-base font-bold text-ink-primary">School Crest & Compliance Documents</h3>
                 <p className="text-xs text-ink-secondary">
-                  For verification by the Super Admin compliance desk. In this prototype, mock attachments are automatically simulated.
+                  Upload your school crest (`public-media`) and GES registration certificate (`private-vault`) directly to Supabase Storage.
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="p-4 border-2 border-dashed border-surface-border rounded-xl text-center space-y-2">
+                  <label className="p-4 border-2 border-dashed border-surface-border rounded-xl text-center space-y-2 cursor-pointer hover:bg-slate-50">
+                    <Upload className="w-8 h-8 text-brand-navy mx-auto" />
+                    <span className="text-xs font-bold block">Upload School Crest / Logo</span>
+                    <span className="text-[11px] text-emerald-600 font-semibold block truncate">
+                      {uploadingFile ? 'Uploading...' : crestUrl.includes('supabase') ? 'Uploaded to public-media' : 'Default crest ready (click to replace)'}
+                    </span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        setUploadingFile(true);
+                        const res = await uploadToSupabaseStorage('public-media', 'school-crests', file);
+                        setUploadingFile(false);
+                        if (res.ok && res.publicUrl) {
+                          setCrestUrl(res.publicUrl);
+                          addToast({ title: 'Crest Uploaded', message: `${file.name} uploaded to public-media.`, type: 'success' });
+                        } else if (!res.ok) {
+                          addToast({ title: 'Upload Notice', message: res.error || 'Sign in first to upload files.', type: 'warning' });
+                        }
+                      }}
+                    />
+                  </label>
+                  <label className="p-4 border-2 border-dashed border-surface-border rounded-xl text-center space-y-2 cursor-pointer hover:bg-slate-50">
                     <FileText className="w-8 h-8 text-brand-navy mx-auto" />
                     <span className="text-xs font-bold block">GES Registration / Approval Certificate</span>
-                    <span className="text-[11px] text-emerald-600 font-semibold">&bull; Simulated GES_Cert_2026.pdf attached</span>
-                  </div>
-                  <div className="p-4 border-2 border-dashed border-surface-border rounded-xl text-center space-y-2">
-                    <FileText className="w-8 h-8 text-brand-navy mx-auto" />
-                    <span className="text-xs font-bold block">Health & Sanitation Environmental Permit</span>
-                    <span className="text-[11px] text-emerald-600 font-semibold">&bull; Simulated Health_Clearance.pdf attached</span>
-                  </div>
+                    <span className="text-[11px] text-emerald-600 font-semibold block truncate">&bull; {gesDocPath}</span>
+                    <input
+                      type="file"
+                      accept=".pdf,.jpg,.jpeg,.png"
+                      className="hidden"
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        setUploadingFile(true);
+                        const res = await uploadToSupabaseStorage('private-vault', 'school-compliance', file);
+                        setUploadingFile(false);
+                        if (res.ok) {
+                          setGesDocPath(res.path);
+                          addToast({ title: 'Certificate Uploaded', message: `${file.name} stored securely in private-vault.`, type: 'success' });
+                        } else {
+                          addToast({ title: 'Upload Notice', message: res.error || 'Sign in first to upload files.', type: 'warning' });
+                        }
+                      }}
+                    />
+                  </label>
                 </div>
               </div>
             )}

@@ -1,5 +1,8 @@
+'use client';
+
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useDemo } from '../../context/DemoContext';
 import { 
   ShieldCheck, 
@@ -42,7 +45,7 @@ interface AdminLayoutProps {
 
 export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const location = useLocation();
+  const pathname = usePathname();
   const { state } = useDemo();
 
   // Pending counts
@@ -116,11 +119,11 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                   {sec.group}
                 </div>
                 {sec.items.map((item) => {
-                  const isActive = location.pathname === item.path;
+                  const isActive = pathname === item.path;
                   return (
                     <Link
                       key={item.path}
-                      to={item.path}
+                      href={item.path}
                       className={`flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
                         isActive
                           ? 'bg-rose-600/90 text-white font-semibold'
@@ -153,7 +156,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
               Gov Console Active
             </span>
-            <Link to="/" className="text-slate-400 hover:text-white flex items-center gap-1 text-[10px]">
+            <Link href="/" className="text-slate-400 hover:text-white flex items-center gap-1 text-[10px]">
               <span>Public View</span>
               <ExternalLink className="w-3 h-3" />
             </Link>
@@ -169,7 +172,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
               </button>
               <span className="font-bold text-xs uppercase tracking-wider text-rose-400">Super Admin Portal</span>
             </div>
-            <Link to="/" className="text-xs text-slate-400 hover:text-white">
+            <Link href="/" className="text-xs text-slate-400 hover:text-white">
               Exit
             </Link>
           </header>
@@ -190,7 +193,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                       {sec.items.map(i => (
                         <Link
                           key={i.path}
-                          to={i.path}
+                          href={i.path}
                           onClick={() => setMobileOpen(false)}
                           className="flex items-center justify-between py-2 px-2 text-xs text-slate-300 hover:bg-slate-900 rounded"
                         >

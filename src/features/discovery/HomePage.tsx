@@ -1,5 +1,8 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useDemo } from '../../context/DemoContext';
 import { SchoolCard } from './SchoolCard';
 import { ParentEnquiryModal } from './ParentEnquiryModal';
@@ -25,7 +28,7 @@ import {
 import { Button } from '../../components/ui/Button';
 
 export const HomePage: React.FC = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { state } = useDemo();
   
   const [searchTerm, setSearchTerm] = useState('');
@@ -86,7 +89,7 @@ export const HomePage: React.FC = () => {
     if (selectedLocality) params.set('locality', selectedLocality);
     if (selectedLevel) params.set('level', selectedLevel);
     if (selectedCurriculum) params.set('curriculum', selectedCurriculum);
-    navigate(`/schools?${params.toString()}`);
+    router.push(`/schools?${params.toString()}`);
   };
 
   return (
@@ -248,7 +251,7 @@ export const HomePage: React.FC = () => {
                 <button
                   key={loc}
                   type="button"
-                  onClick={() => navigate(`/schools?locality=${encodeURIComponent(loc)}`)}
+                  onClick={() => router.push(`/schools?locality=${encodeURIComponent(loc)}`)}
                   className="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors text-xs font-medium"
                 >
                   {loc}
@@ -312,7 +315,7 @@ export const HomePage: React.FC = () => {
               Explore leading institutions known for academic rigour, modern facilities, and sound values.
             </p>
           </div>
-          <Link to="/schools" className="flex items-center gap-1.5 text-sm font-semibold text-brand-navy hover:text-brand-navy-light group">
+          <Link href="/schools" className="flex items-center gap-1.5 text-sm font-semibold text-brand-navy hover:text-brand-navy-light group">
             <span>Browse All {state.schools.length} Schools</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
@@ -357,7 +360,7 @@ export const HomePage: React.FC = () => {
               </p>
             </div>
             <div className="pt-6">
-              <Link to="/parents/dashboard">
+              <Link href="/parents/dashboard">
                 <Button variant="outline" size="sm" className="w-full justify-center">
                   Open Parent Portal
                 </Button>
@@ -377,7 +380,7 @@ export const HomePage: React.FC = () => {
               </p>
             </div>
             <div className="pt-6">
-              <Link to="/school-owners">
+              <Link href="/school-owners">
                 <Button variant="outline" size="sm" className="w-full justify-center">
                   School Owners Hub
                 </Button>
@@ -397,7 +400,7 @@ export const HomePage: React.FC = () => {
               </p>
             </div>
             <div className="pt-6">
-              <Link to="/professionals">
+              <Link href="/professionals">
                 <Button variant="outline" size="sm" className="w-full justify-center">
                   Explore Careers
                 </Button>
@@ -417,7 +420,7 @@ export const HomePage: React.FC = () => {
               </p>
             </div>
             <div className="pt-6">
-              <Link to="/suppliers">
+              <Link href="/suppliers">
                 <Button variant="outline" size="sm" className="w-full justify-center">
                   Supplier Portal
                 </Button>
@@ -491,12 +494,12 @@ export const HomePage: React.FC = () => {
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 shrink-0">
-            <Link to="/school-owners/register">
+            <Link href="/school-owners/register">
               <Button variant="gold" size="lg" className="w-full justify-center">
                 Register Your School
               </Button>
             </Link>
-            <Link to="/schools">
+            <Link href="/schools">
               <Button variant="outline" size="lg" className="w-full justify-center border-slate-600 text-white hover:bg-white/10">
                 Explore Directory
               </Button>
