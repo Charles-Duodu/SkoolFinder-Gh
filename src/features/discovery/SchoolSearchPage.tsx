@@ -188,16 +188,21 @@ export const SchoolSearchPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         
         {/* DESKTOP FILTER SIDEBAR */}
-        <div className="hidden lg:block space-y-5 bg-white p-5 sm:p-6 rounded-2xl border border-surface-border h-fit sticky top-24 shadow-subtle">
-          <div className="flex items-center justify-between pb-3.5 border-b border-surface-border">
-            <span className="text-xs font-bold text-ink-primary uppercase tracking-wider flex items-center gap-1.5">
-              <Filter className="w-3.5 h-3.5 text-brand-gold" />
+        <div className="hidden lg:block space-y-5 bg-[#0B1E36] p-5 sm:p-6 rounded-3xl border border-slate-700/80 h-fit sticky top-24 shadow-2xl relative overflow-hidden text-slate-100">
+          {/* Top specular highlight edge */}
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-400/40 to-transparent" />
+          
+          <div className="flex items-center justify-between pb-3.5 border-b border-slate-800">
+            <span className="text-xs font-black text-amber-400 uppercase tracking-widest flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-amber-400/15 border border-amber-400/30 flex items-center justify-center">
+                <Filter className="w-3.5 h-3.5 text-amber-400" />
+              </div>
               <span>Filter Results</span>
             </span>
             {hasActiveFilters && (
               <button
                 onClick={handleClearFilters}
-                className="text-xs text-rose-600 hover:underline flex items-center gap-1 font-semibold"
+                className="text-xs text-amber-400/90 hover:text-amber-300 hover:underline flex items-center gap-1 font-semibold transition-colors"
               >
                 <RotateCcw className="w-3 h-3" />
                 <span>Reset All</span>
@@ -207,87 +212,87 @@ export const SchoolSearchPage: React.FC = () => {
 
           {/* Keyword Search */}
           <div>
-            <label className="block text-xs font-bold text-ink-primary mb-1.5 uppercase tracking-wider">Keywords</label>
+            <label className="block text-[11px] font-bold text-slate-300 mb-1.5 uppercase tracking-wider">Keywords</label>
             <div className="relative">
-              <Search className="w-4 h-4 text-ink-muted absolute left-3 top-3" />
+              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
               <input
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Name, facility..."
-                className="w-full pl-9 pr-3 py-2.5 text-xs border border-surface-border rounded-xl outline-none focus:border-brand-navy focus:ring-2 focus:ring-brand-navy/20 transition-smooth"
+                className="w-full pl-9 pr-3 py-2.5 text-xs bg-[#0e223b] text-white placeholder-slate-400 border border-slate-700 rounded-xl outline-none focus:border-[#0078D4] focus:ring-2 focus:ring-[#0078D4]/30 transition-smooth"
               />
             </div>
           </div>
 
           {/* Locality */}
           <div>
-            <label className="block text-xs font-bold text-ink-primary mb-1.5 uppercase tracking-wider">Accra Locality</label>
+            <label className="block text-[11px] font-bold text-slate-300 mb-1.5 uppercase tracking-wider">Accra Locality</label>
             <select
               value={selectedLocality}
               onChange={(e) => setSelectedLocality(e.target.value)}
-              className="w-full py-2.5 px-3 text-xs border border-surface-border rounded-xl outline-none bg-white focus:border-brand-navy focus:ring-2 focus:ring-brand-navy/20 transition-smooth"
+              className="w-full py-2.5 px-3 text-xs bg-[#0e223b] text-white border border-slate-700 rounded-xl outline-none focus:border-[#0078D4] focus:ring-2 focus:ring-[#0078D4]/30 transition-smooth"
             >
-              <option value="">All Localities</option>
+              <option value="" className="bg-[#0B1E36] text-white">All Localities</option>
               {localities.map(l => (
-                <option key={l} value={l}>{l}</option>
+                <option key={l} value={l} className="bg-[#0B1E36] text-white">{l}</option>
               ))}
             </select>
           </div>
 
           {/* Level */}
           <div>
-            <label className="block text-xs font-bold text-ink-primary mb-1.5 uppercase tracking-wider">Education Level</label>
+            <label className="block text-[11px] font-bold text-slate-300 mb-1.5 uppercase tracking-wider">Education Level</label>
             <select
               value={selectedLevel}
               onChange={(e) => setSelectedLevel(e.target.value)}
-              className="w-full py-2.5 px-3 text-xs border border-surface-border rounded-xl outline-none bg-white focus:border-brand-navy focus:ring-2 focus:ring-brand-navy/20 transition-smooth"
+              className="w-full py-2.5 px-3 text-xs bg-[#0e223b] text-white border border-slate-700 rounded-xl outline-none focus:border-[#0078D4] focus:ring-2 focus:ring-[#0078D4]/30 transition-smooth"
             >
-              <option value="">All Levels</option>
+              <option value="" className="bg-[#0B1E36] text-white">All Levels</option>
               {levels.map(l => (
-                <option key={l} value={l}>{l}</option>
+                <option key={l} value={l} className="bg-[#0B1E36] text-white">{l}</option>
               ))}
             </select>
           </div>
 
           {/* Curriculum */}
           <div>
-            <label className="block text-xs font-bold text-ink-primary mb-1.5 uppercase tracking-wider">Curriculum</label>
+            <label className="block text-[11px] font-bold text-slate-300 mb-1.5 uppercase tracking-wider">Curriculum</label>
             <select
               value={selectedCurriculum}
               onChange={(e) => setSelectedCurriculum(e.target.value)}
-              className="w-full py-2.5 px-3 text-xs border border-surface-border rounded-xl outline-none bg-white focus:border-brand-navy focus:ring-2 focus:ring-brand-navy/20 transition-smooth"
+              className="w-full py-2.5 px-3 text-xs bg-[#0e223b] text-white border border-slate-700 rounded-xl outline-none focus:border-[#0078D4] focus:ring-2 focus:ring-[#0078D4]/30 transition-smooth"
             >
-              <option value="">All Curricula</option>
+              <option value="" className="bg-[#0B1E36] text-white">All Curricula</option>
               {curricula.map(c => (
-                <option key={c} value={c}>{c}</option>
+                <option key={c} value={c} className="bg-[#0B1E36] text-white">{c}</option>
               ))}
             </select>
           </div>
 
           {/* Boarding Type */}
           <div>
-            <label className="block text-xs font-bold text-ink-primary mb-1.5 uppercase tracking-wider">Boarding Option</label>
+            <label className="block text-[11px] font-bold text-slate-300 mb-1.5 uppercase tracking-wider">Boarding Option</label>
             <select
               value={selectedBoarding}
               onChange={(e) => setSelectedBoarding(e.target.value)}
-              className="w-full py-2.5 px-3 text-xs border border-surface-border rounded-xl outline-none bg-white focus:border-brand-navy focus:ring-2 focus:ring-brand-navy/20 transition-smooth"
+              className="w-full py-2.5 px-3 text-xs bg-[#0e223b] text-white border border-slate-700 rounded-xl outline-none focus:border-[#0078D4] focus:ring-2 focus:ring-[#0078D4]/30 transition-smooth"
             >
-              <option value="">Any Option</option>
-              <option value="Day Only">Day Only</option>
-              <option value="Boarding Only">Boarding Only</option>
-              <option value="Day & Boarding">Day & Boarding</option>
+              <option value="" className="bg-[#0B1E36] text-white">Any Option</option>
+              <option value="Day Only" className="bg-[#0B1E36] text-white">Day Only</option>
+              <option value="Boarding Only" className="bg-[#0B1E36] text-white">Boarding Only</option>
+              <option value="Day & Boarding" className="bg-[#0B1E36] text-white">Day & Boarding</option>
             </select>
           </div>
 
           {/* MULTI-SELECT FACILITY HIGHLIGHTS CHECKLIST */}
-          <div className="pt-4 border-t border-surface-border space-y-3">
+          <div className="pt-4 border-t border-slate-800 space-y-3">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-bold text-ink-primary uppercase tracking-wider flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-brand-gold" />
+              <label className="text-xs font-black text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
                 <span>Facility Highlights</span>
                 {selectedFacilities.length > 0 && (
-                  <span className="bg-brand-gold text-brand-navy-dark text-[10px] font-black px-1.5 py-0.2 rounded-full">
+                  <span className="bg-amber-400 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded-full shadow-xs">
                     {selectedFacilities.length}
                   </span>
                 )}
@@ -296,14 +301,14 @@ export const SchoolSearchPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setSelectedFacilities([])}
-                  className="text-xs text-rose-600 hover:underline font-semibold"
+                  className="text-xs text-slate-400 hover:text-amber-400 hover:underline font-semibold transition-colors"
                 >
                   Clear all
                 </button>
               )}
             </div>
 
-            <p className="text-[11px] text-ink-muted">
+            <p className="text-[11px] text-slate-400">
               Select multiple facilities to narrow down schools:
             </p>
 
@@ -313,17 +318,17 @@ export const SchoolSearchPage: React.FC = () => {
                 return (
                   <label
                     key={fac}
-                    className={`flex items-center gap-2.5 p-2.5 rounded-xl cursor-pointer transition-all select-none ${
+                    className={`flex items-center gap-2.5 transition-all select-none cursor-pointer ${
                       isChecked
-                        ? 'bg-brand-navy/10 text-brand-navy font-bold border border-brand-navy/20 shadow-xs'
-                        : 'hover:bg-slate-50 text-slate-700 font-medium border border-transparent'
+                        ? 'bg-[#0078D4] text-white font-bold border-l-4 border-amber-400 rounded-r-xl rounded-l-none pl-3 pr-2.5 py-2.5 shadow-md'
+                        : 'hover:bg-white/5 text-slate-300 font-medium border-l-4 border-transparent rounded-xl p-2.5'
                     }`}
                   >
                     <input
                       type="checkbox"
                       checked={isChecked}
                       onChange={() => toggleFacility(fac)}
-                      className="w-4 h-4 rounded text-brand-navy border-slate-300 accent-brand-navy focus:ring-brand-navy"
+                      className="w-4 h-4 rounded text-[#0078D4] border-slate-600 bg-[#0e223b] accent-amber-400 focus:ring-0 focus:ring-offset-0"
                     />
                     <span className="flex-1 text-[13px] leading-tight">{fac}</span>
                   </label>
@@ -485,49 +490,77 @@ export const SchoolSearchPage: React.FC = () => {
       {/* Mobile Filter Modal */}
       {mobileFilterOpen && (
         <div className="fixed inset-0 z-50 lg:hidden flex">
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setMobileFilterOpen(false)} />
-          <div className="relative w-80 bg-white flex flex-col z-10 p-5 space-y-5 overflow-y-auto shadow-floating">
-            <div className="flex items-center justify-between border-b pb-3">
-              <span className="font-bold text-sm text-brand-navy uppercase">Filter Schools</span>
-              <button onClick={() => setMobileFilterOpen(false)}><X className="w-5 h-5" /></button>
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setMobileFilterOpen(false)} />
+          <div className="relative w-80 bg-[#0B1E36] text-slate-100 border-r border-slate-800 flex flex-col z-10 p-5 space-y-5 overflow-y-auto shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <span className="font-extrabold text-sm text-amber-400 uppercase tracking-widest flex items-center gap-2">
+                <div className="w-6 h-6 rounded-md bg-amber-400/15 border border-amber-400/30 flex items-center justify-center">
+                  <Filter className="w-3.5 h-3.5 text-amber-400" />
+                </div>
+                <span>Filter Schools</span>
+              </span>
+              <button onClick={() => setMobileFilterOpen(false)} className="text-slate-400 hover:text-white p-1">
+                <X className="w-5 h-5" />
+              </button>
             </div>
 
             <div className="space-y-4 text-xs">
               <div>
-                <label className="font-semibold block mb-1">Locality</label>
-                <select value={selectedLocality} onChange={e => setSelectedLocality(e.target.value)} className="w-full border p-2 rounded-lg bg-white">
-                  <option value="">All Localities</option>
-                  {localities.map(l => <option key={l} value={l}>{l}</option>)}
+                <label className="font-bold text-slate-300 block mb-1 uppercase tracking-wider text-[11px]">Locality</label>
+                <select 
+                  value={selectedLocality} 
+                  onChange={e => setSelectedLocality(e.target.value)} 
+                  className="w-full bg-[#0e223b] text-white border border-slate-700 p-2.5 rounded-xl outline-none focus:border-[#0078D4]"
+                >
+                  <option value="" className="bg-[#0B1E36]">All Localities</option>
+                  {localities.map(l => <option key={l} value={l} className="bg-[#0B1E36]">{l}</option>)}
                 </select>
               </div>
 
               <div>
-                <label className="font-semibold block mb-1">Education Level</label>
-                <select value={selectedLevel} onChange={e => setSelectedLevel(e.target.value)} className="w-full border p-2 rounded-lg bg-white">
-                  <option value="">All Levels</option>
-                  {levels.map(l => <option key={l} value={l}>{l}</option>)}
+                <label className="font-bold text-slate-300 block mb-1 uppercase tracking-wider text-[11px]">Education Level</label>
+                <select 
+                  value={selectedLevel} 
+                  onChange={e => setSelectedLevel(e.target.value)} 
+                  className="w-full bg-[#0e223b] text-white border border-slate-700 p-2.5 rounded-xl outline-none focus:border-[#0078D4]"
+                >
+                  <option value="" className="bg-[#0B1E36]">All Levels</option>
+                  {levels.map(l => <option key={l} value={l} className="bg-[#0B1E36]">{l}</option>)}
                 </select>
               </div>
 
               <div>
-                <label className="font-semibold block mb-2 uppercase">Facilities Checklist</label>
-                <div className="space-y-1.5 max-h-60 overflow-y-auto">
-                  {facilityOptions.map(f => (
-                    <label key={f} className="flex items-center gap-2 p-1.5 rounded hover:bg-slate-50">
-                      <input
-                        type="checkbox"
-                        checked={selectedFacilities.includes(f)}
-                        onChange={() => toggleFacility(f)}
-                        className="rounded text-brand-navy"
-                      />
-                      <span>{f}</span>
-                    </label>
-                  ))}
+                <label className="font-bold text-amber-400 block mb-2 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Facilities Checklist</span>
+                </label>
+                <div className="space-y-1.5 max-h-60 overflow-y-auto pr-1">
+                  {facilityOptions.map(f => {
+                    const isChecked = selectedFacilities.includes(f);
+                    return (
+                      <label 
+                        key={f} 
+                        className={`flex items-center gap-2 p-2 rounded-lg cursor-pointer transition-colors ${
+                          isChecked 
+                            ? 'bg-[#0078D4] text-white font-bold border-l-4 border-amber-400 pl-2.5' 
+                            : 'hover:bg-white/5 text-slate-300 font-medium'
+                        }`}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={isChecked}
+                          onChange={() => toggleFacility(f)}
+                          className="rounded text-[#0078D4] accent-amber-400 bg-[#0e223b] border-slate-600"
+                        />
+                        <span className="text-xs">{f}</span>
+                      </label>
+                    );
+                  })}
                 </div>
               </div>
 
               <div className="pt-2 flex gap-2">
-                <Button variant="primary" className="w-full justify-center" onClick={() => setMobileFilterOpen(false)}>
+                <Button variant="gold" className="w-full justify-center text-slate-950 font-bold" onClick={() => setMobileFilterOpen(false)}>
                   Apply ({filteredSchools.length} Results)
                 </Button>
               </div>
