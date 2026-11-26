@@ -19,7 +19,6 @@ import {
   ShieldCheck
 } from 'lucide-react';
 import { Button } from '../ui/Button';
-import { AuthButton } from './AuthButton';
 
 export const PublicNavbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -78,7 +77,6 @@ export const PublicNavbar: React.FC = () => {
 
           {/* Action CTAs */}
           <div className="hidden sm:flex items-center gap-2.5">
-            <AuthButton />
             <Link href="/parents">
               <Button variant="outline" size="sm">
                 Parent Portal
