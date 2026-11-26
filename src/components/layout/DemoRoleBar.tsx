@@ -68,7 +68,7 @@ export const DemoRoleBar: React.FC = () => {
   };
 
   return (
-    <aside aria-label="Demo Prototype Toolbar" className="bg-brand-navy-dark text-white border-b border-brand-navy-light/60 px-3 py-1.5 text-xs select-none sticky top-0 z-50">
+    <aside aria-label="Demo Prototype Toolbar" className="bg-brand-navy-dark text-white border-b border-brand-navy-light/60 px-3 py-1.5 text-xs select-none relative z-50">
       <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <span className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-brand-gold/20 text-brand-gold font-bold tracking-wider uppercase text-[10px] border border-brand-gold/30">

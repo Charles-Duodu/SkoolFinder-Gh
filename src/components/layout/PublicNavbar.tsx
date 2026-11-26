@@ -35,7 +35,7 @@ export const PublicNavbar: React.FC = () => {
   ];
 
   return (
-    <header className="bg-white border-b border-surface-border sticky top-8 z-40 shadow-subtle">
+    <header className="bg-white border-b border-surface-border sticky top-0 z-40 shadow-subtle w-full">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           
