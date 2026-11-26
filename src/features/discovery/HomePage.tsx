@@ -22,7 +22,8 @@ import {
   ChevronLeft,
   ChevronRight,
   TrendingUp,
-  Award
+  Award,
+  Check
 } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 
@@ -288,6 +289,115 @@ export const HomePage: React.FC = () => {
               onOpenEnquiry={(s) => setEnquirySchool(s)}
             />
           ))}
+        </div>
+      </section>
+
+      {/* SECTION: EXPLORE SCHOOLS FOR FREE — TWO WAYS */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-8">
+          <div className="text-xs font-bold uppercase tracking-[0.2em] text-[#0B1E36]">
+            YOUR SEARCH. YOUR PACE.
+          </div>
+          <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#0B1E36] tracking-tight mt-1.5">
+            Explore Schools for Free — Two Ways
+          </h2>
+          <p className="text-sm sm:text-base text-slate-600 mt-2 font-normal max-w-3xl">
+            Start exploring freely. Create a free account when you’re ready for a more personal journey.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+          
+          {/* Card 1: Explore as a guest */}
+          <div className="bg-white rounded-3xl border border-slate-200/90 p-7 sm:p-9 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+            <div>
+              <h3 className="font-serif text-2xl sm:text-[28px] font-bold text-[#0B1E36] leading-tight">
+                Explore as a guest
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-500 font-normal mt-1 mb-6 sm:mb-8">
+                No registration required
+              </p>
+
+              <div className="space-y-3.5 sm:space-y-4 mb-8 sm:mb-10">
+                <div className="flex items-center gap-3 text-sm sm:text-[15px] text-slate-700 font-medium">
+                  <Check className="w-4 h-4 text-slate-400 shrink-0 stroke-[2.5]" />
+                  <span>Discover school profiles</span>
+                </div>
+                <div className="flex items-center gap-3 text-sm sm:text-[15px] text-slate-700 font-medium">
+                  <Check className="w-4 h-4 text-slate-400 shrink-0 stroke-[2.5]" />
+                  <span>Compare your options</span>
+                </div>
+                <div className="flex items-center gap-3 text-sm sm:text-[15px] text-slate-700 font-medium">
+                  <Check className="w-4 h-4 text-slate-400 shrink-0 stroke-[2.5]" />
+                  <span>Start a conversation</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4 flex-wrap pt-2">
+              <Link
+                href="/schools"
+                className="px-6 py-3 bg-[#0B1E36] hover:bg-[#132c4d] text-white font-bold text-sm rounded-xl transition-all shadow-sm hover:shadow"
+              >
+                Search Schools
+              </Link>
+              <Link
+                href="/compare"
+                className="text-sm font-semibold text-[#0B1E36] hover:underline underline-offset-4"
+              >
+                Try a comparison
+              </Link>
+            </div>
+          </div>
+
+          {/* Card 2: Register as Parent */}
+          <div className="bg-[#0B1E36] rounded-3xl p-7 sm:p-9 text-white shadow-xl flex flex-col justify-between hover:shadow-2xl transition-shadow">
+            <div>
+              <h3 className="font-serif text-2xl sm:text-[28px] font-bold text-white leading-tight">
+                Register as Parent
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-300 font-normal mt-1 mb-6 sm:mb-8">
+                Join for free.
+              </p>
+
+              <div className="space-y-3.5 sm:space-y-4 mb-8 sm:mb-10">
+                <div className="flex items-center gap-3 text-sm sm:text-[15px] text-slate-200 font-medium">
+                  <Check className="w-4 h-4 text-amber-400 shrink-0 stroke-[2.5]" />
+                  <span>Save schools to your personal shortlist</span>
+                </div>
+                <div className="flex items-center gap-3 text-sm sm:text-[15px] text-slate-200 font-medium">
+                  <Check className="w-4 h-4 text-amber-400 shrink-0 stroke-[2.5]" />
+                  <span>Track applications and open-day milestones</span>
+                </div>
+                <div className="flex items-center gap-3 text-sm sm:text-[15px] text-slate-200 font-medium">
+                  <Check className="w-4 h-4 text-amber-400 shrink-0 stroke-[2.5]" />
+                  <span>Receive admissions-window and deadline reminders</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4 flex-wrap pt-2">
+              <Link
+                href="/sign-up"
+                className="px-6 py-3 bg-amber-400 hover:bg-amber-300 active:bg-amber-500 text-slate-950 font-bold text-sm rounded-xl transition-all shadow-md hover:shadow-lg"
+              >
+                Create free account
+              </Link>
+              <Link
+                href="/sign-in"
+                className="text-xs sm:text-sm font-semibold text-amber-400 hover:text-amber-300 underline underline-offset-4 decoration-amber-400/50"
+              >
+                Already registered? Sign in
+              </Link>
+              <Link
+                href="/parents"
+                className="text-xs sm:text-sm font-semibold text-amber-400 hover:text-amber-300 underline underline-offset-4 decoration-amber-400/50"
+              >
+                Try the parent demo
+              </Link>
+            </div>
+          </div>
+
         </div>
       </section>
 
