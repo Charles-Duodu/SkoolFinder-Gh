@@ -109,7 +109,7 @@ export const DirectoriesManagementPage: React.FC<DirectoriesPageProps> = ({ init
               onClick={() => setActiveTab(tab.id as any)}
               className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors ${
                 activeTab === tab.id
-                  ? 'bg-rose-600 text-white shadow-sm'
+                  ? 'bg-[#0078D4] text-white shadow-sm'
                   : 'text-ink-secondary hover:text-ink-primary hover:bg-slate-100'
               }`}
             >

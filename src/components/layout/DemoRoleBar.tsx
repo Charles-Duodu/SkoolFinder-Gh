@@ -51,7 +51,7 @@ export const DemoRoleBar: React.FC = () => {
       label: 'Super Admin',
       name: 'Chief Administrator',
       path: '/super-admin/dashboard',
-      icon: <ShieldCheck className="w-3.5 h-3.5 text-rose-300" />
+      icon: <ShieldCheck className="w-3.5 h-3.5 text-sky-300" />
     }
   ];
 

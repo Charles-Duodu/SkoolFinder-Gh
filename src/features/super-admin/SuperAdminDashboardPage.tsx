@@ -67,7 +67,7 @@ export const SuperAdminDashboardPage: React.FC = () => {
         {/* Command Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-surface-border pb-6">
           <div>
-            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-rose-600">
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#0078D4]">
               <ShieldCheck className="w-4 h-4" />
               <span>Central Governance Console</span>
             </div>

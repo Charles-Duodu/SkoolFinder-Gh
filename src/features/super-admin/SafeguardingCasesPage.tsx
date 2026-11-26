@@ -34,7 +34,7 @@ export const SafeguardingCasesPage: React.FC = () => {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-surface-border pb-6">
           <div>
-            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-rose-600">
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#0078D4]">
               <ShieldAlert className="w-4 h-4" />
               <span>Safeguarding, Trust & Complaints Desk</span>
             </div>

@@ -46,7 +46,7 @@ export const AdminRolesAnalyticsCMSPage: React.FC<AdminRolesAnalyticsCMSPageProp
               onClick={() => setView(t.id as any)}
               className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors ${
                 view === t.id
-                  ? 'bg-rose-600 text-white shadow-sm'
+                  ? 'bg-[#0078D4] text-white shadow-sm'
                   : 'text-ink-secondary hover:text-ink-primary hover:bg-slate-100'
               }`}
             >

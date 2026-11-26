@@ -102,7 +102,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
         <aside className="hidden lg:flex lg:w-64 flex-col bg-slate-950 border-r border-slate-800">
           <div className="p-4 border-b border-slate-800 flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-rose-600 flex items-center justify-center text-white shadow-sm font-bold">
+              <div className="w-8 h-8 rounded-lg bg-[#0078D4] flex items-center justify-center text-white shadow-sm font-bold">
                 <ShieldCheck className="w-5 h-5" />
               </div>
               <div>
@@ -126,7 +126,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                       href={item.path}
                       className={`flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
                         isActive
-                          ? 'bg-rose-600/90 text-white font-semibold'
+                          ? 'bg-[#0078D4] text-white font-semibold shadow-sm'
                           : 'text-slate-400 hover:text-white hover:bg-slate-900'
                       }`}
                     >
@@ -164,7 +164,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
               </Link>
             </div>
             <SignOutButton
-              className="w-full justify-center bg-slate-900 border-slate-800 text-slate-300 hover:text-rose-200 hover:bg-rose-950/40"
+              className="w-full justify-center bg-slate-900 border-slate-800 text-slate-300 hover:text-sky-200 hover:bg-sky-950/40"
               size="sm"
             />
           </div>
@@ -176,7 +176,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
           {/* Desktop Top Header Bar with Sign Out */}
           <header className="bg-white border-b border-surface-border px-6 py-3.5 hidden lg:flex items-center justify-between sticky top-0 z-20 shadow-subtle">
             <div className="flex items-center gap-2 text-xs text-ink-secondary">
-              <span className="font-semibold text-rose-600 uppercase tracking-wider">Super Admin Console</span>
+              <span className="font-semibold text-[#0078D4] uppercase tracking-wider">Super Admin Console</span>
               <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
               <span className="font-medium text-slate-700">Governance & Ecosystem Management</span>
             </div>
@@ -188,7 +188,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
               <SignOutButton
                 size="sm"
                 variant="outline"
-                className="border-rose-200 text-rose-700 hover:bg-rose-50 hover:border-rose-300"
+                className="border-sky-200 text-[#0078D4] hover:bg-sky-50 hover:border-sky-300"
               />
             </div>
           </header>
@@ -199,7 +199,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
               <button onClick={() => setMobileOpen(true)} className="p-1 rounded text-slate-300">
                 <Menu className="w-5 h-5" />
               </button>
-              <span className="font-bold text-xs uppercase tracking-wider text-rose-400">Super Admin Portal</span>
+              <span className="font-bold text-xs uppercase tracking-wider text-[#0078D4]">Super Admin Portal</span>
             </div>
             <div className="flex items-center gap-2">
               <Link href="/" className="text-xs text-slate-400 hover:text-white mr-1">
@@ -233,14 +233,14 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                             {i.icon}
                             <span>{i.label}</span>
                           </div>
-                          {i.badge && <span className="text-[10px] px-1.5 rounded bg-rose-500 text-white">{i.badge}</span>}
+                          {i.badge && <span className="text-[10px] px-1.5 rounded bg-[#0078D4] text-white">{i.badge}</span>}
                         </Link>
                       ))}
                     </div>
                   ))}
                 </div>
                 <div className="pt-3 border-t border-slate-800">
-                  <SignOutButton className="w-full justify-center bg-rose-600 hover:bg-rose-700 text-white" size="sm" />
+                  <SignOutButton className="w-full justify-center bg-[#0078D4] hover:bg-[#005A9E] text-white" size="sm" />
                 </div>
               </div>
             </div>
