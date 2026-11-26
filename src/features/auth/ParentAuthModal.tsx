@@ -10,12 +10,14 @@ interface ParentAuthModalProps {
   isOpen: boolean;
   onClose: () => void;
   initialMode?: 'sign-up' | 'sign-in';
+  promptReason?: string;
 }
 
 export const ParentAuthModal: React.FC<ParentAuthModalProps> = ({
   isOpen,
   onClose,
   initialMode = 'sign-up',
+  promptReason,
 }) => {
   const router = useRouter();
   const { setRole, addToast } = useDemo();
@@ -191,9 +193,10 @@ export const ParentAuthModal: React.FC<ParentAuthModalProps> = ({
             {mode === 'sign-up' ? 'Create your free parent account' : 'Sign in to your parent account'}
           </h2>
           <p className="text-xs sm:text-sm text-slate-500 mt-2">
-            {mode === 'sign-up'
-              ? 'Enter your details below to register your account and access your admissions portal.'
-              : 'Enter your credentials to access your saved schools, applications, and reminders.'}
+            {promptReason ||
+              (mode === 'sign-up'
+                ? 'Enter your details below to register your account and access your admissions portal.'
+                : 'Enter your credentials to access your saved schools, applications, and reminders.')}
           </p>
 
           {/* Stepper Pills (Matching User Mockup) */}
