@@ -39,19 +39,14 @@ export const HomePage: React.FC = () => {
   // Hero Rotational Floating Slides
   const heroSlides = [
     {
-      image: '/images/hero-1.jpg',
-      alt: 'Ghanaian teacher and early-grade pupils learning and building with wooden blocks',
-      tagline: 'Early Childhood & Foundation Learning'
-    },
-    {
       image: '/images/hero-2.jpg',
-      alt: 'Students engaged in learning at modern library and innovation resource centre',
+      alt: 'Ghanaian high school students engaged in STEM science laboratory robotics and learning',
       tagline: 'Modern Science & Innovation Labs'
     },
     {
-      image: '/images/hero-3.jpg',
-      alt: 'Dedicated teacher guiding engaged classroom students',
-      tagline: 'Vetted Teachers & Holistic Education'
+      image: '/images/hero-1.jpg',
+      alt: 'Ghanaian teacher and early-grade pupils learning and building with wooden blocks',
+      tagline: 'Early Childhood & Foundation Learning'
     }
   ];
 
@@ -170,7 +165,7 @@ export const HomePage: React.FC = () => {
               
               {/* Suburb / Locality */}
               <div className="lg:col-span-4">
-                <label className="block text-[11px] font-black text-amber-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                <label className="block text-[11px] font-bold text-white uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
                   <MapPin className="w-3.5 h-3.5 text-rose-400 shrink-0" />
                   <span>SUBURB / LOCALITY</span>
                 </label>
@@ -181,7 +176,7 @@ export const HomePage: React.FC = () => {
                     onChange={(e) => setSelectedLocality(e.target.value)}
                     placeholder="e.g. Cantonments, East Legon, Spintex..."
                     list="hero-localities-list"
-                    className="w-full px-3.5 py-3 text-sm text-white bg-white/10 hover:bg-white/15 focus:bg-white/20 border border-white/20 rounded-xl outline-none placeholder:text-slate-300 transition-all focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30"
+                    className="w-full px-3.5 py-3 text-sm text-slate-900 bg-white border border-slate-200 rounded-xl outline-none placeholder:text-slate-400 font-medium transition-all focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30 shadow-sm"
                   />
                   <datalist id="hero-localities-list">
                     {localities.map(loc => <option key={loc} value={loc} />)}
@@ -191,36 +186,36 @@ export const HomePage: React.FC = () => {
 
               {/* School Level */}
               <div className="lg:col-span-3">
-                <label className="block text-[11px] font-black text-amber-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                <label className="block text-[11px] font-bold text-white uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
                   <GraduationCap className="w-3.5 h-3.5 text-indigo-300 shrink-0" />
                   <span>SCHOOL LEVEL</span>
                 </label>
                 <select
                   value={selectedLevel}
                   onChange={(e) => setSelectedLevel(e.target.value)}
-                  className="w-full px-3.5 py-3 text-sm text-white bg-[#0f2846] border border-white/20 rounded-xl outline-none transition-all focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30 cursor-pointer"
+                  className="w-full px-3.5 py-3 text-sm text-slate-900 bg-white border border-slate-200 rounded-xl outline-none font-medium transition-all focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30 cursor-pointer shadow-sm"
                 >
-                  <option value="" className="bg-[#0B1E36] text-white">All Levels (Crèche to SHS)</option>
+                  <option value="" className="bg-white text-slate-900">All Levels (Crèche to SHS)</option>
                   {levels.map(lvl => (
-                    <option key={lvl} value={lvl} className="bg-[#0B1E36] text-white">{lvl}</option>
+                    <option key={lvl} value={lvl} className="bg-white text-slate-900">{lvl}</option>
                   ))}
                 </select>
               </div>
 
               {/* Curriculum */}
               <div className="lg:col-span-3">
-                <label className="block text-[11px] font-black text-amber-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                <label className="block text-[11px] font-bold text-white uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
                   <BookOpen className="w-3.5 h-3.5 text-teal-300 shrink-0" />
                   <span>CURRICULUM</span>
                 </label>
                 <select
                   value={selectedCurriculum}
                   onChange={(e) => setSelectedCurriculum(e.target.value)}
-                  className="w-full px-3.5 py-3 text-sm text-white bg-[#0f2846] border border-white/20 rounded-xl outline-none transition-all focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30 cursor-pointer"
+                  className="w-full px-3.5 py-3 text-sm text-slate-900 bg-white border border-slate-200 rounded-xl outline-none font-medium transition-all focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30 cursor-pointer shadow-sm"
                 >
-                  <option value="" className="bg-[#0B1E36] text-white">All Curricula</option>
+                  <option value="" className="bg-white text-slate-900">All Curricula</option>
                   {curricula.map(curr => (
-                    <option key={curr} value={curr} className="bg-[#0B1E36] text-white">{curr}</option>
+                    <option key={curr} value={curr} className="bg-white text-slate-900">{curr}</option>
                   ))}
                 </select>
               </div>
@@ -231,7 +226,7 @@ export const HomePage: React.FC = () => {
                   type="submit"
                   className="w-full py-3 px-4 bg-amber-400 hover:bg-amber-300 active:bg-amber-500 text-slate-950 font-black text-sm rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 group hover:shadow-amber-400/30 hover:scale-[1.02]"
                 >
-                  <Search className="w-4 h-4 text-slate-950 stroke-[2.5]" />
+                  <span className="text-base leading-none">🔍</span>
                   <span>Search Schools</span>
                 </button>
               </div>
