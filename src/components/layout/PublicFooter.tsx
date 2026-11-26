@@ -7,10 +7,6 @@ import { SafeguardingReportModal } from '../../features/discovery/SafeguardingRe
 
 export const PublicFooter: React.FC = () => {
   const [safeguardingOpen, setSafeguardingOpen] = useState(false);
-  const localities = [
-    'East Legon', 'Cantonments', 'Airport Residential', 'Osu', 'Tema',
-    'Spintex', 'Achimota', 'Dansoman', 'Madina', 'Adenta', 'Ridge', 'Labone'
-  ];
 
   const levels = [
     'Crèche & Nursery', 'Kindergarten', 'Primary Schools', 
@@ -21,7 +17,7 @@ export const PublicFooter: React.FC = () => {
     <footer className="bg-brand-navy-dark text-slate-300 border-t border-slate-800">
       {/* Top Banner */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           
           {/* Brand Col */}
           <div className="lg:col-span-2 space-y-4">
@@ -91,24 +87,6 @@ export const PublicFooter: React.FC = () => {
                 </li>
               ))}
             </ul>
-          </div>
-
-          {/* Greater Accra Localities */}
-          <div>
-            <h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-3">
-              Accra Localities
-            </h4>
-            <div className="flex flex-wrap gap-1.5">
-              {localities.map((loc) => (
-                <Link
-                  key={loc}
-                  href={`/schools?locality=${encodeURIComponent(loc)}`}
-                  className="px-2 py-0.5 rounded text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors"
-                >
-                  {loc}
-                </Link>
-              ))}
-            </div>
           </div>
 
         </div>

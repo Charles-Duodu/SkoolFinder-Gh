@@ -19,7 +19,6 @@ import {
   School as SchoolIcon, 
   Briefcase, 
   Truck, 
-  CheckCircle2,
   ChevronLeft,
   ChevronRight,
   TrendingUp,
@@ -156,11 +155,6 @@ export const HomePage: React.FC = () => {
           
           {/* Hero Headlines */}
           <div className="max-w-4xl mx-auto text-center space-y-4">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md text-amber-300 text-xs font-bold border border-white/15 shadow-sm">
-              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-              <span>Greater Accra's Dedicated Private Education Platform</span>
-            </div>
-
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight drop-shadow-md">
               Find the <span className="text-amber-400 drop-shadow">Right School</span> for Your Child
             </h1>
@@ -243,21 +237,6 @@ export const HomePage: React.FC = () => {
               </div>
 
             </form>
-
-            {/* Quick-tap popular Accra suburbs */}
-            <div className="mt-3.5 pt-3 border-t border-white/10 flex flex-wrap items-center gap-2 text-xs text-slate-300">
-              <span className="font-bold text-amber-400">Popular Suburbs:</span>
-              {['East Legon', 'Cantonments', 'Tema', 'Spintex', 'Achimota', 'Airport Residential'].map((loc) => (
-                <button
-                  key={loc}
-                  type="button"
-                  onClick={() => router.push(`/schools?locality=${encodeURIComponent(loc)}`)}
-                  className="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors text-xs font-medium"
-                >
-                  {loc}
-                </button>
-              ))}
-            </div>
           </div>
 
           {/* Carousel Slide Indicators */}
@@ -276,26 +255,6 @@ export const HomePage: React.FC = () => {
                 aria-label={`Go to slide ${idx + 1}`}
               />
             ))}
-          </div>
-
-          {/* Trust Highlights */}
-          <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto text-center text-xs text-slate-200">
-            <div className="flex items-center justify-center gap-2 bg-black/20 backdrop-blur-xs py-2 px-3 rounded-xl border border-white/10">
-              <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
-              <span>Verified Institution Records</span>
-            </div>
-            <div className="flex items-center justify-center gap-2 bg-black/20 backdrop-blur-xs py-2 px-3 rounded-xl border border-white/10">
-              <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
-              <span>Transparent Published Fees</span>
-            </div>
-            <div className="flex items-center justify-center gap-2 bg-black/20 backdrop-blur-xs py-2 px-3 rounded-xl border border-white/10">
-              <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
-              <span>Direct Admissions Enquiries</span>
-            </div>
-            <div className="flex items-center justify-center gap-2 bg-black/20 backdrop-blur-xs py-2 px-3 rounded-xl border border-white/10">
-              <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
-              <span>Multi-School Comparison</span>
-            </div>
           </div>
         </div>
       </section>
