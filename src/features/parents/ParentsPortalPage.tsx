@@ -61,10 +61,9 @@ export const ParentsPortalPage: React.FC = () => {
     <DashboardLayout
       portalName="Parents & Guardians Workspace"
       portalSubtitle="Discovering education for Nana Yaw & Akosua"
-      navItems={navItems.map(item => ({
-        ...item,
-        path: '#', // using tab switching for seamless prototype experience
-      }))}
+      navItems={navItems}
+      activeTab={activeTab}
+      onTabChange={(tabId) => setActiveTab(tabId as any)}
       actionButton={
         <Link href="/schools">
           <Button variant="gold" size="sm" icon={<Search className="w-3.5 h-3.5 text-brand-navy-dark" />}>
@@ -73,29 +72,6 @@ export const ParentsPortalPage: React.FC = () => {
         </Link>
       }
     >
-      {/* Dynamic Subview Navigation for In-Page Experience */}
-      <div className="flex border-b border-surface-border mb-6 overflow-x-auto no-scrollbar gap-1 bg-white p-1 rounded-xl shadow-subtle">
-        {navItems.map(item => (
-          <button
-            key={item.id}
-            onClick={() => setActiveTab(item.id as any)}
-            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors ${activeTab === item.id
-              ? 'bg-brand-navy text-white shadow-sm'
-              : 'text-ink-secondary hover:text-ink-primary hover:bg-slate-100'
-              }`}
-          >
-            {item.icon}
-            <span>{item.label}</span>
-            {item.badge !== undefined && (
-              <span className={`text-[10px] font-bold px-1.5 py-0.2 rounded-full ${activeTab === item.id ? 'bg-amber-400 text-slate-950' : 'bg-slate-200 text-slate-700'
-                }`}>
-                {item.badge}
-              </span>
-            )}
-          </button>
-        ))}
-      </div>
-
       {/* VIEW: OVERVIEW */}
       {activeTab === 'overview' && (
         <div className="space-y-6">
