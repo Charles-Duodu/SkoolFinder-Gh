@@ -293,6 +293,7 @@ export const HomePage: React.FC = () => {
             <SchoolCard
               key={school.id}
               school={school}
+              variant="grid"
               onOpenEnquiry={(s) => setEnquirySchool(s)}
             />
           ))}

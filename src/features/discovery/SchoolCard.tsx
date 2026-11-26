@@ -18,9 +18,10 @@ import {
 interface SchoolCardProps {
   school: School;
   onOpenEnquiry?: (school: School) => void;
+  variant?: 'grid' | 'list';
 }
 
-export const SchoolCard: React.FC<SchoolCardProps> = ({ school }) => {
+export const SchoolCard: React.FC<SchoolCardProps> = ({ school, variant = 'list' }) => {
   const { role, state, toggleSaveSchool, toggleCompareSchool } = useDemo();
   const [coverError, setCoverError] = useState(false);
   const [crestError, setCrestError] = useState(false);
@@ -62,10 +63,10 @@ export const SchoolCard: React.FC<SchoolCardProps> = ({ school }) => {
 
   return (
     <>
-      <div className="glass-panel glass-panel-hover rounded-3xl overflow-hidden shadow-glass hover:shadow-glass-hover flex flex-col group relative bg-white border border-slate-200/80">
+      <div className={`glass-panel glass-panel-hover rounded-3xl overflow-hidden shadow-glass hover:shadow-glass-hover flex ${variant === 'list' ? 'flex-col md:flex-row' : 'flex-col'} group relative bg-white border border-slate-200/80`}>
         
         {/* Cover Image & Badges */}
-        <div className="relative h-44 sm:h-48 w-full bg-gradient-to-br from-brand-navy-dark via-brand-navy to-slate-900 overflow-hidden">
+        <div className={`relative ${variant === 'list' ? 'h-48 md:h-auto md:w-72 lg:w-80 shrink-0 min-h-[220px]' : 'h-44 sm:h-48 w-full'} bg-gradient-to-br from-brand-navy-dark via-brand-navy to-slate-900 overflow-hidden`}>
           {!coverError ? (
             <img
               src={school.coverImageUrl}

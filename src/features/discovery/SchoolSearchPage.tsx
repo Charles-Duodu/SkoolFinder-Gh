@@ -41,7 +41,7 @@ export const SchoolSearchPage: React.FC = () => {
   });
 
   const [sortBy, setSortBy] = useState<'featured' | 'name' | 'feeAsc' | 'feeDesc'>('featured');
-  const [viewMode, setViewMode] = useState<'grid' | 'list' | 'map'>('grid');
+  const [viewMode, setViewMode] = useState<'grid' | 'list' | 'map'>('list');
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
 
   const [enquirySchool, setEnquirySchool] = useState<School | null>(null);
@@ -159,18 +159,18 @@ export const SchoolSearchPage: React.FC = () => {
 
           <div className="hidden sm:flex items-center border border-surface-border rounded-lg p-0.5 bg-white">
             <button
-              onClick={() => setViewMode('grid')}
-              className={`p-1.5 rounded ${viewMode === 'grid' ? 'bg-slate-100 text-brand-navy' : 'text-ink-muted'}`}
-              title="Grid View"
-            >
-              <Grid className="w-4 h-4" />
-            </button>
-            <button
               onClick={() => setViewMode('list')}
-              className={`p-1.5 rounded ${viewMode === 'list' ? 'bg-slate-100 text-brand-navy' : 'text-ink-muted'}`}
+              className={`p-1.5 rounded ${viewMode === 'list' ? 'bg-slate-100 text-brand-navy font-bold' : 'text-ink-muted'}`}
               title="List View"
             >
               <List className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => setViewMode('grid')}
+              className={`p-1.5 rounded ${viewMode === 'grid' ? 'bg-slate-100 text-brand-navy font-bold' : 'text-ink-muted'}`}
+              title="Grid View"
+            >
+              <Grid className="w-4 h-4" />
             </button>
           </div>
 
@@ -366,15 +366,6 @@ export const SchoolSearchPage: React.FC = () => {
               {/* View Switcher */}
               <div className="flex items-center gap-1 border border-surface-border rounded-lg p-0.5 bg-slate-50">
                 <button
-                  onClick={() => setViewMode('grid')}
-                  title="Grid View"
-                  className={`p-1.5 rounded-md text-xs transition-colors ${
-                    viewMode === 'grid' ? 'bg-white text-brand-navy shadow-sm font-bold' : 'text-slate-500 hover:text-slate-800'
-                  }`}
-                >
-                  <Grid className="w-3.5 h-3.5" />
-                </button>
-                <button
                   onClick={() => setViewMode('list')}
                   title="List View"
                   className={`p-1.5 rounded-md text-xs transition-colors ${
@@ -382,6 +373,15 @@ export const SchoolSearchPage: React.FC = () => {
                   }`}
                 >
                   <List className="w-3.5 h-3.5" />
+                </button>
+                <button
+                  onClick={() => setViewMode('grid')}
+                  title="Grid View"
+                  className={`p-1.5 rounded-md text-xs transition-colors ${
+                    viewMode === 'grid' ? 'bg-white text-brand-navy shadow-sm font-bold' : 'text-slate-500 hover:text-slate-800'
+                  }`}
+                >
+                  <Grid className="w-3.5 h-3.5" />
                 </button>
                 <button
                   onClick={() => setViewMode('map')}
@@ -476,6 +476,7 @@ export const SchoolSearchPage: React.FC = () => {
                   <SchoolCard
                     key={school.id}
                     school={school}
+                    variant={viewMode === 'list' ? 'list' : 'grid'}
                     onOpenEnquiry={(s) => setEnquirySchool(s)}
                   />
                 ))}
