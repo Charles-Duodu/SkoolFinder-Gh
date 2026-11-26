@@ -97,7 +97,7 @@ export async function updateSession(request: NextRequest) {
     }
   }
 
-  if (claims && (pathname.startsWith('/sign-in') || pathname.startsWith('/sign-up'))) {
+  if (claims && request.nextUrl.searchParams.get('autoredirect') === 'true' && (pathname.startsWith('/sign-in') || pathname.startsWith('/sign-up'))) {
     const nextParam = request.nextUrl.searchParams.get('next');
     const roleClaim = (claims as Record<string, unknown> & { app_metadata?: { role?: string } })
       ?.app_metadata?.role;
