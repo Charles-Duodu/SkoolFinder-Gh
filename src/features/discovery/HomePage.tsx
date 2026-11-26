@@ -440,9 +440,9 @@ export const HomePage: React.FC = () => {
               <div className="absolute bottom-0 inset-x-0 h-1 bg-amber-400" />
             </div>
 
-            <div className="p-6 sm:p-7 md:p-8 lg:p-9 xl:p-10 flex flex-col justify-between flex-1 space-y-6">
+            <div className="p-6 sm:p-7 md:p-6 lg:p-7 xl:p-8 flex flex-col justify-between flex-1 space-y-6">
               <div>
-                <h3 className="text-xl sm:text-2xl lg:text-[26px] font-bold text-[#0B1E36] tracking-tight leading-snug">
+                <h3 className="text-xl sm:text-2xl md:text-lg lg:text-xl xl:text-2xl font-bold text-[#0B1E36] tracking-tight leading-snug whitespace-nowrap">
                   School Owners
                 </h3>
                 <h4 className="text-xs sm:text-sm lg:text-base font-bold text-[#0B1E36] mt-1 mb-2.5">
@@ -487,9 +487,9 @@ export const HomePage: React.FC = () => {
               <div className="absolute bottom-0 inset-x-0 h-1 bg-amber-400" />
             </div>
 
-            <div className="p-6 sm:p-7 md:p-8 lg:p-9 xl:p-10 flex flex-col justify-between flex-1 space-y-6">
+            <div className="p-6 sm:p-7 md:p-6 lg:p-7 xl:p-8 flex flex-col justify-between flex-1 space-y-6">
               <div>
-                <h3 className="text-xl sm:text-2xl lg:text-[26px] font-bold text-[#0B1E36] tracking-tight leading-snug">
+                <h3 className="text-xl sm:text-2xl md:text-lg lg:text-xl xl:text-2xl font-bold text-[#0B1E36] tracking-tight leading-snug whitespace-nowrap">
                   Teachers & Professionals
                 </h3>
                 <h4 className="text-xs sm:text-sm lg:text-base font-bold text-[#0B1E36] mt-1 mb-2.5">
@@ -534,9 +534,9 @@ export const HomePage: React.FC = () => {
               <div className="absolute bottom-0 inset-x-0 h-1 bg-amber-400" />
             </div>
 
-            <div className="p-6 sm:p-7 md:p-8 lg:p-9 xl:p-10 flex flex-col justify-between flex-1 space-y-6">
+            <div className="p-6 sm:p-7 md:p-6 lg:p-7 xl:p-8 flex flex-col justify-between flex-1 space-y-6">
               <div>
-                <h3 className="text-xl sm:text-2xl lg:text-[26px] font-bold text-[#0B1E36] tracking-tight leading-snug">
+                <h3 className="text-xl sm:text-2xl md:text-lg lg:text-xl xl:text-2xl font-bold text-[#0B1E36] tracking-tight leading-snug whitespace-nowrap">
                   Suppliers & Services
                 </h3>
                 <h4 className="text-xs sm:text-sm lg:text-base font-bold text-[#0B1E36] mt-1 mb-2.5">
