@@ -23,7 +23,8 @@ import {
   ChevronRight,
   TrendingUp,
   Award,
-  Check
+  Check,
+  FileText
 } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 
@@ -403,97 +404,155 @@ export const HomePage: React.FC = () => {
 
       {/* SECTION 4: OUR EDUCATION ECOSYSTEM */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <div className="text-xs font-bold text-brand-gold uppercase tracking-wider">
-            Interconnected Education SaaS
+        <div className="mb-8">
+          <div className="text-xs font-bold uppercase tracking-[0.2em] text-[#0B1E36]">
+            OUR ECOSYSTEM
           </div>
-          <h2 className="text-2xl sm:text-3xl font-bold text-ink-primary mt-1">
-            One Connected Education Ecosystem
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-[#0B1E36] tracking-tight mt-1.5">
+            More Than School Search
           </h2>
-          <p className="text-sm text-ink-secondary mt-2">
-            Beyond school search, SkoolFinder bridges the four key pillars of Ghanaian private education.
+          <p className="text-sm sm:text-base text-slate-600 mt-2 font-normal max-w-3xl">
+            A connected platform for schools, education professionals and trusted partners.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
           
-          {/* Card 1: Parents */}
-          <div className="bg-white rounded-2xl p-6 border border-surface-border shadow-subtle hover:shadow-elevated transition-all flex flex-col justify-between">
-            <div className="space-y-4">
-              <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
-                <Users className="w-6 h-6" />
-              </div>
-              <h3 className="text-lg font-bold text-ink-primary">Parents & Guardians</h3>
-              <p className="text-xs text-ink-secondary leading-relaxed">
-                Shortlist schools, compare curricula, monitor admissions deadlines, and communicate directly with admission teams.
-              </p>
+          {/* Card 1: School Owners */}
+          <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm hover:shadow-md transition-all flex flex-col overflow-hidden">
+            <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-100">
+              <img
+                src="/images/ecosystem-schools.jpg"
+                alt="School Owners"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute bottom-0 inset-x-0 h-1 bg-amber-400" />
             </div>
-            <div className="pt-6">
-              <Link href="/parents/dashboard">
-                <Button variant="outline" size="sm" className="w-full justify-center">
-                  Open Parent Portal
-                </Button>
-              </Link>
+
+            <div className="p-6 sm:p-7 flex flex-col justify-between flex-1 space-y-5">
+              <div>
+                <h3 className="text-xl font-bold text-[#0B1E36]">
+                  School Owners
+                </h3>
+                <h4 className="text-xs sm:text-sm font-bold text-[#0B1E36] mt-0.5 mb-2">
+                  Grow Your School
+                </h4>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Reach more families, promote admissions and find school partners.
+                </p>
+
+                <div className="grid grid-cols-2 gap-2 pt-4 text-[11px] font-semibold text-[#0B1E36]">
+                  <div className="flex items-center gap-1.5">
+                    <Users className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                    <span>Admissions Support</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <Briefcase className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                    <span>Vacancies & Tenders</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-2">
+                <Link
+                  href="/school-owners/register"
+                  className="w-full py-2.5 px-4 bg-[#0B1E36] hover:bg-[#132c4d] text-white font-bold text-sm rounded-xl text-center block transition-all shadow-sm hover:shadow"
+                >
+                  List Your School
+                </Link>
+              </div>
             </div>
           </div>
 
-          {/* Card 2: Schools */}
-          <div className="bg-white rounded-2xl p-6 border border-surface-border shadow-subtle hover:shadow-elevated transition-all flex flex-col justify-between">
-            <div className="space-y-4">
-              <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
-                <SchoolIcon className="w-6 h-6" />
-              </div>
-              <h3 className="text-lg font-bold text-ink-primary">Schools & Proprietors</h3>
-              <p className="text-xs text-ink-secondary leading-relaxed">
-                Gain verified visibility, manage parent enquiries, recruit licensed teachers, and procure equipment via RFQs.
-              </p>
+          {/* Card 2: Teachers & Professionals */}
+          <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm hover:shadow-md transition-all flex flex-col overflow-hidden">
+            <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-100">
+              <img
+                src="/images/ecosystem-teachers.jpg"
+                alt="Teachers & Professionals"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute bottom-0 inset-x-0 h-1 bg-amber-400" />
             </div>
-            <div className="pt-6">
-              <Link href="/school-owners">
-                <Button variant="outline" size="sm" className="w-full justify-center">
-                  School Owners Hub
-                </Button>
-              </Link>
+
+            <div className="p-6 sm:p-7 flex flex-col justify-between flex-1 space-y-5">
+              <div>
+                <h3 className="text-xl font-bold text-[#0B1E36]">
+                  Teachers & Professionals
+                </h3>
+                <h4 className="text-xs sm:text-sm font-bold text-[#0B1E36] mt-0.5 mb-2">
+                  Find Your Next Opportunity
+                </h4>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Explore education jobs, showcase your expertise and offer services.
+                </p>
+
+                <div className="grid grid-cols-2 gap-2 pt-4 text-[11px] font-semibold text-[#0B1E36]">
+                  <div className="flex items-center gap-1.5">
+                    <Briefcase className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                    <span>Education Jobs</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <Users className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                    <span>Tutoring & Specialist Services</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-2">
+                <Link
+                  href="/professionals"
+                  className="w-full py-2.5 px-4 bg-[#0B1E36] hover:bg-[#132c4d] text-white font-bold text-sm rounded-xl text-center block transition-all shadow-sm hover:shadow"
+                >
+                  Explore Opportunities
+                </Link>
+              </div>
             </div>
           </div>
 
-          {/* Card 3: Teachers */}
-          <div className="bg-white rounded-2xl p-6 border border-surface-border shadow-subtle hover:shadow-elevated transition-all flex flex-col justify-between">
-            <div className="space-y-4">
-              <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                <Briefcase className="w-6 h-6" />
-              </div>
-              <h3 className="text-lg font-bold text-ink-primary">Teachers & Specialists</h3>
-              <p className="text-xs text-ink-secondary leading-relaxed">
-                Showcase NTC credentials, discover verified teaching vacancies in Accra, and offer specialized tutoring services.
-              </p>
+          {/* Card 3: Suppliers & Services */}
+          <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm hover:shadow-md transition-all flex flex-col overflow-hidden">
+            <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-100">
+              <img
+                src="/images/ecosystem-suppliers.jpg"
+                alt="Suppliers & Services"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute bottom-0 inset-x-0 h-1 bg-amber-400" />
             </div>
-            <div className="pt-6">
-              <Link href="/professionals">
-                <Button variant="outline" size="sm" className="w-full justify-center">
-                  Explore Careers
-                </Button>
-              </Link>
-            </div>
-          </div>
 
-          {/* Card 4: Suppliers */}
-          <div className="bg-white rounded-2xl p-6 border border-surface-border shadow-subtle hover:shadow-elevated transition-all flex flex-col justify-between">
-            <div className="space-y-4">
-              <div className="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
-                <Truck className="w-6 h-6" />
+            <div className="p-6 sm:p-7 flex flex-col justify-between flex-1 space-y-5">
+              <div>
+                <h3 className="text-xl font-bold text-[#0B1E36]">
+                  Suppliers & Services
+                </h3>
+                <h4 className="text-xs sm:text-sm font-bold text-[#0B1E36] mt-0.5 mb-2">
+                  Connect With Schools
+                </h4>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Showcase your products and services, and discover school tenders.
+                </p>
+
+                <div className="grid grid-cols-2 gap-2 pt-4 text-[11px] font-semibold text-[#0B1E36]">
+                  <div className="flex items-center gap-1.5">
+                    <Truck className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                    <span>Products & Services</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <FileText className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                    <span>School Tenders</span>
+                  </div>
+                </div>
               </div>
-              <h3 className="text-lg font-bold text-ink-primary">Suppliers & Vendors</h3>
-              <p className="text-xs text-ink-secondary leading-relaxed">
-                List education products across 14 categories, discover school tenders and RFQs, and submit competitive bids.
-              </p>
-            </div>
-            <div className="pt-6">
-              <Link href="/suppliers">
-                <Button variant="outline" size="sm" className="w-full justify-center">
-                  Supplier Portal
-                </Button>
-              </Link>
+
+              <div className="pt-2">
+                <Link
+                  href="/suppliers"
+                  className="w-full py-2.5 px-4 bg-[#0B1E36] hover:bg-[#132c4d] text-white font-bold text-sm rounded-xl text-center block transition-all shadow-sm hover:shadow"
+                >
+                  Discover Tenders
+                </Link>
+              </div>
             </div>
           </div>
 
