@@ -31,7 +31,7 @@ export const SchoolRegistrationPage: React.FC<SchoolRegistrationPageProps> = ({ 
 
   const [step, setStep] = useState(1);
   const [submittedStatus, setSubmittedStatus] = useState<VerificationStatus | null>(null);
-  const [crestUrl, setCrestUrl] = useState('https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=160&auto=format&fit=crop&q=80');
+  const [crestUrl, setCrestUrl] = useState('/logo-icon.svg');
   const [gesDocPath, setGesDocPath] = useState('GES_Cert_2026.pdf');
   const [uploadingFile, setUploadingFile] = useState(false);
 
@@ -73,8 +73,8 @@ export const SchoolRegistrationPage: React.FC<SchoolRegistrationPageProps> = ({ 
       slug: (schoolName || 'new-accra-academy').toLowerCase().replace(/\s+/g, '-'),
       tagline: tagline || 'Committed to child development and academic distinction',
       crestUrl,
-      coverImageUrl: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=1200&auto=format&fit=crop&q=80',
-      galleryImages: ['https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=800&auto=format&fit=crop&q=80'],
+      coverImageUrl: '/images/schools/school-east-legon.jpg',
+      galleryImages: ['/images/schools/school-east-legon.jpg'],
       locality,
       digitalAddress,
       address: address || 'Airport West, Accra',

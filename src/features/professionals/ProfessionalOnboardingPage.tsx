@@ -50,7 +50,7 @@ export const ProfessionalOnboardingPage: React.FC<ProfessionalOnboardingPageProp
     e.preventDefault();
     addProfessional({
       fullName,
-      avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
+      avatarUrl: '/images/professionals/teacher-kofi.jpg',
       title,
       mode,
       locality,

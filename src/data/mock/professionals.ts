@@ -4,7 +4,7 @@ export const mockProfessionals: Professional[] = [
   {
     id: 'pro-01',
     fullName: 'Kofi Addo Mensah',
-    avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80',
+    avatarUrl: '/images/professionals/teacher-kofi.jpg',
     title: 'Senior Physics & Mathematics Lead | IGCSE / WASSCE Specialist',
     mode: 'both',
     locality: 'East Legon',
@@ -43,7 +43,7 @@ export const mockProfessionals: Professional[] = [
   {
     id: 'pro-02',
     fullName: 'Grace Naa Korkoi Tagoe',
-    avatarUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&auto=format&fit=crop&q=80',
+    avatarUrl: '/images/professionals/teacher-grace.jpg',
     title: 'Certified Early Childhood Specialist & Reading Interventionist',
     mode: 'services',
     locality: 'Cantonments',
@@ -73,15 +73,15 @@ export const mockProfessionals: Professional[] = [
   },
   {
     id: 'pro-03',
-    fullName: 'David Kwabena Ansah',
-    avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&auto=format&fit=crop&q=80',
-    title: 'Senior French Language Instructor & DELF Examiner',
+    fullName: 'Esi Sutherland-Addy',
+    avatarUrl: '/images/professionals/teacher-esi.jpg',
+    title: 'Senior Bilingual French & Literature Instructor | DELF / WASSCE Specialist',
     mode: 'career',
     locality: 'Tema',
     phone: '+233 24 119 4432',
-    email: 'david.ansah.french@yahoo.com',
-    verificationStatus: 'under_review',
-    summary: 'Bilingual French educator with extensive experience preparing students for DELF Prim, Junior, and WASSCE French examinations.',
+    email: 'esi.sutherland.edu@gmail.com',
+    verificationStatus: 'approved',
+    summary: 'Bilingual French and Literature educator with extensive experience preparing students for DELF Prim, Junior, and WASSCE French examinations.',
     qualifications: [
       { degree: 'B.A. French & Linguistics', institution: 'University of Ghana, Legon', year: 2015 },
       { degree: 'DELF/DALF Examiner Certification', institution: 'Alliance Française d’Accra', year: 2018 }

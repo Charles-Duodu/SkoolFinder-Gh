@@ -6,12 +6,12 @@ export const mockSchools: School[] = [
     name: 'Achimota Preparatory & International School',
     slug: 'achimota-preparatory-international',
     tagline: 'Excellence in holistic basic and primary education in Accra since 1958',
-    crestUrl: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=160&auto=format&fit=crop&q=80',
-    coverImageUrl: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=1200&auto=format&fit=crop&q=80',
+    crestUrl: '/logo-icon.svg',
+    coverImageUrl: '/images/schools/school-achimota.jpg',
     galleryImages: [
-      'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=800&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1577896851231-70ef18881754?w=800&auto=format&fit=crop&q=80'
+      '/images/schools/school-achimota.jpg',
+      '/images/hero-1.jpg',
+      '/images/hero-2.jpg'
     ],
     locality: 'Achimota',
     digitalAddress: 'GA-112-9042',
@@ -58,11 +58,12 @@ export const mockSchools: School[] = [
     name: 'East Legon Cambridge Academy',
     slug: 'east-legon-cambridge-academy',
     tagline: 'World-class British curriculum education from Early Years through IGCSE',
-    crestUrl: 'https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=160&auto=format&fit=crop&q=80',
-    coverImageUrl: 'https://images.unsplash.com/photo-1562774053-701939374585?w=1200&auto=format&fit=crop&q=80',
+    crestUrl: '/logo-icon.svg',
+    coverImageUrl: '/images/schools/school-east-legon.jpg',
     galleryImages: [
-      'https://images.unsplash.com/photo-1562774053-701939374585?w=800&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&auto=format&fit=crop&q=80'
+      '/images/schools/school-east-legon.jpg',
+      '/images/hero-2.jpg',
+      '/images/hero-3.jpg'
     ],
     locality: 'East Legon',
     digitalAddress: 'GD-204-5519',
@@ -108,11 +109,11 @@ export const mockSchools: School[] = [
     name: 'Cantonments Montessori & Childcare Centre',
     slug: 'cantonments-montessori-centre',
     tagline: 'Child-centered developmental foundation for infants, toddlers and kindergarteners',
-    crestUrl: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=160&auto=format&fit=crop&q=80',
-    coverImageUrl: 'https://images.unsplash.com/photo-1587691592099-24045742c181?w=1200&auto=format&fit=crop&q=80',
+    crestUrl: '/logo-icon.svg',
+    coverImageUrl: '/images/schools/school-cantonments.jpg',
     galleryImages: [
-      'https://images.unsplash.com/photo-1587691592099-24045742c181?w=800&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1576267423445-b2e0074d68a4?w=800&auto=format&fit=crop&q=80'
+      '/images/schools/school-cantonments.jpg',
+      '/images/hero-1.jpg'
     ],
     locality: 'Cantonments',
     digitalAddress: 'GL-019-3312',
@@ -156,10 +157,12 @@ export const mockSchools: School[] = [
     name: 'Tema Community International College',
     slug: 'tema-community-international-college',
     tagline: 'Leading Day & Boarding Senior High and Cambridge Sixth Form in Greater Accra',
-    crestUrl: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=160&auto=format&fit=crop&q=80',
-    coverImageUrl: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1200&auto=format&fit=crop&q=80',
+    crestUrl: '/logo-icon.svg',
+    coverImageUrl: '/images/schools/school-tema.jpg',
     galleryImages: [
-      'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&auto=format&fit=crop&q=80'
+      '/images/schools/school-tema.jpg',
+      '/images/hero-3.jpg',
+      '/images/hero-2.jpg'
     ],
     locality: 'Tema',
     digitalAddress: 'TX-044-8891',
@@ -204,10 +207,11 @@ export const mockSchools: School[] = [
     name: 'Ridge View Christian High School',
     slug: 'ridge-view-christian-high',
     tagline: 'Moral discipline and exemplary WASSCE academic results in the heart of Ridge',
-    crestUrl: 'https://images.unsplash.com/photo-1519452635265-7b1fbfd1e4e0?w=160&auto=format&fit=crop&q=80',
-    coverImageUrl: 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?w=1200&auto=format&fit=crop&q=80',
+    crestUrl: '/logo-icon.svg',
+    coverImageUrl: '/images/hero-3.jpg',
     galleryImages: [
-      'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?w=800&auto=format&fit=crop&q=80'
+      '/images/hero-3.jpg',
+      '/images/schools/school-tema.jpg'
     ],
     locality: 'Ridge',
     digitalAddress: 'GA-029-7104',
@@ -249,10 +253,11 @@ export const mockSchools: School[] = [
     name: 'Spintex Grace Children Academy',
     slug: 'spintex-grace-children-academy',
     tagline: 'Affordable, community-focused basic education excellence on Spintex Road',
-    crestUrl: 'https://images.unsplash.com/photo-1577896851231-70ef18881754?w=160&auto=format&fit=crop&q=80',
-    coverImageUrl: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&auto=format&fit=crop&q=80',
+    crestUrl: '/logo-icon.svg',
+    coverImageUrl: '/images/hero-1.jpg',
     galleryImages: [
-      'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&auto=format&fit=crop&q=80'
+      '/images/hero-1.jpg',
+      '/images/schools/school-achimota.jpg'
     ],
     locality: 'Spintex',
     digitalAddress: 'GT-319-2011',
@@ -294,10 +299,11 @@ export const mockSchools: School[] = [
     name: 'Dansoman Heritage International School',
     slug: 'dansoman-heritage-international',
     tagline: 'Pioneering holistic bilingual learning in West Accra',
-    crestUrl: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=160&auto=format&fit=crop&q=80',
-    coverImageUrl: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=1200&auto=format&fit=crop&q=80',
+    crestUrl: '/logo-icon.svg',
+    coverImageUrl: '/images/schools/school-achimota.jpg',
     galleryImages: [
-      'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&auto=format&fit=crop&q=80'
+      '/images/schools/school-achimota.jpg',
+      '/images/hero-2.jpg'
     ],
     locality: 'Dansoman',
     digitalAddress: 'GA-541-0021',
@@ -339,10 +345,11 @@ export const mockSchools: School[] = [
     name: 'Airport Hills Early Learning Haven',
     slug: 'airport-hills-early-haven',
     tagline: 'Nurturing curiosity, creativity, and foundational literacy',
-    crestUrl: 'https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=160&auto=format&fit=crop&q=80',
-    coverImageUrl: 'https://images.unsplash.com/photo-1587691592099-24045742c181?w=1200&auto=format&fit=crop&q=80',
+    crestUrl: '/logo-icon.svg',
+    coverImageUrl: '/images/schools/school-cantonments.jpg',
     galleryImages: [
-      'https://images.unsplash.com/photo-1587691592099-24045742c181?w=800&auto=format&fit=crop&q=80'
+      '/images/schools/school-cantonments.jpg',
+      '/images/hero-1.jpg'
     ],
     locality: 'Airport Residential',
     digitalAddress: 'GA-088-3412',

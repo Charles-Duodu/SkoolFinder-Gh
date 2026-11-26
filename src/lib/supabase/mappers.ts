@@ -20,14 +20,10 @@ import type {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type DbRow = Record<string, any>;
 
-const DEFAULT_CREST =
-  'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=160&auto=format&fit=crop&q=80';
-const DEFAULT_COVER =
-  'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=1200&auto=format&fit=crop&q=80';
-const DEFAULT_AVATAR =
-  'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80';
-const DEFAULT_LOGO =
-  'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=160&auto=format&fit=crop&q=80';
+const DEFAULT_CREST = '/logo-icon.svg';
+const DEFAULT_COVER = '/images/schools/school-east-legon.jpg';
+const DEFAULT_AVATAR = '/images/professionals/teacher-kofi.jpg';
+const DEFAULT_LOGO = '/images/ecosystem-suppliers.jpg';
 
 export function mapSchoolRow(row: DbRow): School {
   return {

@@ -45,7 +45,7 @@ export const SupplierOnboardingPage: React.FC<SupplierOnboardingPageProps> = ({ 
       registrationNumber: regNumber,
       category,
       additionalCategories: ['ICT & Software', 'Science Lab Equipment'],
-      logoUrl: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=160&auto=format&fit=crop&q=80',
+      logoUrl: '/images/ecosystem-suppliers.jpg',
       locality,
       address,
       phone,
