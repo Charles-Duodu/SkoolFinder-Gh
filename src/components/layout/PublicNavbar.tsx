@@ -15,7 +15,8 @@ import {
   Scale, 
   ChevronRight,
   Sparkles,
-  GraduationCap
+  GraduationCap,
+  ShieldCheck
 } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { AuthButton } from './AuthButton';
@@ -83,9 +84,9 @@ export const PublicNavbar: React.FC = () => {
                 Parent Portal
               </Button>
             </Link>
-            <Link href="/school-owners?tab=register">
-              <Button variant="gold" size="sm" icon={<Sparkles className="w-4 h-4 text-brand-navy-dark" />}>
-                Register School
+            <Link href="/super-admin/dashboard">
+              <Button variant="gold" size="sm" icon={<ShieldCheck className="w-4 h-4 text-brand-navy-dark" />}>
+                Super Admin
               </Button>
             </Link>
           </div>
@@ -138,14 +139,9 @@ export const PublicNavbar: React.FC = () => {
                 Parent Workspace
               </Button>
             </Link>
-            <Link href="/school-owners/register" onClick={() => setMobileMenuOpen(false)}>
-              <Button variant="gold" className="w-full justify-center">
-                Register Your School
-              </Button>
-            </Link>
             <Link href="/super-admin/dashboard" onClick={() => setMobileMenuOpen(false)}>
-              <Button variant="ghost" className="w-full justify-center text-xs text-ink-muted">
-                Super Admin Governance
+              <Button variant="gold" className="w-full justify-center" icon={<ShieldCheck className="w-4 h-4 text-brand-navy-dark" />}>
+                Super Admin
               </Button>
             </Link>
           </div>
