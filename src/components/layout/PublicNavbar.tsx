@@ -30,7 +30,7 @@ export const PublicNavbar: React.FC = () => {
   const navLinks = [
     { label: 'Find Schools', path: '/schools', icon: <Search className="w-4 h-4" /> },
     { label: 'Compare Schools', path: '/compare', badge: comparisonCount > 0 ? comparisonCount : undefined, icon: <Scale className="w-4 h-4" /> },
-    { label: 'For School Owners', path: '/school-owners', icon: <School className="w-4 h-4" /> },
+    { label: 'School Owners', path: '/school-owners', icon: <School className="w-4 h-4" /> },
     { label: 'Teachers & Pros', path: '/professionals', icon: <Briefcase className="w-4 h-4" /> },
     { label: 'Suppliers & Vendors', path: '/suppliers', icon: <Truck className="w-4 h-4" /> },
   ];
