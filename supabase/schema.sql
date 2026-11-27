@@ -382,6 +382,37 @@ ALTER TABLE public.quotation_bids ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.safeguarding_cases ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.audit_logs ENABLE ROW LEVEL SECURITY;
 
+-- -----------------------------------------------------------------------------
+-- 14. PAYMENTS & TRANSACTIONS (BACHS GHANA MOMO & CARDS)
+-- -----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS public.payments (
+  id TEXT PRIMARY KEY,
+  user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+  user_email TEXT NOT NULL,
+  user_name TEXT,
+  amount_pesewas BIGINT NOT NULL, -- e.g. 15000 = GH₵150.00
+  currency TEXT DEFAULT 'GHS',
+  purpose TEXT NOT NULL, -- 'featured_listing', 'admission_application', 'claim_verification', 'tender_bid'
+  target_id TEXT, -- e.g. schoolId or admissionApplicationId
+  bachs_checkout_id TEXT,
+  reference TEXT UNIQUE NOT NULL,
+  status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'completed', 'failed', 'refunded')),
+  channel TEXT, -- 'mobile_money', 'card', 'bank_transfer'
+  metadata JSONB DEFAULT '{}'::jsonb,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE public.payments ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can read own payments"
+  ON public.payments FOR SELECT
+  USING (auth.uid() = user_id OR auth.role() = 'service_role');
+
+CREATE POLICY "Service role can insert and update payments"
+  ON public.payments FOR ALL
+  USING (auth.role() = 'service_role');
+
 INSERT INTO storage.buckets (id, name, public)
 VALUES ('public-media', 'public-media', true)
 ON CONFLICT (id) DO NOTHING;

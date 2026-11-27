@@ -30,6 +30,8 @@ import {
   GraduationCap
 } from 'lucide-react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
+import { BachsCheckoutModal } from '../../components/payments/BachsCheckoutModal';
+import { Sparkles } from 'lucide-react';
 
 interface SchoolDashboardPageProps {
   welcomeNotice?: boolean;
@@ -59,6 +61,7 @@ export const SchoolDashboardPage: React.FC<SchoolDashboardPageProps> = ({ welcom
   const [replyText, setReplyText] = useState('');
   const [selectedApplication, setSelectedApplication] = useState<string | null>(null);
   const [selectedBid, setSelectedBid] = useState<string | null>(null);
+  const [featuredUpgradeModalOpen, setFeaturedUpgradeModalOpen] = useState(false);
 
   // New Vacancy Form
   const [vacTitle, setVacTitle] = useState('');
@@ -205,6 +208,30 @@ export const SchoolDashboardPage: React.FC<SchoolDashboardPageProps> = ({ welcom
                 <p className="text-base font-bold text-emerald-600">95% Complete</p>
               </div>
             </div>
+          </div>
+
+          {/* Bachs Mobile Money / Card Featured Placement Promotion Banner */}
+          <div className="p-5 rounded-2xl bg-gradient-to-r from-[#0B1E36] via-[#122847] to-[#1E3A8A] text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-md border border-slate-700/50">
+            <div className="space-y-1">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-400/20 text-amber-300 text-[10px] font-bold uppercase tracking-wider border border-amber-400/30">
+                <Sparkles className="w-3 h-3 text-amber-400" />
+                Featured School Placement
+              </div>
+              <h3 className="text-base font-serif font-bold text-white">
+                Promote {currentSchool.name} on the Greater Accra Homepage
+              </h3>
+              <p className="text-xs text-slate-300 max-w-2xl leading-relaxed">
+                Gain 4x more parent admission inquiries with priority placement in the Featured Private Schools directory. Powered by instant Bachs Ghana Mobile Money & Card checkout.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setFeaturedUpgradeModalOpen(true)}
+              className="px-5 py-2.5 bg-amber-400 hover:bg-amber-300 active:bg-amber-500 text-slate-950 font-bold text-xs rounded-xl shadow-sm transition-all shrink-0 cursor-pointer flex items-center gap-1.5"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-slate-950 fill-slate-950" />
+              <span>Promote for GH₵150.00</span>
+            </button>
           </div>
 
           {/* KPI Metrics */}
@@ -796,6 +823,19 @@ export const SchoolDashboardPage: React.FC<SchoolDashboardPageProps> = ({ welcom
           </div>
         </div>
       </Modal>
+
+      {/* MODAL: BACHS FEATURED PROMOTION CHECKOUT */}
+      <BachsCheckoutModal
+        isOpen={featuredUpgradeModalOpen}
+        onClose={() => setFeaturedUpgradeModalOpen(false)}
+        title="Featured Private School Placement"
+        description={`Activate Term 1 priority featured placement on the SkoolFinder Greater Accra homepage for ${currentSchool.name}.`}
+        amountGhs={150.00}
+        purpose="featured_listing"
+        targetId={currentSchool.id}
+        customerEmail="admin@achimotaprep.edu.gh"
+        customerName={currentSchool.name}
+      />
 
     </DashboardLayout>
   );
