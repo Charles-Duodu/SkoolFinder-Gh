@@ -64,7 +64,7 @@ export async function createBachsCheckout(options: CreateCheckoutOptions): Promi
         },
         body: JSON.stringify({
           pricing: {
-            amount: options.amountGhs,
+            amount: options.amountGhs.toFixed(2),
             currency: 'GHS',
           },
           customer: {
