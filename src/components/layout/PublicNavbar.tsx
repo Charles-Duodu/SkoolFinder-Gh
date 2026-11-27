@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useUser, UserButton } from '@clerk/nextjs';
+import { createClient } from '@/lib/supabase/client';
 import { useDemo } from '../../context/DemoContext';
 import { 
   Search, 
@@ -25,7 +25,20 @@ export const PublicNavbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
   const { state } = useDemo();
-  const { isSignedIn, isLoaded } = useUser();
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+
+  useEffect(() => {
+    const supabase = createClient();
+    if (supabase) {
+      supabase.auth.getUser().then(({ data }) => {
+        setUserEmail(data.user?.email || null);
+      });
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+        setUserEmail(session?.user?.email || null);
+      });
+      return () => subscription?.unsubscribe();
+    }
+  }, []);
 
   const comparisonCount = state.parent.comparisonSchoolIds.length;
 
@@ -79,14 +92,24 @@ export const PublicNavbar: React.FC = () => {
 
           {/* Action CTAs */}
           <div className="hidden sm:flex items-center gap-2.5">
-            {isLoaded && isSignedIn ? (
+            {userEmail ? (
               <>
                 <Link href="/parents">
                   <Button variant="outline" size="sm" className="bg-white/60 backdrop-blur-md border-white/80 hover:bg-white/90 shadow-xs">
                     Parent Workspace
                   </Button>
                 </Link>
-                <UserButton />
+                <button
+                  type="button"
+                  onClick={async () => {
+                    const supabase = createClient();
+                    if (supabase) await supabase.auth.signOut();
+                    window.location.href = '/';
+                  }}
+                  className="text-xs text-ink-secondary hover:text-brand-navy px-2.5 py-1.5 font-semibold rounded-lg hover:bg-slate-100 transition-colors cursor-pointer"
+                >
+                  Sign Out
+                </button>
               </>
             ) : (
               <>
@@ -147,17 +170,24 @@ export const PublicNavbar: React.FC = () => {
             </Link>
           ))}
           <div className="pt-3 border-t border-surface-border flex flex-col gap-2">
-            {isLoaded && isSignedIn ? (
+            {userEmail ? (
               <>
                 <Link href="/parents/dashboard" onClick={() => setMobileMenuOpen(false)}>
                   <Button variant="outline" className="w-full justify-center">
                     Parent Workspace
                   </Button>
                 </Link>
-                <div className="flex items-center justify-between px-3 py-2 bg-white/60 rounded-xl">
-                  <span className="text-sm font-medium text-ink-primary">My Account</span>
-                  <UserButton />
-                </div>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    const supabase = createClient();
+                    if (supabase) await supabase.auth.signOut();
+                    window.location.href = '/';
+                  }}
+                  className="w-full text-center text-xs text-ink-secondary py-2 hover:text-brand-navy"
+                >
+                  Sign Out ({userEmail})
+                </button>
               </>
             ) : (
               <>
