@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { ClerkProvider } from '@clerk/nextjs';
 import '@/styles/index.css';
 import { AppProviders } from '@/components/providers/AppProviders';
 
@@ -19,20 +20,22 @@ export default function RootLayout({
   const showDemoBar = process.env.NEXT_PUBLIC_ENABLE_DEMO_BAR !== 'false';
 
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body className="bg-surface-bg text-ink-primary font-sans antialiased min-h-screen selection:bg-brand-gold/20 selection:text-brand-navy">
-        <AppProviders showDemoBar={showDemoBar}>
-          {children}
-        </AppProviders>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <head>
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+          />
+        </head>
+        <body className="bg-surface-bg text-ink-primary font-sans antialiased min-h-screen selection:bg-brand-gold/20 selection:text-brand-navy">
+          <AppProviders showDemoBar={showDemoBar}>
+            {children}
+          </AppProviders>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

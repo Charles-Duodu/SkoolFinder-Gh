@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useUser, UserButton } from '@clerk/nextjs';
 import { useDemo } from '../../context/DemoContext';
 import { 
   Search, 
@@ -24,6 +25,7 @@ export const PublicNavbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
   const { state } = useDemo();
+  const { isSignedIn, isLoaded } = useUser();
 
   const comparisonCount = state.parent.comparisonSchoolIds.length;
 
@@ -77,16 +79,29 @@ export const PublicNavbar: React.FC = () => {
 
           {/* Action CTAs */}
           <div className="hidden sm:flex items-center gap-2.5">
-            <Link href="/parents">
-              <Button variant="outline" size="sm" className="bg-white/60 backdrop-blur-md border-white/80 hover:bg-white/90 shadow-xs">
-                Parent Portal
-              </Button>
-            </Link>
-            <Link href="/super-admin/dashboard">
-              <Button variant="gold" size="sm" icon={<ShieldCheck className="w-4 h-4 text-brand-navy-dark" />} className="shadow-md hover:shadow-amber-400/20">
-                Super Admin
-              </Button>
-            </Link>
+            {isLoaded && isSignedIn ? (
+              <>
+                <Link href="/parents">
+                  <Button variant="outline" size="sm" className="bg-white/60 backdrop-blur-md border-white/80 hover:bg-white/90 shadow-xs">
+                    Parent Workspace
+                  </Button>
+                </Link>
+                <UserButton />
+              </>
+            ) : (
+              <>
+                <Link href="/sign-in">
+                  <Button variant="outline" size="sm" className="bg-white/60 backdrop-blur-md border-white/80 hover:bg-white/90 shadow-xs">
+                    Sign In
+                  </Button>
+                </Link>
+                <Link href="/sign-up">
+                  <Button variant="gold" size="sm" className="shadow-md hover:shadow-amber-400/20">
+                    Register Free
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -132,16 +147,32 @@ export const PublicNavbar: React.FC = () => {
             </Link>
           ))}
           <div className="pt-3 border-t border-surface-border flex flex-col gap-2">
-            <Link href="/parents/dashboard" onClick={() => setMobileMenuOpen(false)}>
-              <Button variant="outline" className="w-full justify-center">
-                Parent Workspace
-              </Button>
-            </Link>
-            <Link href="/super-admin/dashboard" onClick={() => setMobileMenuOpen(false)}>
-              <Button variant="gold" className="w-full justify-center" icon={<ShieldCheck className="w-4 h-4 text-brand-navy-dark" />}>
-                Super Admin
-              </Button>
-            </Link>
+            {isLoaded && isSignedIn ? (
+              <>
+                <Link href="/parents/dashboard" onClick={() => setMobileMenuOpen(false)}>
+                  <Button variant="outline" className="w-full justify-center">
+                    Parent Workspace
+                  </Button>
+                </Link>
+                <div className="flex items-center justify-between px-3 py-2 bg-white/60 rounded-xl">
+                  <span className="text-sm font-medium text-ink-primary">My Account</span>
+                  <UserButton />
+                </div>
+              </>
+            ) : (
+              <>
+                <Link href="/sign-in" onClick={() => setMobileMenuOpen(false)}>
+                  <Button variant="outline" className="w-full justify-center">
+                    Sign In
+                  </Button>
+                </Link>
+                <Link href="/sign-up" onClick={() => setMobileMenuOpen(false)}>
+                  <Button variant="gold" className="w-full justify-center">
+                    Register Free
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
         </div>
       )}
