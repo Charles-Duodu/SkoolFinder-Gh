@@ -47,7 +47,7 @@ export async function POST(req: Request) {
     const originHeader = req.headers.get('origin');
     const hostHeader = req.headers.get('x-forwarded-host') || req.headers.get('host');
     const protoHeader = req.headers.get('x-forwarded-proto') || 'https';
-    const dynamicBaseUrl = (body as any).origin || originHeader || (hostHeader ? `${protoHeader}://${hostHeader}` : process.env.NEXT_PUBLIC_APP_URL || 'https://skool-finder-gh-zydn.vercel.app');
+    const dynamicBaseUrl = (body as any).origin || originHeader || (hostHeader ? `${protoHeader}://${hostHeader}` : process.env.NEXT_PUBLIC_APP_URL || 'https://skool-finder-gh.vercel.app');
 
     // Generate Bachs checkout session
     const session = await createBachsCheckout({

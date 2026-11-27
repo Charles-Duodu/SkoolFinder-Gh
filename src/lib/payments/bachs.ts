@@ -44,7 +44,7 @@ export const getBachsBaseUrl = () => {
 
 export async function createBachsCheckout(options: CreateCheckoutOptions): Promise<CheckoutSessionResult> {
   const secretKey = process.env.BACHS_SECRET_KEY;
-  const baseUrl = options.baseUrl || process.env.NEXT_PUBLIC_APP_URL || 'https://skool-finder-gh-zydn.vercel.app';
+  const baseUrl = options.baseUrl || process.env.NEXT_PUBLIC_APP_URL || 'https://skool-finder-gh.vercel.app';
   const reference = `SF-GH-${Date.now()}-${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
   const amountPesewas = Math.round(options.amountGhs * 100);
 

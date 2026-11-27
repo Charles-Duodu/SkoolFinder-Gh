@@ -70,7 +70,7 @@ export async function POST(req: Request) {
             heading: 'Payment Successfully Received',
             bodyText: `Your payment of GH₵${amountGhs} for ${paymentRecord.purpose.replace(/_/g, ' ')} has been received and confirmed. Your reference is ${reference}.`,
             ctaText: 'View Dashboard',
-            ctaUrl: `${process.env.NEXT_PUBLIC_APP_URL || 'https://skool-finder-gh-zydn.vercel.app'}/parents/dashboard`,
+            ctaUrl: `${process.env.NEXT_PUBLIC_APP_URL || 'https://skool-finder-gh.vercel.app'}/parents/dashboard`,
           }).catch(console.warn);
         }
 

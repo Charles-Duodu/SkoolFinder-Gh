@@ -176,7 +176,7 @@ export async function sendWelcomeEmail(payload: {
   };
 
   const { label, portal, portalPath, color } = roleLabels[payload.role] || roleLabels.parent;
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://skool-finder-gh-zydn.vercel.app';
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://skool-finder-gh.vercel.app';
 
   return sendEmailSafe({
     to: payload.recipientEmail,
