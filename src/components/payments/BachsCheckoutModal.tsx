@@ -41,6 +41,7 @@ export const BachsCheckoutModal: React.FC<BachsCheckoutModalProps> = ({
     setErrorMsg(null);
 
     try {
+      const currentOrigin = typeof window !== 'undefined' ? window.location.origin : '';
       const res = await fetch('/api/payments/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -50,6 +51,7 @@ export const BachsCheckoutModal: React.FC<BachsCheckoutModalProps> = ({
           title,
           description,
           targetId,
+          origin: currentOrigin,
           metadata: {
             customerEmail,
             customerName,
@@ -65,8 +67,12 @@ export const BachsCheckoutModal: React.FC<BachsCheckoutModalProps> = ({
       }
 
       if (data.checkoutUrl) {
-        // Redirect to Bachs Checkout (or simulated receipt)
-        window.location.href = data.checkoutUrl;
+        let targetUrl = data.checkoutUrl;
+        // Client safety guard: Never redirect to localhost when browsing on live domain
+        if (typeof window !== 'undefined' && window.location.hostname !== 'localhost' && targetUrl.includes('localhost')) {
+          targetUrl = targetUrl.replace(/https?:\/\/localhost(:\d+)?/, window.location.origin);
+        }
+        window.location.href = targetUrl;
       }
     } catch (err: any) {
       setErrorMsg(err.message || 'Payment initiation failed.');

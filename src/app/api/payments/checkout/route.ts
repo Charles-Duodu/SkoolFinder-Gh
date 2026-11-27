@@ -43,11 +43,11 @@ export async function POST(req: Request) {
     const customerName = user?.user_metadata?.full_name || metadata.customerName || 'SkoolFinder Member';
     const customerPhone = user?.user_metadata?.phone || metadata.customerPhone;
 
-    // Determine dynamic base URL from request headers so redirection always returns to the live domain
+    // Determine dynamic base URL from request origin/headers so redirection always returns to the current live domain
     const originHeader = req.headers.get('origin');
     const hostHeader = req.headers.get('x-forwarded-host') || req.headers.get('host');
     const protoHeader = req.headers.get('x-forwarded-proto') || 'https';
-    const dynamicBaseUrl = originHeader || (hostHeader ? `${protoHeader}://${hostHeader}` : process.env.NEXT_PUBLIC_APP_URL || 'https://skool-finder-gh-zydn.vercel.app');
+    const dynamicBaseUrl = (body as any).origin || originHeader || (hostHeader ? `${protoHeader}://${hostHeader}` : process.env.NEXT_PUBLIC_APP_URL || 'https://skool-finder-gh-zydn.vercel.app');
 
     // Generate Bachs checkout session
     const session = await createBachsCheckout({

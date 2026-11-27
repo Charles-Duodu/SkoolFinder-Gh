@@ -107,8 +107,8 @@ export async function createBachsCheckout(options: CreateCheckoutOptions): Promi
     }
   }
 
-  // Graceful Demo / Interactive Simulation Mode (allows testing without active merchant key)
-  const simulatedUrl = `${baseUrl}/payment/success?ref=${reference}&purpose=${options.purpose}&target=${options.targetId || ''}&simulated=true&amount=${options.amountGhs}`;
+  // Graceful Demo / Interactive Simulation Mode: Returns relative path so browser never redirects to localhost
+  const simulatedUrl = `/payment/success?ref=${reference}&purpose=${options.purpose}&target=${options.targetId || ''}&simulated=true&amount=${options.amountGhs}`;
 
   return {
     checkoutUrl: simulatedUrl,
