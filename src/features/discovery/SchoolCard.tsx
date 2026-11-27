@@ -75,10 +75,10 @@ export const SchoolCard: React.FC<SchoolCardProps> = ({ school, variant = 'list'
 
   return (
     <>
-      <div className={`glass-panel glass-panel-hover rounded-3xl overflow-hidden shadow-glass hover:shadow-glass-hover flex ${variant === 'list' ? 'flex-col md:flex-row' : 'flex-col'} group relative bg-white border border-slate-200/80`}>
+      <div className={`glass-panel glass-panel-hover rounded-3xl overflow-hidden shadow-glass hover:shadow-glass-hover flex ${variant === 'list' ? 'flex-col sm:flex-row' : 'flex-col'} group relative bg-white border border-slate-200/80`}>
         
         {/* Cover Image & Badges */}
-        <div className={`relative ${variant === 'list' ? 'h-48 md:h-auto md:w-72 lg:w-80 shrink-0 min-h-[220px]' : 'h-44 sm:h-48 w-full'} bg-gradient-to-br from-brand-navy-dark via-brand-navy to-slate-900 overflow-hidden`}>
+        <div className={`relative ${variant === 'list' ? 'h-52 sm:h-auto sm:w-64 md:w-72 lg:w-80 shrink-0 sm:min-h-[210px]' : 'h-44 sm:h-48 w-full'} bg-gradient-to-br from-brand-navy-dark via-brand-navy to-slate-900 overflow-hidden`}>
           {!coverError ? (
             <img
               src={school.coverImageUrl}
