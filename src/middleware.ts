@@ -1,27 +1,31 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import { NextResponse, type NextRequest } from 'next/server';
 
-const isProtectedRoute = createRouteMatcher([
-  '/parents(.*)',
-  '/super-admin(.*)',
-  '/school-owners/dashboard(.*)',
-  '/professionals/dashboard(.*)',
-  '/suppliers/dashboard(.*)',
-]);
-
-const clerkHandler = clerkMiddleware(async (auth, req) => {
-  if (isProtectedRoute(req)) {
-    await auth.protect();
-  }
-});
+let clerkHandler: any = null;
 
 export default function middleware(req: NextRequest, event: any) {
-  const hasClerkKeys = 
-    Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) && 
-    Boolean(process.env.CLERK_SECRET_KEY);
+  const pubKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+  const secretKey = process.env.CLERK_SECRET_KEY;
 
-  if (!hasClerkKeys) {
+  // If Clerk keys are not yet configured in the environment, pass through safely without 500 error
+  if (!pubKey || !secretKey) {
     return NextResponse.next();
+  }
+
+  if (!clerkHandler) {
+    const isProtectedRoute = createRouteMatcher([
+      '/parents(.*)',
+      '/super-admin(.*)',
+      '/school-owners/dashboard(.*)',
+      '/professionals/dashboard(.*)',
+      '/suppliers/dashboard(.*)',
+    ]);
+
+    clerkHandler = clerkMiddleware(async (auth, request) => {
+      if (isProtectedRoute(request)) {
+        await auth.protect();
+      }
+    });
   }
 
   return clerkHandler(req, event);
