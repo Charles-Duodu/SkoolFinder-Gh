@@ -288,12 +288,12 @@ export const HomePage: React.FC = () => {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 gap-6">
           {featuredSchools.map((school) => (
             <SchoolCard
               key={school.id}
               school={school}
-              variant="grid"
+              variant="list"
               onOpenEnquiry={(s) => setEnquirySchool(s)}
             />
           ))}
