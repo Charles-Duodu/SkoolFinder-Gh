@@ -11,6 +11,7 @@ interface ParentAuthModalProps {
   onClose: () => void;
   initialMode?: 'sign-up' | 'sign-in';
   promptReason?: string;
+  onSuccess?: () => void;
 }
 
 export const ParentAuthModal: React.FC<ParentAuthModalProps> = ({
@@ -18,6 +19,7 @@ export const ParentAuthModal: React.FC<ParentAuthModalProps> = ({
   onClose,
   initialMode = 'sign-up',
   promptReason,
+  onSuccess,
 }) => {
   const router = useRouter();
   const { setRole, addToast } = useDemo();
@@ -25,6 +27,7 @@ export const ParentAuthModal: React.FC<ParentAuthModalProps> = ({
 
   const [mode, setMode] = useState<'sign-up' | 'sign-in'>(initialMode);
   const [currentStep, setCurrentStep] = useState<1 | 2 | 3>(1);
+  const [isSuccessComplete, setIsSuccessComplete] = useState(false);
 
   // Form Fields
   const [fullName, setFullName] = useState('');
@@ -106,16 +109,17 @@ export const ParentAuthModal: React.FC<ParentAuthModalProps> = ({
         setRole('parent');
         setCurrentStep(3);
 
+        if (onSuccess) {
+          onSuccess();
+        }
+
         addToast({
           title: 'Account Created 🎉',
-          message: `Welcome to SkoolFinder, ${fullName || email}! Redirecting to your Parent Portal...`,
+          message: `Welcome to SkoolFinder, ${fullName || email}! Your parent account is ready.`,
           type: 'success',
         });
 
-        setTimeout(() => {
-          onClose();
-          router.push('/parents');
-        }, 800);
+        setIsSuccessComplete(true);
       } else {
         // Sign-in flow
         if (supabase) {
@@ -133,16 +137,19 @@ export const ParentAuthModal: React.FC<ParentAuthModalProps> = ({
         }
 
         setRole('parent');
+        setCurrentStep(3);
+
+        if (onSuccess) {
+          onSuccess();
+        }
+
         addToast({
           title: 'Signed In Successfully',
-          message: 'Welcome back! Loading your Parent Portal...',
+          message: 'Welcome back! Your parent account is ready.',
           type: 'success',
         });
 
-        setTimeout(() => {
-          onClose();
-          router.push('/parents');
-        }, 500);
+        setIsSuccessComplete(true);
       }
     } catch (err: any) {
       setErrorMsg(err?.message || 'Authentication error. Please try again.');
@@ -272,141 +279,184 @@ export const ParentAuthModal: React.FC<ParentAuthModalProps> = ({
 
           <hr className="border-slate-100 my-5" />
 
-          {/* Form Section Header */}
-          <div className="mb-5">
-            <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#0B1E36]">
-              {mode === 'sign-up' ? 'Create your free parent account' : 'Parent Login'}
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1">
-              {mode === 'sign-up'
-                ? 'Enter your details to start your free parent journey.'
-                : 'Sign in to manage your school shortlists and applications.'}
-            </p>
-          </div>
-
-          {/* Error Message */}
-          {errorMsg && (
-            <div className="mb-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-800 flex items-start gap-2">
-              <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
-              <span>{errorMsg}</span>
-            </div>
-          )}
-
-          {/* Success Message */}
-          {successMsg && (
-            <div className="mb-4 p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-900 flex items-start gap-2">
-              <Check className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-              <span>{successMsg}</span>
-            </div>
-          )}
-
-          {/* Input Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {mode === 'sign-up' && (
-              <div>
-                <label className="block text-xs sm:text-sm font-bold text-[#0B1E36] mb-1.5">
-                  Full name
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  placeholder="e.g. Ama Mensah"
-                  className="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0B1E36] transition-all"
-                />
+          {isSuccessComplete ? (
+            <div className="py-8 px-2 text-center space-y-6 animate-in zoom-in-95 duration-200">
+              <div className="w-16 h-16 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-sm">
+                <Check className="w-8 h-8 stroke-[3]" />
               </div>
-            )}
 
-            <div>
-              <label className="block text-xs sm:text-sm font-bold text-[#0B1E36] mb-1.5">
-                Email address
-              </label>
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="e.g. ama.mensah@gmail.com"
-                className="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0B1E36] transition-all"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs sm:text-sm font-bold text-[#0B1E36] mb-1.5">
-                Password
-              </label>
-              <input
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Minimum 6 characters"
-                className="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0B1E36] transition-all"
-              />
-            </div>
-
-            {mode === 'sign-up' && (
               <div>
-                <label className="block text-xs sm:text-sm font-bold text-[#0B1E36] mb-1.5">
-                  Confirm password
-                </label>
-                <input
-                  type="password"
-                  required
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="Re-enter your password"
-                  className="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0B1E36] transition-all"
-                />
+                <h3 className="text-2xl font-serif font-bold text-[#0B1E36]">
+                  Parent Account Activated 🎉
+                </h3>
+                <p className="text-sm text-slate-600 mt-2 max-w-md mx-auto leading-relaxed">
+                  Welcome to SkoolFinder, <strong className="text-[#0B1E36]">{fullName || email}</strong>! Your free parent account is ready and your action has been synced to your dashboard.
+                </p>
               </div>
-            )}
 
-            <div className="pt-2">
-              <button
-                type="submit"
-                disabled={loading}
-                className="px-7 py-3 bg-[#0B1E36] hover:bg-[#132c4d] active:bg-[#071322] text-white font-bold text-sm rounded-lg shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 disabled:opacity-70 cursor-pointer"
-              >
-                {loading && <Loader2 className="w-4 h-4 animate-spin text-white" />}
-                {loading
-                  ? mode === 'sign-up'
-                    ? 'Creating account...'
-                    : 'Signing in...'
-                  : mode === 'sign-up'
-                  ? 'Create free account'
-                  : 'Sign in'}
-              </button>
-            </div>
-          </form>
-
-          {/* Subtext and Mode Switcher */}
-          <div className="mt-6 pt-4 border-t border-slate-100 text-xs text-slate-500 space-y-2">
-            <p>
-              Your credentials are securely handled to personalize your school shortlist, applications, and notifications.
-            </p>
-            {mode === 'sign-up' ? (
-              <p>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-2">
                 <button
                   type="button"
-                  onClick={() => switchMode('sign-in')}
-                  className="font-bold text-[#0B1E36] hover:underline cursor-pointer"
+                  onClick={() => {
+                    setIsSuccessComplete(false);
+                    onClose();
+                    router.push('/parents');
+                  }}
+                  className="w-full sm:w-auto px-6 py-3.5 bg-[#0B1E36] hover:bg-[#132c4d] text-white font-bold text-sm rounded-xl shadow-md transition-all cursor-pointer"
                 >
-                  Already have an account? Sign in
+                  Go to Parent Dashboard &rarr;
                 </button>
-              </p>
-            ) : (
-              <p>
                 <button
                   type="button"
-                  onClick={() => switchMode('sign-up')}
-                  className="font-bold text-[#0B1E36] hover:underline cursor-pointer"
+                  onClick={() => {
+                    setIsSuccessComplete(false);
+                    onClose();
+                  }}
+                  className="w-full sm:w-auto px-6 py-3.5 bg-amber-400 hover:bg-amber-300 active:bg-amber-500 text-slate-950 font-bold text-sm rounded-xl shadow-sm transition-all cursor-pointer"
                 >
-                  Don&apos;t have an account? Create your free parent account
+                  Continue Adding Schools
                 </button>
-              </p>
-            )}
-          </div>
+              </div>
+            </div>
+          ) : (
+            <>
+              {/* Form Section Header */}
+              <div className="mb-5">
+                <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#0B1E36]">
+                  {mode === 'sign-up' ? 'Create your free parent account' : 'Parent Login'}
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                  {mode === 'sign-up'
+                    ? 'Enter your details to start your free parent journey.'
+                    : 'Sign in to manage your school shortlists and applications.'}
+                </p>
+              </div>
+
+              {/* Error Message */}
+              {errorMsg && (
+                <div className="mb-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-800 flex items-start gap-2">
+                  <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
+                  <span>{errorMsg}</span>
+                </div>
+              )}
+
+              {/* Success Message */}
+              {successMsg && (
+                <div className="mb-4 p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-900 flex items-start gap-2">
+                  <Check className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                  <span>{successMsg}</span>
+                </div>
+              )}
+
+              {/* Input Form */}
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {mode === 'sign-up' && (
+                  <div>
+                    <label className="block text-xs sm:text-sm font-bold text-[#0B1E36] mb-1.5">
+                      Full name
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                      placeholder="e.g. Ama Mensah"
+                      className="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0B1E36] transition-all"
+                    />
+                  </div>
+                )}
+
+                <div>
+                  <label className="block text-xs sm:text-sm font-bold text-[#0B1E36] mb-1.5">
+                    Email address
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="e.g. ama.mensah@gmail.com"
+                    className="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0B1E36] transition-all"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs sm:text-sm font-bold text-[#0B1E36] mb-1.5">
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Minimum 6 characters"
+                    className="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0B1E36] transition-all"
+                  />
+                </div>
+
+                {mode === 'sign-up' && (
+                  <div>
+                    <label className="block text-xs sm:text-sm font-bold text-[#0B1E36] mb-1.5">
+                      Confirm password
+                    </label>
+                    <input
+                      type="password"
+                      required
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      placeholder="Re-enter your password"
+                      className="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0B1E36] transition-all"
+                    />
+                  </div>
+                )}
+
+                <div className="pt-2">
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="px-7 py-3 bg-[#0B1E36] hover:bg-[#132c4d] active:bg-[#071322] text-white font-bold text-sm rounded-lg shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 disabled:opacity-70 cursor-pointer"
+                  >
+                    {loading && <Loader2 className="w-4 h-4 animate-spin text-white" />}
+                    {loading
+                      ? mode === 'sign-up'
+                        ? 'Creating account...'
+                        : 'Signing in...'
+                      : mode === 'sign-up'
+                      ? 'Create free account'
+                      : 'Sign in'}
+                  </button>
+                </div>
+              </form>
+
+              {/* Subtext and Mode Switcher */}
+              <div className="mt-6 pt-4 border-t border-slate-100 text-xs text-slate-500 space-y-2">
+                <p>
+                  Your credentials are securely handled to personalize your school shortlist, applications, and notifications.
+                </p>
+                {mode === 'sign-up' ? (
+                  <p>
+                    <button
+                      type="button"
+                      onClick={() => switchMode('sign-in')}
+                      className="font-bold text-[#0B1E36] hover:underline cursor-pointer"
+                    >
+                      Already have an account? Sign in
+                    </button>
+                  </p>
+                ) : (
+                  <p>
+                    <button
+                      type="button"
+                      onClick={() => switchMode('sign-up')}
+                      className="font-bold text-[#0B1E36] hover:underline cursor-pointer"
+                    >
+                      Don&apos;t have an account? Create your free parent account
+                    </button>
+                  </p>
+                )}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

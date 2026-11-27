@@ -23,6 +23,8 @@ import { mapParentWorkspace } from '@/lib/supabase/mappers';
 interface DemoContextType {
   role: UserRole;
   setRole: (role: UserRole) => void;
+  isAuthenticated: boolean;
+  setIsAuthenticated: (auth: boolean) => void;
   state: EcosystemState;
   dataSource: 'supabase' | 'demo_seed';
   isBootstrapping: boolean;
@@ -88,6 +90,7 @@ const DemoContext = createContext<DemoContextType | undefined>(undefined);
 
 export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [role, setRoleState] = useState<UserRole>('guest');
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [toasts, setToasts] = useState<ToastNotification[]>([]);
   const [state, setState] = useState<EcosystemState>(() => getInitialEcosystemState());
   const [dataSource, setDataSource] = useState<'supabase' | 'demo_seed'>('demo_seed');
@@ -189,8 +192,6 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     try {
-      const savedRole = localStorage.getItem(ROLE_KEY);
-      if (savedRole) setRoleState(savedRole as UserRole);
       const savedState = localStorage.getItem(STORAGE_KEY);
       if (savedState) {
         const parsed = JSON.parse(savedState);
@@ -207,10 +208,45 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
       isHydrated.current = true;
     }
 
+    // Determine authentication state: only mark authenticated if Supabase user or explicit session
+    const supabase = createClient();
+    if (supabase) {
+      supabase.auth.getUser().then(({ data }) => {
+        if (data.user) {
+          setIsAuthenticated(true);
+          const userRole =
+            (data.user.app_metadata?.role as UserRole) ||
+            (data.user.user_metadata?.requested_role as UserRole) ||
+            'parent';
+          setRoleState(userRole);
+        } else {
+          const hasActiveAuth = typeof window !== 'undefined' && localStorage.getItem('skoolfinder_auth_active') === 'true';
+          if (hasActiveAuth) {
+            setIsAuthenticated(true);
+            const savedRole = localStorage.getItem(ROLE_KEY);
+            if (savedRole && savedRole !== 'guest') {
+              setRoleState(savedRole as UserRole);
+            }
+          } else {
+            setIsAuthenticated(false);
+            setRoleState('guest');
+          }
+        }
+      });
+    }
+
     refreshEcosystem();
 
-    const supabase = createClient();
-    const subscription = supabase?.auth.onAuthStateChange((event) => {
+    const subscription = supabase?.auth.onAuthStateChange((event, session) => {
+      if (session?.user) {
+        setIsAuthenticated(true);
+      } else if (event === 'SIGNED_OUT') {
+        setIsAuthenticated(false);
+        setRoleState('guest');
+        try {
+          localStorage.removeItem('skoolfinder_auth_active');
+        } catch {}
+      }
       if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') {
         refreshEcosystem();
       }
@@ -232,6 +268,17 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const setRole = (newRole: UserRole) => {
     setRoleState(newRole);
+    if (newRole !== 'guest') {
+      setIsAuthenticated(true);
+      try {
+        localStorage.setItem('skoolfinder_auth_active', 'true');
+      } catch (e) {}
+    } else {
+      setIsAuthenticated(false);
+      try {
+        localStorage.removeItem('skoolfinder_auth_active');
+      } catch (e) {}
+    }
     try {
       localStorage.setItem(ROLE_KEY, newRole);
     } catch (e) {
@@ -243,9 +290,11 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const pristine = getInitialEcosystemState();
     setState(pristine);
     setRole('guest');
+    setIsAuthenticated(false);
     try {
       localStorage.removeItem(STORAGE_KEY);
       localStorage.removeItem(ROLE_KEY);
+      localStorage.removeItem('skoolfinder_auth_active');
     } catch {}
     refreshEcosystem();
   };
@@ -740,6 +789,8 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
       value={{
         role,
         setRole,
+        isAuthenticated,
+        setIsAuthenticated,
         state,
         dataSource,
         isBootstrapping,

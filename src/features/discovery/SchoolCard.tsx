@@ -22,13 +22,14 @@ interface SchoolCardProps {
 }
 
 export const SchoolCard: React.FC<SchoolCardProps> = ({ school, variant = 'list' }) => {
-  const { role, state, toggleSaveSchool, toggleCompareSchool } = useDemo();
+  const { role, isAuthenticated, state, toggleSaveSchool, toggleCompareSchool } = useDemo();
   const [coverError, setCoverError] = useState(false);
   const [crestError, setCrestError] = useState(false);
 
   // Parent Auth Modal state for gated interactions
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authModalReason, setAuthModalReason] = useState<string | undefined>(undefined);
+  const [pendingAction, setPendingAction] = useState<'save' | 'compare' | null>(null);
 
   const isSaved = state.parent.savedSchoolIds.includes(school.id);
   const isCompared = state.parent.comparisonSchoolIds.includes(school.id);
@@ -44,8 +45,9 @@ export const SchoolCard: React.FC<SchoolCardProps> = ({ school, variant = 'list'
 
   // Handlers enforcing account requirement for Compare and Save
   const handleCompareClick = () => {
-    if (role === 'guest') {
+    if (!isAuthenticated || role === 'guest') {
       setAuthModalReason('Please create a free parent account to compare schools side-by-side.');
+      setPendingAction('compare');
       setAuthModalOpen(true);
       return;
     }
@@ -53,12 +55,22 @@ export const SchoolCard: React.FC<SchoolCardProps> = ({ school, variant = 'list'
   };
 
   const handleSaveClick = () => {
-    if (role === 'guest') {
+    if (!isAuthenticated || role === 'guest') {
       setAuthModalReason('Please create a free parent account to save schools to your personal shortlist.');
+      setPendingAction('save');
       setAuthModalOpen(true);
       return;
     }
     toggleSaveSchool(school.id);
+  };
+
+  const handleAuthSuccess = () => {
+    if (pendingAction === 'compare') {
+      toggleCompareSchool(school.id);
+    } else if (pendingAction === 'save') {
+      toggleSaveSchool(school.id);
+    }
+    setPendingAction(null);
   };
 
   return (
@@ -231,6 +243,7 @@ export const SchoolCard: React.FC<SchoolCardProps> = ({ school, variant = 'list'
         onClose={() => setAuthModalOpen(false)}
         initialMode="sign-up"
         promptReason={authModalReason}
+        onSuccess={handleAuthSuccess}
       />
     </>
   );
