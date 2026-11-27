@@ -208,7 +208,7 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
       isHydrated.current = true;
     }
 
-    // Determine authentication state: only mark authenticated if Supabase user or explicit session
+    // Determine authentication state: only mark authenticated if Supabase user or explicit active session
     const supabase = createClient();
     if (supabase) {
       supabase.auth.getUser().then(({ data }) => {
@@ -220,8 +220,9 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
             'parent';
           setRoleState(userRole);
         } else {
-          const hasActiveAuth = typeof window !== 'undefined' && localStorage.getItem('skoolfinder_auth_active') === 'true';
-          if (hasActiveAuth) {
+          // If no active Supabase user, check if session was explicitly authenticated during this session
+          const hasSessionAuth = typeof window !== 'undefined' && sessionStorage.getItem('skoolfinder_session_authenticated') === 'true';
+          if (hasSessionAuth) {
             setIsAuthenticated(true);
             const savedRole = localStorage.getItem(ROLE_KEY);
             if (savedRole && savedRole !== 'guest') {
@@ -230,9 +231,19 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
           } else {
             setIsAuthenticated(false);
             setRoleState('guest');
+            try {
+              localStorage.removeItem('skoolfinder_auth_active');
+              localStorage.removeItem(ROLE_KEY);
+            } catch {}
           }
         }
+      }).catch(() => {
+        setIsAuthenticated(false);
+        setRoleState('guest');
       });
+    } else {
+      setIsAuthenticated(false);
+      setRoleState('guest');
     }
 
     refreshEcosystem();
@@ -272,11 +283,13 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setIsAuthenticated(true);
       try {
         localStorage.setItem('skoolfinder_auth_active', 'true');
+        sessionStorage.setItem('skoolfinder_session_authenticated', 'true');
       } catch (e) {}
     } else {
       setIsAuthenticated(false);
       try {
         localStorage.removeItem('skoolfinder_auth_active');
+        sessionStorage.removeItem('skoolfinder_session_authenticated');
       } catch (e) {}
     }
     try {
@@ -295,6 +308,7 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
       localStorage.removeItem(STORAGE_KEY);
       localStorage.removeItem(ROLE_KEY);
       localStorage.removeItem('skoolfinder_auth_active');
+      sessionStorage.removeItem('skoolfinder_session_authenticated');
     } catch {}
     refreshEcosystem();
   };

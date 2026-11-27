@@ -17,9 +17,9 @@ export const mockInitialParent: ParentUser = {
     { name: 'Nana Yaw Mensah', currentAge: 11, targetLevel: 'Junior High School' },
     { name: 'Akosua Mensah', currentAge: 5, targetLevel: 'Kindergarten' }
   ],
-  savedSchoolIds: ['sch-01', 'sch-02', 'sch-03'],
-  shortlistedSchoolIds: ['sch-01', 'sch-02'],
-  comparisonSchoolIds: ['sch-01', 'sch-02'],
+  savedSchoolIds: [],
+  shortlistedSchoolIds: [],
+  comparisonSchoolIds: [],
   alertPreferences: {
     admissionsDeadlines: true,
     feeChanges: false,

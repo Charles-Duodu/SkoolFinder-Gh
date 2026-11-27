@@ -44,7 +44,9 @@ export const SchoolCard: React.FC<SchoolCardProps> = ({ school, variant = 'list'
     .toUpperCase();
 
   // Handlers enforcing account requirement for Compare and Save
-  const handleCompareClick = () => {
+  const handleCompareClick = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    e?.preventDefault();
     if (!isAuthenticated || role === 'guest') {
       setAuthModalReason('Please create a free parent account to compare schools side-by-side.');
       setPendingAction('compare');
@@ -54,7 +56,9 @@ export const SchoolCard: React.FC<SchoolCardProps> = ({ school, variant = 'list'
     toggleCompareSchool(school.id);
   };
 
-  const handleSaveClick = () => {
+  const handleSaveClick = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    e?.preventDefault();
     if (!isAuthenticated || role === 'guest') {
       setAuthModalReason('Please create a free parent account to save schools to your personal shortlist.');
       setPendingAction('save');
