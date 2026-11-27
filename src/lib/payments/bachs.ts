@@ -16,6 +16,7 @@ export interface CreateCheckoutOptions {
   title: string;
   description?: string;
   targetId?: string;
+  baseUrl?: string;
   metadata?: Record<string, any>;
   successUrl?: string;
   cancelUrl?: string;
@@ -43,11 +44,11 @@ export const getBachsBaseUrl = () => {
 
 export async function createBachsCheckout(options: CreateCheckoutOptions): Promise<CheckoutSessionResult> {
   const secretKey = process.env.BACHS_SECRET_KEY;
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+  const baseUrl = options.baseUrl || process.env.NEXT_PUBLIC_APP_URL || 'https://skool-finder-gh-zydn.vercel.app';
   const reference = `SF-GH-${Date.now()}-${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
   const amountPesewas = Math.round(options.amountGhs * 100);
 
-  const successUrl = options.successUrl || `${baseUrl}/payment/success?ref=${reference}&purpose=${options.purpose}&target=${options.targetId || ''}`;
+  const successUrl = options.successUrl || `${baseUrl}/payment/success?ref=${reference}&purpose=${options.purpose}&target=${options.targetId || ''}&amount=${options.amountGhs}`;
   const cancelUrl = options.cancelUrl || `${baseUrl}/payment/cancel?ref=${reference}`;
 
   // If live or sandbox API key is configured, call Bachs REST API
