@@ -54,7 +54,7 @@ export async function createBachsCheckout(options: CreateCheckoutOptions): Promi
   // If live or sandbox API key is configured, call Bachs REST API
   if (isLiveBachsKey(secretKey)) {
     try {
-      const apiUrl = `${getBachsBaseUrl()}/v1/checkouts`;
+      const apiUrl = `${getBachsBaseUrl()}/v1/checkout-sessions`;
       const res = await fetch(apiUrl, {
         method: 'POST',
         headers: {
@@ -63,51 +63,54 @@ export async function createBachsCheckout(options: CreateCheckoutOptions): Promi
           'Accept': 'application/json',
         },
         body: JSON.stringify({
+          pricing: {
+            amount: options.amountGhs,
+            currency: 'GHS',
+          },
           customer: {
             email: options.customer.email,
             name: options.customer.name || options.customer.email,
             phone: options.customer.phone || undefined,
           },
-          currency: 'GHS',
-          items: [
-            {
-              name: options.title,
-              description: options.description || `SkoolFinder Ghana - ${options.purpose}`,
-              amount: amountPesewas,
-              quantity: 1,
-            },
-          ],
-          payment_methods: ['mobile_money', 'card', 'bank_transfer'],
-          reference,
-          metadata: {
-            purpose: options.purpose,
-            targetId: options.targetId,
-            ...options.metadata,
-          },
           success_url: successUrl,
           cancel_url: cancelUrl,
+          metadata: {
+            title: options.title,
+            purpose: options.purpose,
+            targetId: options.targetId,
+            reference,
+            ...options.metadata,
+          },
         }),
       });
 
       if (res.ok) {
         const data = await res.json();
-        return {
-          checkoutUrl: data.checkout_url || data.url || successUrl,
-          sessionId: data.id || data.session_id || reference,
-          reference,
-          amountPesewas,
-          mode: secretKey?.startsWith('sk_live_') ? 'live' : 'sandbox',
-        };
+        const liveCheckoutUrl = data.checkout_url || data.url;
+        if (liveCheckoutUrl) {
+          return {
+            checkoutUrl: liveCheckoutUrl,
+            sessionId: data.id || data.session_id || reference,
+            reference,
+            amountPesewas,
+            mode: secretKey?.startsWith('sk_live_') ? 'live' : 'sandbox',
+          };
+        }
       } else {
         const errorText = await res.text();
-        console.warn('Bachs API checkout error, falling back to simulated session:', errorText);
+        console.error('Bachs API rejected checkout:', res.status, errorText);
+        let errorJson: any = null;
+        try { errorJson = JSON.parse(errorText); } catch {}
+        throw new Error(errorJson?.message || errorJson?.error || `Bachs API error (${res.status}): ${errorText}`);
       }
-    } catch (err) {
-      console.warn('Bachs network request failed, falling back to simulated session:', err);
+    } catch (err: any) {
+      console.error('Bachs request failed:', err);
+      // Re-throw so user gets visible diagnostic feedback
+      throw err;
     }
   }
 
-  // Graceful Demo / Interactive Simulation Mode: Returns relative path so browser never redirects to localhost
+  // Graceful Demo Mode (only used when NO Bachs API key is configured at all)
   const simulatedUrl = `/payment/success?ref=${reference}&purpose=${options.purpose}&target=${options.targetId || ''}&simulated=true&amount=${options.amountGhs}`;
 
   return {
